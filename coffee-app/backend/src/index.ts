@@ -2,10 +2,10 @@ import express, { Request, Response, NextFunction } from 'express';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
-import { corsMiddleware, optionsHandler } from './middleware/cors';
-import { globalErrorHandler, notFoundHandler } from './middleware/errorHandler';
-import routes from './routes';
-import { logger } from './utils/logger';
+import { corsMiddleware, optionsHandler } from './middleware/cors.ts';
+import { globalErrorHandler, notFoundHandler } from './middleware/errorHandler.ts';
+import routes from './routes/index.ts';
+import { logger } from './utils/logger.ts';
 
 // Load environment variables
 dotenv.config();
