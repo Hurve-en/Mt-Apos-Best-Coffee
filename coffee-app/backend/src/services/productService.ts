@@ -1,6 +1,6 @@
-import { prisma } from '../index';
-import { AppError } from '../utils/errorHandler';
-import { IProduct, IProductInput } from '../types';
+import { prisma } from '../index.ts';
+import { AppError } from '../utils/errorHandler.ts';
+import { IProduct, IProductInput } from '../types/product.ts';
 
 export const productService = {
   // Get all products

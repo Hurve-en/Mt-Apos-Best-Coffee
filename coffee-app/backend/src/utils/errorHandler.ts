@@ -9,7 +9,7 @@ export class AppError extends Error {
   }
 }
 
-export const handleError = (error: any) => {
+export const handleError = (error: unknown) => {
   if (error instanceof AppError) {
     return {
       statusCode: error.statusCode,

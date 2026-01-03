@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { AuthRequest } from '../middleware/auth';
-import { authService } from '../services/authService';
-import { userService } from '../services/userService';
-import { logger } from '../utils/logger';
+import { AuthRequest } from '../middleware/auth.ts';
+import { authService } from '../services/authService.ts';
+import { userService } from '../services/userService.ts';
+import { logger } from '../utils/logger.ts';
 
 export const authController = {
   // Register new user

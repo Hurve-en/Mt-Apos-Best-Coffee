@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { AppError } from '../utils/errorHandler';
+import { AppError } from '../utils/errorHandler.ts';
 import { ITokenPayload } from '../types';
 
 export const authService = {

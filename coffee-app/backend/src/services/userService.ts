@@ -1,7 +1,7 @@
-import { prisma } from '../index';
-import { authService } from './authService';
-import { AppError } from '../utils/errorHandler';
-import { IUserInput, IUser } from '../types';
+import { prisma } from '../index.ts';
+import { authService } from './authService.ts';
+import { AppError } from '../utils/errorHandler.ts';
+import { IUserInput, IUser } from '../types/index.ts';
 
 export const userService = {
   // Create new user
@@ -25,7 +25,9 @@ export const userService = {
         password: hashedPassword,
         name: data.name,
         phone: data.phone,
-        role: 'CUSTOMER'
+        address: data.address,
+        city: data.city,
+        postalCode: data.postalCode
       }
     });
 
@@ -52,7 +54,13 @@ export const userService = {
   updateUser: async (id: string, data: Partial<IUserInput>): Promise<IUser> => {
     const user = await prisma.user.update({
       where: { id },
-      data
+      data: {
+        name: data.name,
+        phone: data.phone,
+        address: data.address,
+        city: data.city,
+        postalCode: data.postalCode
+      }
     });
     return user as unknown as IUser;
   },

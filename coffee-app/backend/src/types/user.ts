@@ -4,7 +4,7 @@ export interface IUser {
   password: string;
   name: string;
   phone?: string;
-  role: 'CUSTOMER' | 'ADMIN' | 'STAFF';
+  role?: string;
   address?: string;
   city?: string;
   postalCode?: string;
@@ -17,6 +17,9 @@ export interface IUserInput {
   password: string;
   name: string;
   phone?: string;
+  address?: string;
+  city?: string;
+  postalCode?: string;
 }
 
 export interface ILoginPayload {
@@ -27,5 +30,5 @@ export interface ILoginPayload {
 export interface ITokenPayload {
   id: string;
   email: string;
-  role: string;
+  role?: string;
 }

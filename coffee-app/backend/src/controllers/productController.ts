@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { AuthRequest } from '../middleware/auth';
-import { productService } from '../services/productService';
-import { logger } from '../utils/logger';
+import { AuthRequest } from '../middleware/auth.ts';
+import { productService } from '../services/productService.ts';
+import { logger } from '../utils/logger.ts';
 
 export const productController = {
   // Get all products

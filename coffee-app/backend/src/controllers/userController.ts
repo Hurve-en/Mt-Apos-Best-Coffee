@@ -1,7 +1,7 @@
 import { Response } from 'express';
-import { AuthRequest } from '../middleware/auth';
-import { userService } from '../services/userService';
-import { logger } from '../utils/logger';
+import { AuthRequest } from '../middleware/auth.ts';
+import { userService } from '../services/userService.ts';
+import { logger } from '../utils/logger.ts';
 
 export const userController = {
   // Get user profile
@@ -36,9 +36,9 @@ export const userController = {
       const user = await userService.updateUser(req.user.id, {
         name,
         phone,
-        address: address || '',
-        city: city || '',
-        postalCode: postalCode || ''
+        address,
+        city,
+        postalCode
       });
 
       logger.success('User profile updated', { userId: req.user.id });
@@ -55,7 +55,7 @@ export const userController = {
   },
 
   // Get all users (admin only)
-  getAllUsers: async (req: AuthRequest, res: Response): Promise<void> => {
+  getAllUsers: async (_req: AuthRequest, res: Response): Promise<void> => {
     try {
       const users = await userService.getAllUsers();
       res.status(200).json({
