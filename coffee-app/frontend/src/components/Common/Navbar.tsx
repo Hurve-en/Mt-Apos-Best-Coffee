@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
-import { logout } from '../redux/slices/authSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
+import { logout } from '../../redux/slices/authSlice';
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
