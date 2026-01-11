@@ -1,7 +1,8 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../hooks/useRedux';
 
-export const Home = () => {
+const Home: React.FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAppSelector((state: any) => state.auth);
 
@@ -107,3 +108,5 @@ export const Home = () => {
     </div>
   );
 };
+
+export default Home;

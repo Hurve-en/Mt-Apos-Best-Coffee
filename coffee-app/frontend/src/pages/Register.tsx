@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAppDispatch } from '../hooks/useRedux';
 import { loginSuccess, loginFailure, setLoading } from '../redux/slices/authSlice';
 import { apiService } from '../services/api';
 
-export const Register = () => {
+const Register: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [formData, setFormData] = useState({
@@ -83,10 +83,10 @@ export const Register = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-coffee-50 to-coffee-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white rounded-2xl shadow-2xl p-8 animate-fadeIn">
+      <div className="max-w-md w-full space-y-8 bg-white rounded-2xl shadow-2xl p-8">
         {/* Header */}
         <div className="text-center">
-          <span className="text-5xl animate-bounce">☕</span>
+          <span className="text-5xl">☕</span>
           <h1 className="mt-4 text-3xl font-bold text-coffee-900">CoffeeHub</h1>
           <p className="mt-2 text-gray-600">Join our coffee community!</p>
         </div>
@@ -95,7 +95,7 @@ export const Register = () => {
         <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
           {/* Error Message */}
           {errors.submit && (
-            <div className="rounded-lg bg-red-50 p-4 border border-red-200 animate-slideDown">
+            <div className="rounded-lg bg-red-50 p-4 border border-red-200">
               <p className="text-sm text-red-800">{errors.submit}</p>
             </div>
           )}
@@ -219,3 +219,5 @@ export const Register = () => {
     </div>
   );
 };
+
+export default Register;

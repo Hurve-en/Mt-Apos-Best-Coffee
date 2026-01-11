@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAppDispatch } from '../hooks/useRedux';
 import { loginSuccess, loginFailure, setLoading } from '../redux/slices/authSlice';
 import { apiService } from '../services/api';
 
-export const Login = () => {
+const Login: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [formData, setFormData] = useState({
@@ -50,7 +50,7 @@ export const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-coffee-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+      <div className="max-w-md w-full space-y-8 bg-white rounded-2xl shadow-2xl p-8">
         {/* Header */}
         <div className="text-center">
           <span className="text-5xl">☕</span>
@@ -129,3 +129,5 @@ export const Login = () => {
     </div>
   );
 };
+
+export default Login;

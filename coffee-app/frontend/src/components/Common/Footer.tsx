@@ -1,4 +1,6 @@
-export const Footer = () => {
+import React from 'react';
+
+const Footer: React.FC = () => {
   return (
     <footer className="bg-coffee-900 text-white mt-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -41,7 +43,7 @@ export const Footer = () => {
             <h3 className="font-bold mb-4">Contact Us</h3>
             <ul className="space-y-2 text-coffee-300">
               <li>📧 info@coffeehub.com</li>
-              <li>📱 +63 (XXX) XXXX-XXXX</li>
+              <li>📱 +63 9XX XXXX XXX</li>
               <li>📍 Cebu, Philippines</li>
             </ul>
           </div>
@@ -54,3 +56,5 @@ export const Footer = () => {
     </footer>
   );
 };
+
+export default Footer;

@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
-import { logout } from '../../redux/slices/authSlice';
+import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
+import { logout } from '../redux/slices/authSlice';
 
-export const Navbar = () => {
+const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user, isAuthenticated } = useAppSelector((state: any) => state.auth);
@@ -16,13 +16,13 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="bg-coffee-900 text-white shadow-lg">
+    <nav className="bg-coffee-900 text-white shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition">
             <span className="text-2xl">☕</span>
-            <span className="font-bold text-xl">CoffeeHub</span>
+            <span className="font-bold text-xl hidden sm:inline">CoffeeHub</span>
           </Link>
 
           {/* Navigation Links */}
@@ -46,7 +46,7 @@ export const Navbar = () => {
             <Link to="/cart" className="relative hover:text-coffee-200 transition">
               <span className="text-2xl">🛒</span>
               {items.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                   {items.length}
                 </span>
               )}
@@ -60,7 +60,7 @@ export const Navbar = () => {
                   className="flex items-center space-x-2 hover:text-coffee-200 transition"
                 >
                   <span className="text-lg">👤</span>
-                  <span className="text-sm">{user?.name}</span>
+                  <span className="text-sm hidden sm:inline">{user?.name}</span>
                 </button>
 
                 {showUserMenu && (
@@ -82,16 +82,16 @@ export const Navbar = () => {
                 )}
               </div>
             ) : (
-              <div className="space-x-2">
+              <div className="space-x-2 flex">
                 <Link
                   to="/login"
-                  className="px-4 py-2 rounded hover:bg-coffee-800 transition"
+                  className="px-3 py-2 text-sm rounded hover:bg-coffee-800 transition"
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className="px-4 py-2 bg-coffee-700 rounded hover:bg-coffee-600 transition"
+                  className="px-3 py-2 text-sm bg-coffee-700 rounded hover:bg-coffee-600 transition"
                 >
                   Register
                 </Link>
@@ -103,3 +103,5 @@ export const Navbar = () => {
     </nav>
   );
 };
+
+export default Navbar;
