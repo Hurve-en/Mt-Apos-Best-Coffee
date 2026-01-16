@@ -1,11 +1,15 @@
-import express, { Request, Response, NextFunction } from 'express';
-import helmet from 'helmet';
-import dotenv from 'dotenv';
-import { PrismaClient } from '@prisma/client';
-import { corsMiddleware, optionsHandler } from './middleware/cors.ts';
-import { globalErrorHandler, notFoundHandler } from './middleware/errorHandler.ts';
-import routes from './routes/index.ts';
-import { logger } from './utils/logger.ts';
+import express, { Request, Response, NextFunction } from "express";
+import helmet from "helmet";
+import dotenv from "dotenv";
+import { PrismaClient } from "@prisma/client";
+import { corsMiddleware, optionsHandler } from "./middleware/cors.ts";
+import {
+  globalErrorHandler,
+  notFoundHandler,
+} from "./middleware/errorHandler.ts";
+import routes from "./routes/index.ts";
+import adminRoutes from "./routes/admin.ts";
+import { logger } from "./utils/logger.ts";
 
 // Load environment variables
 dotenv.config();
@@ -26,11 +30,11 @@ app.use(helmet());
 
 // CORS middleware
 app.use(corsMiddleware);
-app.options('*', optionsHandler);
+app.options("*", optionsHandler);
 
 // Body parser
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ limit: '10mb', extended: true }));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 // Request logging
 app.use((req: Request, _res: Response, next: NextFunction) => {
@@ -43,16 +47,19 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
 // ============================================================================
 
 // Health check
-app.get('/health', (_req: Request, res: Response) => {
+app.get("/health", (_req: Request, res: Response) => {
   res.status(200).json({
     success: true,
-    message: 'Server is running',
-    timestamp: new Date().toISOString()
+    message: "Server is running",
+    timestamp: new Date().toISOString(),
   });
 });
 
 // API routes
-app.use('/api', routes);
+app.use("/api", routes);
+
+// Admin routes
+app.use("/api/admin", adminRoutes);
 
 // ============================================================================
 // ERROR HANDLING
@@ -72,7 +79,7 @@ async function startServer(): Promise<void> {
   try {
     // Check database connection
     await prisma.$connect();
-    logger.success('Database connected successfully');
+    logger.success("Database connected successfully");
 
     // Start server
     app.listen(PORT, () => {
@@ -81,20 +88,20 @@ async function startServer(): Promise<void> {
       logger.info(`Health check: http://localhost:${PORT}/health`);
     });
   } catch (error) {
-    logger.error('Failed to start server', error);
+    logger.error("Failed to start server", error);
     process.exit(1);
   }
 }
 
 // Handle graceful shutdown
-process.on('SIGTERM', async () => {
-  logger.warn('SIGTERM signal received: closing HTTP server');
+process.on("SIGTERM", async () => {
+  logger.warn("SIGTERM signal received: closing HTTP server");
   await prisma.$disconnect();
   process.exit(0);
 });
 
-process.on('SIGINT', async () => {
-  logger.warn('SIGINT signal received: closing HTTP server');
+process.on("SIGINT", async () => {
+  logger.warn("SIGINT signal received: closing HTTP server");
   await prisma.$disconnect();
   process.exit(0);
 });
