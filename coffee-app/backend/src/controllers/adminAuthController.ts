@@ -5,36 +5,35 @@ import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
-export const adminLogin = async (req: Request, res: Response) => {
+export const adminLogin = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res
+      res
         .status(400)
         .json({ success: false, message: "Email and password required" });
+      return;
     }
 
     const user = await prisma.user.findUnique({ where: { email } });
-
     if (!user) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Invalid credentials" });
+      res.status(401).json({ success: false, message: "Invalid credentials" });
+      return;
     }
 
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Invalid credentials" });
+      res.status(401).json({ success: false, message: "Invalid credentials" });
+      return;
     }
 
-    // Allow login if role contains 'ADMIN'
     if (!user.role || !user.role.includes("ADMIN")) {
-      return res
-        .status(403)
-        .json({ success: false, message: "Admin access only" });
+      res.status(403).json({ success: false, message: "Admin access only" });
+      return;
     }
 
     const token = jwt.sign(
@@ -45,7 +44,7 @@ export const adminLogin = async (req: Request, res: Response) => {
 
     res.json({
       success: true,
-      message: "Login successful",
+      message: "Admin login successful",
       user: {
         id: user.id,
         email: user.email,
@@ -55,17 +54,24 @@ export const adminLogin = async (req: Request, res: Response) => {
       token,
     });
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Admin login error:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
-export const getAdminStats = async (req: Request, res: Response) => {
+export const getAdminStats = async (
+  _req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const totalOrders = await prisma.order.count();
     const totalProducts = await prisma.product.count();
     const totalRevenue = await prisma.order.aggregate({
       _sum: { totalPrice: true },
+    });
+    const recentOrders = await prisma.order.findMany({
+      take: 5,
+      orderBy: { createdAt: "desc" },
     });
 
     res.json({
@@ -74,9 +80,11 @@ export const getAdminStats = async (req: Request, res: Response) => {
         totalOrders,
         totalProducts,
         totalRevenue: totalRevenue._sum.totalPrice || 0,
+        recentOrders,
       },
     });
   } catch (error) {
+    console.error("Get admin stats error:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
