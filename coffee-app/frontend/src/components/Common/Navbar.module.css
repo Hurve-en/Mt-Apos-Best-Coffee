@@ -1,0 +1,387 @@
+/* Navbar.module.css - Professional Navigation Styling */
+
+.navbar-header {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e8e8e8;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.navbar-nav {
+  width: 100%;
+  height: auto;
+}
+
+.navbar-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Logo */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: #1a1410;
+  font-weight: 700;
+  font-size: 1.25rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.navbar-logo:hover {
+  color: #c17a4a;
+  transform: scale(1.05);
+}
+
+.logo-icon {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.logo-text {
+  font-family:
+    "Sora",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  letter-spacing: -0.5px;
+}
+
+/* Desktop Menu */
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+}
+
+.menu-item {
+  position: relative;
+}
+
+.menu-link {
+  display: block;
+  padding: 0.75rem 1.25rem;
+  color: #4a3f38;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.menu-link:hover {
+  color: #c17a4a;
+  border-bottom-color: #c17a4a;
+}
+
+/* Right Actions */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-left: auto;
+}
+
+/* Cart Button */
+.cart-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4a3f38;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  padding: 0.5rem;
+}
+
+.cart-button:hover {
+  color: #c17a4a;
+}
+
+.cart-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #c17a4a;
+  color: #ffffff;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  box-shadow: 0 2px 4px rgba(193, 122, 74, 0.2);
+}
+
+/* User Section */
+.user-section {
+  position: relative;
+}
+
+.user-menu-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: 1px solid #e8e8e8;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: #1a1410;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  font-family: "Sora", sans-serif;
+}
+
+.user-menu-button:hover {
+  border-color: #c17a4a;
+  color: #c17a4a;
+}
+
+.user-icon {
+  font-size: 1.2rem;
+}
+
+.user-name {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 160px;
+  margin-top: 0.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.user-section:hover .user-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  background: none;
+  border: none;
+  color: #4a3f38;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Sora", sans-serif;
+  font-size: 0.95rem;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f1ed;
+  color: #c17a4a;
+}
+
+.logout-item:hover {
+  background-color: rgba(139, 58, 58, 0.1);
+  color: #8b3a3a;
+}
+
+/* Auth Buttons */
+.auth-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.auth-link {
+  color: #4a3f38;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.auth-link:hover {
+  color: #c17a4a;
+}
+
+.auth-button-primary {
+  display: inline-block;
+  background-color: #1a1410;
+  color: #ffffff;
+  padding: 0.65rem 1.25rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.auth-button-primary:hover {
+  background-color: #2d2420;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(26, 20, 16, 0.2);
+}
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #1a1410;
+  padding: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.mobile-menu-toggle:hover {
+  color: #c17a4a;
+}
+
+/* Mobile Menu */
+.mobile-menu {
+  display: none;
+  background-color: #ffffff;
+  border-top: 1px solid #e8e8e8;
+  padding: 1rem 0;
+  animation: slideDown 0.3s ease-out;
+}
+
+.mobile-menu-item {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  color: #4a3f38;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: "Sora", sans-serif;
+  font-size: 0.95rem;
+  text-align: left;
+}
+
+.mobile-menu-item:hover {
+  background-color: #f5f1ed;
+  color: #c17a4a;
+}
+
+.logout {
+  color: #8b3a3a;
+}
+
+.logout:hover {
+  background-color: rgba(139, 58, 58, 0.1);
+}
+
+/* Animations */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar-container {
+    padding: 0.75rem 1rem;
+    gap: 1rem;
+  }
+
+  .navbar-menu {
+    display: none;
+  }
+
+  .auth-buttons {
+    display: none;
+  }
+
+  .mobile-menu-toggle {
+    display: block;
+  }
+
+  .mobile-menu {
+    display: block;
+  }
+
+  .navbar-logo {
+    font-size: 1.1rem;
+  }
+
+  .cart-button {
+    padding: 0.25rem;
+  }
+
+  .logo-text {
+    display: none;
+  }
+
+  .logo-icon {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-container {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .user-name {
+    display: none;
+  }
+
+  .user-menu-button {
+    border: none;
+    padding: 0.5rem;
+  }
+
+  .cart-badge {
+    width: 20px;
+    height: 20px;
+    font-size: 0.7rem;
+  }
+}
