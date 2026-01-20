@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../../hooks/useRedux";
 import { logout } from "../../redux/slices/authSlice";
-import styles from "./Navbar.module.css";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -23,42 +22,59 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <header className={styles.header}>
-      <nav className={styles.nav}>
-        <div className={styles.container}>
+    <header className="sticky top-0 z-1000 bg-white border-b border-gray-200 shadow-sm">
+      <nav className="w-full">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-3 flex justify-between items-center gap-8">
           {/* Logo */}
-          <Link to="/" className={styles.logo}>
-            <span className={styles.icon}>☕</span>
-            <span className={styles.text}>Apo Coffee</span>
+          <Link
+            to="/"
+            className="flex items-center gap-3 text-gray-900 font-bold text-xl no-underline cursor-pointer whitespace-nowrap flex-shrink-0 hover:text-orange-500 transition-colors duration-300"
+          >
+            <span className="text-2xl">☕</span>
+            <span className="font-sans tracking-tight hidden sm:inline">
+              Apo Coffee
+            </span>
           </Link>
 
-          {/* Menu */}
-          <ul className={styles.menu}>
-            <li className={styles.item}>
-              <Link to="/" className={styles.link}>
+          {/* Desktop Menu */}
+          <ul className="hidden md:flex list-none gap-0 m-0 p-0 flex-1">
+            <li>
+              <Link
+                to="/"
+                className="block px-5 py-3 text-gray-700 no-underline font-medium text-sm hover:text-orange-500 border-b-2 border-transparent hover:border-orange-500 transition-all duration-300"
+              >
                 Home
               </Link>
             </li>
-            <li className={styles.item}>
-              <Link to="/menu" className={styles.link}>
+            <li>
+              <Link
+                to="/menu"
+                className="block px-5 py-3 text-gray-700 no-underline font-medium text-sm hover:text-orange-500 border-b-2 border-transparent hover:border-orange-500 transition-all duration-300"
+              >
                 Menu
               </Link>
             </li>
             {isAuthenticated && (
-              <li className={styles.item}>
-                <Link to="/orders" className={styles.link}>
+              <li>
+                <Link
+                  to="/orders"
+                  className="block px-5 py-3 text-gray-700 no-underline font-medium text-sm hover:text-orange-500 border-b-2 border-transparent hover:border-orange-500 transition-all duration-300"
+                >
                   Orders
                 </Link>
               </li>
             )}
           </ul>
 
-          {/* Actions */}
-          <div className={styles.actions}>
-            {/* Cart */}
-            <Link to="/cart" className={styles.cart}>
+          {/* Right Actions */}
+          <div className="flex items-center gap-6 ml-auto">
+            {/* Cart Icon */}
+            <Link
+              to="/cart"
+              className="relative flex items-center justify-center text-gray-700 cursor-pointer no-underline transition-colors duration-300 hover:text-orange-500 p-2"
+            >
               <svg
-                className={styles.svg}
+                className="w-6 h-6"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -69,46 +85,59 @@ const Navbar: React.FC = () => {
                 <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
               </svg>
               {items.length > 0 && (
-                <span className={styles.badge}>{items.length}</span>
+                <span className="absolute -top-2 -right-2 bg-orange-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shadow-md">
+                  {items.length}
+                </span>
               )}
             </Link>
 
-            {/* User or Auth */}
+            {/* User Section or Auth Buttons */}
             {isAuthenticated ? (
-              <div className={styles.userSection}>
-                <button className={styles.userBtn}>
-                  <span className={styles.userIcon}>👤</span>
-                  <span className={styles.userName}>
+              <div className="relative group">
+                <button className="flex items-center gap-2 bg-none border border-gray-200 px-4 py-2 rounded cursor-pointer font-medium text-gray-900 text-sm transition-all duration-300 hover:border-orange-500 hover:text-orange-500">
+                  <span className="text-xl">👤</span>
+                  <span className="max-w-xs overflow-hidden text-ellipsis hidden sm:inline">
                     {user?.name || "User"}
                   </span>
                 </button>
-                <div className={styles.dropdown}>
-                  <Link to="/profile" className={styles.dropItem}>
+
+                {/* Dropdown Menu */}
+                <div className="absolute top-full right-0 bg-white border border-gray-200 rounded shadow-lg min-w-40 mt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-1 pointer-events-none group-hover:pointer-events-auto">
+                  <Link
+                    to="/profile"
+                    className="block w-full px-4 py-3 text-left text-gray-700 no-underline font-medium text-sm transition-all duration-300 hover:bg-orange-50 hover:text-orange-500"
+                  >
                     Profile
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className={`${styles.dropItem} ${styles.logoutItem}`}
+                    className="block w-full px-4 py-3 text-left bg-none border-none text-red-700 font-medium text-sm cursor-pointer transition-all duration-300 hover:bg-red-50"
                   >
                     Logout
                   </button>
                 </div>
               </div>
             ) : (
-              <div className={styles.auth}>
-                <Link to="/login" className={styles.authLink}>
+              <div className="hidden md:flex gap-4 items-center">
+                <Link
+                  to="/login"
+                  className="text-gray-700 no-underline font-semibold transition-colors duration-300 hover:text-orange-500"
+                >
                   Login
                 </Link>
-                <Link to="/register" className={styles.authBtn}>
+                <Link
+                  to="/register"
+                  className="bg-gray-900 text-white px-5 py-2 rounded no-underline font-semibold text-sm transition-all duration-300 hover:bg-gray-800 hover:-translate-y-0.5 hover:shadow-lg inline-block"
+                >
                   Register
                 </Link>
               </div>
             )}
           </div>
 
-          {/* Mobile Toggle */}
+          {/* Mobile Menu Toggle */}
           <button
-            className={styles.toggle}
+            className="hidden md:hidden bg-none border-none cursor-pointer text-gray-900 p-2 transition-colors duration-300 hover:text-orange-500"
             onClick={toggleMobileMenu}
             aria-label="Toggle menu"
           >
@@ -143,17 +172,17 @@ const Navbar: React.FC = () => {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className={styles.mobile}>
+          <div className="md:hidden bg-white border-t border-gray-200 py-4">
             <Link
               to="/"
-              className={styles.mobileItem}
+              className="block w-full px-6 py-3 text-gray-700 no-underline font-medium transition-all duration-300 hover:bg-orange-50 hover:text-orange-500"
               onClick={toggleMobileMenu}
             >
               Home
             </Link>
             <Link
               to="/menu"
-              className={styles.mobileItem}
+              className="block w-full px-6 py-3 text-gray-700 no-underline font-medium transition-all duration-300 hover:bg-orange-50 hover:text-orange-500"
               onClick={toggleMobileMenu}
             >
               Menu
@@ -161,7 +190,7 @@ const Navbar: React.FC = () => {
             {isAuthenticated && (
               <Link
                 to="/orders"
-                className={styles.mobileItem}
+                className="block w-full px-6 py-3 text-gray-700 no-underline font-medium transition-all duration-300 hover:bg-orange-50 hover:text-orange-500"
                 onClick={toggleMobileMenu}
               >
                 Orders
@@ -170,7 +199,7 @@ const Navbar: React.FC = () => {
             {isAuthenticated && (
               <Link
                 to="/profile"
-                className={styles.mobileItem}
+                className="block w-full px-6 py-3 text-gray-700 no-underline font-medium transition-all duration-300 hover:bg-orange-50 hover:text-orange-500"
                 onClick={toggleMobileMenu}
               >
                 Profile
@@ -180,14 +209,14 @@ const Navbar: React.FC = () => {
               <>
                 <Link
                   to="/login"
-                  className={styles.mobileItem}
+                  className="block w-full px-6 py-3 text-gray-700 no-underline font-medium transition-all duration-300 hover:bg-orange-50 hover:text-orange-500"
                   onClick={toggleMobileMenu}
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className={styles.mobileItem}
+                  className="block w-full px-6 py-3 text-gray-700 no-underline font-medium transition-all duration-300 hover:bg-orange-50 hover:text-orange-500"
                   onClick={toggleMobileMenu}
                 >
                   Register
@@ -197,7 +226,7 @@ const Navbar: React.FC = () => {
             {isAuthenticated && (
               <button
                 onClick={handleLogout}
-                className={`${styles.mobileItem} ${styles.logout}`}
+                className="block w-full px-6 py-3 text-left bg-none border-none text-red-700 font-medium cursor-pointer transition-all duration-300 hover:bg-red-50"
               >
                 Logout
               </button>
