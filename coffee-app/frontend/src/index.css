@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 /* ============================================================================
-   PREMIUM DESIGN SYSTEM - PLAYFAIR DISPLAY + LATO
+   COMPLETE DESIGN SYSTEM - ALL IN ONE
    ============================================================================ */
 
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Lato:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap");
 
 * {
   margin: 0;
@@ -15,20 +15,25 @@
 }
 
 :root {
-  /* Colors */
-  --primary-900: #1a1410;
-  --primary-800: #2d2420;
-  --primary-700: #4a3f38;
-  --primary-600: #6b5d54;
-  --primary-500: #8b7764;
-  --primary-400: #a89181;
-  --primary-300: #c4b5a8;
-  --primary-200: #ddd4cc;
-  --primary-100: #f5f1ed;
+  /* Premium Espresso & Caramel Palette */
+  --primary-900: #3e2723;
+  --primary-800: #5c4933;
+  --primary-700: #8b6f47;
+  --primary-600: #b8845a;
+  --primary-500: #c89a6f;
+  --primary-400: #d4a574;
+  --primary-300: #e0b89c;
+  --primary-200: #f2e4d5;
+  --primary-100: #f9f1e8;
 
-  --accent-warm: #c17a4a;
-  --accent-gold: #d4a574;
-  --accent-cream: #faf7f2;
+  --accent-warm: #3e2723;
+  --accent-caramel: #d4a574;
+  --accent-cream: #fcf9f4;
+  --accent-sage: #7a8f87;
+
+  --neutral-bg: #fcf8f3;
+  --neutral-bg-light: #fef5f0;
+  --neutral-200: #f2e4d5;
 
   --success: #2d6a4f;
   --warning: #d4622e;
@@ -38,9 +43,9 @@
   --white: #ffffff;
   --black: #000000;
 
-  /* Typography - PREMIUM FONTS */
-  --font-display: "Playfair Display", serif;
-  --font-body: "Lato", sans-serif;
+  /* Typography */
+  --font-display: "Sora", sans-serif;
+  --font-body: "Sora", sans-serif;
 
   /* Spacing */
   --space-xs: 0.5rem;
@@ -51,11 +56,12 @@
   --space-2xl: 3rem;
   --space-3xl: 4rem;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.12);
+  /* Premium Shadows with Depth */
+  --shadow-sm: 0 2px 4px rgba(62, 39, 35, 0.08);
+  --shadow-md: 0 8px 16px rgba(62, 39, 35, 0.12);
+  --shadow-lg: 0 16px 32px rgba(62, 39, 35, 0.16);
+  --shadow-xl: 0 24px 48px rgba(62, 39, 35, 0.2);
+  --shadow-glass: 0 8px 32px rgba(62, 39, 35, 0.1);
 
   /* Border Radius */
   --radius-sm: 0.5rem;
@@ -78,9 +84,8 @@ body {
   font-size: 16px;
   line-height: 1.6;
   color: var(--primary-900);
-  background-color: var(--accent-cream);
-  font-weight: 400;
-  letter-spacing: 0.3px;
+  background-color: var(--neutral-bg);
+  transition: background-color 0.3s ease;
 }
 
 /* Typography */
@@ -97,39 +102,27 @@ h6 {
 }
 
 h1 {
-  font-size: 3.5rem;
+  font-size: 3rem;
   margin-bottom: var(--space-lg);
-  font-weight: 800;
-  letter-spacing: -0.03em;
 }
 h2 {
-  font-size: 2.5rem;
+  font-size: 2.25rem;
   margin-bottom: var(--space-lg);
-  font-weight: 700;
 }
 h3 {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   margin-bottom: var(--space-md);
-  font-weight: 700;
-}
-
-h4 {
-  font-size: 1.25rem;
-  font-weight: 600;
 }
 
 p {
   margin-bottom: var(--space-md);
   color: var(--primary-700);
-  font-weight: 400;
-  line-height: 1.8;
 }
 
 a {
   color: var(--accent-warm);
   text-decoration: none;
   transition: color var(--transition-fast);
-  font-weight: 500;
 }
 
 a:hover {
@@ -150,7 +143,6 @@ button,
   align-items: center;
   gap: var(--space-sm);
   font-size: 0.95rem;
-  letter-spacing: 0.5px;
 }
 
 .btn-primary {
@@ -190,103 +182,84 @@ button,
 /* Responsive typography */
 @media (max-width: 768px) {
   h1 {
-    font-size: 2.25rem;
+    font-size: 2rem;
   }
 
   h2 {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 }
 
 /* ============================================================================
-   PREMIUM NAVBAR STYLES
+   NAVBAR STYLES
    ============================================================================ */
 
+/* Header */
 .navbar-header {
-  background: linear-gradient(135deg, var(--white) 0%, #fafaf8 100%);
-  border-bottom: 2px solid var(--accent-warm);
+  background-color: var(--white);
+  border-bottom: 1px solid var(--primary-100);
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 8px 32px rgba(26, 20, 16, 0.12);
-  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-base);
 }
 
+/* Navigation */
 .navbar-nav {
   width: 100%;
 }
 
+/* Container */
 .navbar-container {
-  max-width: 1400px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 1.2rem 2rem;
+  padding: 1rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 2.5rem;
+  gap: 2rem;
 }
 
-/* ============= LOGO - PREMIUM STYLE ============= */
+/* Logo - Modern & Elegant */
 .navbar-logo {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.75rem;
   text-decoration: none;
   color: var(--primary-900);
-  font-weight: 800;
-  font-size: 1.5rem;
-  letter-spacing: -1px;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-weight: 700;
+  font-size: 1.3rem;
+  transition: all var(--transition-fast);
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
-  background: linear-gradient(
-    135deg,
-    var(--primary-900) 0%,
-    var(--accent-warm) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-family: var(--font-display);
+  letter-spacing: -0.5px;
 }
 
 .navbar-logo:hover {
-  transform: scale(1.08) translateY(-2px);
-  filter: drop-shadow(0 8px 16px rgba(193, 122, 74, 0.2));
+  color: var(--accent-warm);
+  transform: scale(1.05);
 }
 
 .logo-icon {
-  font-size: 2rem;
+  font-size: 1.8rem;
   display: inline-block;
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
 }
 
 .logo-text {
   font-family: var(--font-display);
-  font-weight: 800;
   letter-spacing: -0.02em;
 }
 
-/* ============= DESKTOP MENU - PREMIUM ============= */
+/* Desktop Menu */
 .navbar-menu {
   display: flex;
   list-style: none;
-  gap: 0.5rem;
+  gap: 0;
   margin: 0;
   padding: 0;
   flex: 1;
-  justify-content: center;
 }
 
 .menu-item {
@@ -295,48 +268,44 @@ button,
 
 .menu-link {
   display: block;
-  padding: 0.8rem 1.8rem;
+  padding: 0.75rem 1.5rem;
   color: var(--primary-700);
   text-decoration: none;
   font-weight: 500;
   font-size: 0.95rem;
-  transition: all 0.3s ease;
-  border-radius: var(--radius-lg);
+  transition: all var(--transition-base);
+  border-bottom: 2px solid transparent;
   position: relative;
-  overflow: hidden;
-  font-family: var(--font-body);
-  letter-spacing: 0.3px;
 }
 
-.menu-link::before {
+.menu-link::after {
   content: "";
   position: absolute;
   bottom: 0;
-  left: -100%;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent-warm), var(--accent-gold));
-  transition: left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  left: 1.5rem;
+  width: 0;
+  height: 2px;
+  background-color: var(--accent-warm);
+  transition: width var(--transition-base);
 }
 
 .menu-link:hover {
   color: var(--accent-warm);
-  background-color: rgba(193, 122, 74, 0.08);
 }
 
-.menu-link:hover::before {
-  left: 0;
+.menu-link:hover::after {
+  width: calc(100% - 3rem);
 }
 
-/* ============= NAVBAR ACTIONS ============= */
+/* Right Actions */
 .navbar-actions {
   display: flex;
   align-items: center;
-  gap: 1.8rem;
+  gap: 1.5rem;
   margin-left: auto;
 }
 
-/* ============= CART - PREMIUM ============= */
+/* Cart Button */
 .cart-button {
   position: relative;
   display: flex;
@@ -345,17 +314,14 @@ button,
   color: var(--primary-700);
   cursor: pointer;
   text-decoration: none;
-  transition: all 0.3s ease;
-  padding: 0.8rem;
-  border-radius: var(--radius-lg);
-  width: 44px;
-  height: 44px;
+  transition: all var(--transition-fast);
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
 }
 
 .cart-button:hover {
   color: var(--accent-warm);
-  background: rgba(193, 122, 74, 0.1);
-  transform: scale(1.1) rotate(5deg);
+  background-color: rgba(193, 122, 74, 0.1);
 }
 
 .cart-icon {
@@ -367,34 +333,33 @@ button,
 
 .cart-badge {
   position: absolute;
-  top: -6px;
-  right: -6px;
-  background: linear-gradient(135deg, var(--accent-warm), var(--accent-gold));
+  top: -8px;
+  right: -8px;
+  background-color: var(--accent-warm);
   color: var(--white);
   border-radius: 50%;
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.75rem;
-  font-weight: 800;
-  box-shadow: 0 4px 12px rgba(193, 122, 74, 0.35);
-  animation: bounce 2s ease-in-out infinite;
-  font-family: var(--font-body);
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(193, 122, 74, 0.3);
+  animation: pulse 2s ease-in-out infinite;
 }
 
-@keyframes bounce {
+@keyframes pulse {
   0%,
   100% {
     transform: scale(1);
   }
   50% {
-    transform: scale(1.15);
+    transform: scale(1.1);
   }
 }
 
-/* ============= USER SECTION - PREMIUM ============= */
+/* User Section */
 .user-section {
   position: relative;
 }
@@ -402,79 +367,64 @@ button,
 .user-button {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.8),
-    rgba(245, 241, 237, 0.8)
-  );
-  border: 2px solid var(--accent-warm);
-  padding: 0.7rem 1.2rem;
-  border-radius: var(--radius-lg);
+  gap: 0.5rem;
+  background: var(--white);
+  border: 1.5px solid var(--primary-200);
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--primary-900);
   font-size: 0.95rem;
-  transition: all 0.3s ease;
+  transition: all var(--transition-base);
   font-family: var(--font-body);
-  backdrop-filter: blur(10px);
-  letter-spacing: 0.3px;
 }
 
 .user-button:hover {
-  border-color: var(--accent-gold);
+  border-color: var(--accent-warm);
   color: var(--accent-warm);
-  background: linear-gradient(
-    135deg,
-    rgba(193, 122, 74, 0.1),
-    rgba(212, 165, 116, 0.1)
-  );
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(193, 122, 74, 0.15);
+  box-shadow: 0 0 0 3px rgba(193, 122, 74, 0.1);
 }
 
 .user-icon {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
 
 .user-name {
-  max-width: 120px;
+  max-width: 100px;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-weight: 600;
-  font-family: var(--font-body);
 }
 
-/* ============= DROPDOWN - PREMIUM ============= */
+/* Dropdown Menu */
 .user-dropdown {
   position: absolute;
-  top: calc(100% + 0.8rem);
+  top: calc(100% + 0.5rem);
   right: 0;
-  background: linear-gradient(135deg, var(--white), #fafaf8);
-  border: 2px solid var(--primary-100);
-  border-radius: var(--radius-xl);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-  min-width: 200px;
+  background-color: var(--white);
+  border: 1px solid var(--primary-100);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  min-width: 180px;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-10px) scale(0.95);
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform: translateY(-10px);
+  transition: all var(--transition-base);
   pointer-events: none;
   overflow: hidden;
-  backdrop-filter: blur(10px);
 }
 
 .user-section:hover .user-dropdown {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0) scale(1);
+  transform: translateY(0);
   pointer-events: auto;
 }
 
 .dropdown-item {
   display: block;
   width: 100%;
-  padding: 0.9rem 1.3rem;
+  padding: 0.75rem 1rem;
   text-align: left;
   background: none;
   border: none;
@@ -482,31 +432,25 @@ button,
   text-decoration: none;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast);
   font-family: var(--font-body);
   font-size: 0.95rem;
-  letter-spacing: 0.3px;
 }
 
 .dropdown-item:hover {
-  background: linear-gradient(
-    90deg,
-    rgba(193, 122, 74, 0.1),
-    rgba(212, 165, 116, 0.08)
-  );
+  background-color: var(--primary-100);
   color: var(--accent-warm);
-  padding-left: 1.6rem;
 }
 
 .logout-item:hover {
-  background: rgba(139, 58, 58, 0.1);
+  background-color: rgba(139, 58, 58, 0.1);
   color: var(--danger);
 }
 
-/* ============= AUTH BUTTONS - PREMIUM ============= */
+/* Auth Buttons */
 .auth-buttons {
   display: flex;
-  gap: 1.2rem;
+  gap: 1rem;
   align-items: center;
 }
 
@@ -514,23 +458,19 @@ button,
   color: var(--primary-700);
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
+  transition: all var(--transition-fast);
   position: relative;
-  padding-bottom: 4px;
-  font-family: var(--font-body);
-  letter-spacing: 0.3px;
 }
 
 .auth-link::after {
   content: "";
   position: absolute;
-  bottom: 0;
+  bottom: -2px;
   left: 0;
   width: 0;
   height: 2px;
-  background: var(--accent-warm);
-  transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background-color: var(--accent-warm);
+  transition: width var(--transition-base);
 }
 
 .auth-link:hover {
@@ -543,42 +483,37 @@ button,
 
 .auth-button {
   display: inline-block;
-  background: linear-gradient(135deg, var(--primary-900), var(--primary-800));
+  background-color: var(--primary-900);
   color: var(--white);
-  padding: 0.75rem 1.8rem;
-  border-radius: var(--radius-lg);
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-md);
   text-decoration: none;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.95rem;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all var(--transition-base);
   cursor: pointer;
-  border: 2px solid transparent;
+  border: none;
   font-family: var(--font-display);
-  box-shadow: 0 8px 20px rgba(26, 20, 16, 0.15);
-  letter-spacing: 0.5px;
 }
 
 .auth-button:hover {
-  background: linear-gradient(135deg, var(--accent-warm), var(--accent-gold));
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(193, 122, 74, 0.25);
-  border-color: var(--white);
+  background-color: var(--primary-800);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }
 
-/* ============= MOBILE TOGGLE ============= */
+/* Mobile Toggle Button */
 .mobile-toggle {
   display: none;
   background: none;
   border: none;
   cursor: pointer;
   color: var(--primary-900);
-  padding: 0.6rem;
-  transition: all 0.3s ease;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-lg);
-  align-items: center;
-  justify-content: center;
+  padding: 0.5rem;
+  transition: all var(--transition-fast);
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
 }
 
 .mobile-toggle:hover {
@@ -591,36 +526,34 @@ button,
   height: 24px;
 }
 
-/* ============= MOBILE MENU ============= */
+/* Mobile Menu */
 .mobile-menu {
   display: none;
-  background: linear-gradient(180deg, var(--white), #fafaf8);
-  border-top: 2px solid var(--accent-warm);
-  padding: 1.2rem 0;
-  animation: slideDown 0.3s ease-out;
+  background-color: var(--white);
+  border-top: 1px solid var(--primary-100);
+  padding: 1rem 0;
+  animation: slideDown var(--transition-base) ease-out;
 }
 
 .mobile-menu-item {
   display: block;
   width: 100%;
-  padding: 1rem 1.5rem;
+  padding: 0.75rem 1.5rem;
   color: var(--primary-700);
   text-decoration: none;
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
   border: none;
   background: none;
   cursor: pointer;
   font-family: var(--font-body);
   font-size: 0.95rem;
   text-align: left;
-  letter-spacing: 0.3px;
 }
 
 .mobile-menu-item:hover {
-  background: rgba(193, 122, 74, 0.1);
+  background-color: var(--primary-100);
   color: var(--accent-warm);
-  padding-left: 2rem;
 }
 
 .mobile-menu-item.logout {
@@ -628,25 +561,14 @@ button,
 }
 
 .mobile-menu-item.logout:hover {
-  background: rgba(139, 58, 58, 0.1);
+  background-color: rgba(139, 58, 58, 0.1);
 }
 
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ============= RESPONSIVE DESIGN ============= */
+/* Responsive Design */
 @media (max-width: 768px) {
   .navbar-container {
-    padding: 1rem 1.2rem;
-    gap: 1.2rem;
+    padding: 0.75rem 1rem;
+    gap: 1rem;
   }
 
   .navbar-menu {
@@ -658,7 +580,7 @@ button,
   }
 
   .mobile-toggle {
-    display: flex;
+    display: block;
   }
 
   .mobile-menu {
@@ -666,7 +588,7 @@ button,
   }
 
   .navbar-logo {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   .logo-text {
@@ -674,18 +596,14 @@ button,
   }
 
   .logo-icon {
-    font-size: 1.8rem;
-  }
-
-  .navbar-actions {
-    gap: 1rem;
+    font-size: 1.5rem;
   }
 }
 
 @media (max-width: 480px) {
   .navbar-container {
-    padding: 0.8rem 1rem;
-    gap: 0.8rem;
+    padding: 0.5rem 0.75rem;
+    gap: 0.5rem;
   }
 
   .user-name {
@@ -693,22 +611,17 @@ button,
   }
 
   .user-button {
-    border: 2px solid var(--accent-warm);
-    padding: 0.6rem;
+    border: none;
+    padding: 0.5rem;
   }
 
   .cart-badge {
-    width: 22px;
-    height: 22px;
-    font-size: 0.65rem;
+    width: 20px;
+    height: 20px;
+    font-size: 0.7rem;
   }
 
   .user-dropdown {
-    min-width: 160px;
-    right: -20px;
-  }
-
-  .navbar-actions {
-    gap: 0.8rem;
+    min-width: 150px;
   }
 }

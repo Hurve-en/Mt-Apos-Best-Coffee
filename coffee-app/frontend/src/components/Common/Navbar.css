@@ -3,12 +3,12 @@
    ============================================================================ */
 
 .navbar-header {
-  background: linear-gradient(135deg, var(--white) 0%, #fafaf8 100%);
-  border-bottom: 2px solid var(--accent-warm);
+  background: linear-gradient(135deg, #fcf9f4 0%, #f9f1e8 100%);
+  border-bottom: 2px solid #d4a574;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 8px 32px rgba(26, 20, 16, 0.12);
+  box-shadow: 0 8px 24px rgba(62, 39, 35, 0.12);
   backdrop-filter: blur(10px);
 }
 
@@ -32,7 +32,7 @@
   align-items: center;
   gap: 0.8rem;
   text-decoration: none;
-  color: var(--primary-900);
+  color: #3e2723;
   font-weight: 800;
   font-size: 1.4rem;
   letter-spacing: -1px;
@@ -40,11 +40,7 @@
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
-  background: linear-gradient(
-    135deg,
-    var(--primary-900) 0%,
-    var(--accent-warm) 100%
-  );
+  background: linear-gradient(135deg, #3e2723 0%, #d4a574 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -52,7 +48,7 @@
 
 .navbar-logo:hover {
   transform: scale(1.08) translateY(-2px);
-  filter: drop-shadow(0 8px 16px rgba(193, 122, 74, 0.2));
+  filter: drop-shadow(0 8px 16px rgba(212, 165, 116, 0.25));
 }
 
 .logo-icon {
@@ -95,7 +91,7 @@
 .menu-link {
   display: block;
   padding: 0.8rem 1.8rem;
-  color: var(--primary-700);
+  color: #8b6f47;
   text-decoration: none;
   font-weight: 600;
   font-size: 0.95rem;
@@ -112,13 +108,13 @@
   left: -100%;
   width: 100%;
   height: 3px;
-  background: linear-gradient(90deg, var(--accent-warm), var(--accent-gold));
+  background: linear-gradient(90deg, #3e2723, #d4a574);
   transition: left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .menu-link:hover {
-  color: var(--accent-warm);
-  background-color: rgba(193, 122, 74, 0.08);
+  color: #3e2723;
+  background-color: rgba(212, 165, 116, 0.12);
 }
 
 .menu-link:hover::before {
@@ -139,7 +135,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--primary-700);
+  color: #8b6f47;
   cursor: pointer;
   text-decoration: none;
   transition: all 0.3s ease;
@@ -150,8 +146,8 @@
 }
 
 .cart-button:hover {
-  color: var(--accent-warm);
-  background: rgba(193, 122, 74, 0.1);
+  color: #3e2723;
+  background: rgba(212, 165, 116, 0.12);
   transform: scale(1.1) rotate(5deg);
 }
 
@@ -166,8 +162,8 @@
   position: absolute;
   top: -6px;
   right: -6px;
-  background: linear-gradient(135deg, var(--accent-warm), var(--accent-gold));
-  color: var(--white);
+  background: linear-gradient(135deg, #3e2723, #d4a574);
+  color: #fcf9f4;
   border-radius: 50%;
   width: 26px;
   height: 26px;
@@ -176,7 +172,7 @@
   justify-content: center;
   font-size: 0.75rem;
   font-weight: 800;
-  box-shadow: 0 4px 12px rgba(193, 122, 74, 0.35);
+  box-shadow: 0 4px 12px rgba(212, 165, 116, 0.4);
   animation: bounce 2s ease-in-out infinite;
 }
 
@@ -201,15 +197,15 @@
   gap: 0.7rem;
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.8),
-    rgba(245, 241, 237, 0.8)
+    rgba(255, 255, 255, 0.85),
+    rgba(249, 241, 232, 0.85)
   );
-  border: 2px solid var(--accent-warm);
+  border: 2px solid #d4a574;
   padding: 0.7rem 1.2rem;
   border-radius: var(--radius-lg);
   cursor: pointer;
   font-weight: 600;
-  color: var(--primary-900);
+  color: #3e2723;
   font-size: 0.95rem;
   transition: all 0.3s ease;
   font-family: var(--font-body);
@@ -217,15 +213,15 @@
 }
 
 .user-button:hover {
-  border-color: var(--accent-gold);
-  color: var(--accent-warm);
+  border-color: #8b6f47;
+  color: #3e2723;
   background: linear-gradient(
     135deg,
-    rgba(193, 122, 74, 0.1),
-    rgba(212, 165, 116, 0.1)
+    rgba(212, 165, 116, 0.12),
+    rgba(139, 111, 71, 0.08)
   );
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(193, 122, 74, 0.15);
+  box-shadow: 0 8px 24px rgba(212, 165, 116, 0.18);
 }
 
 .user-icon {
@@ -244,10 +240,10 @@
   position: absolute;
   top: calc(100% + 0.8rem);
   right: 0;
-  background: linear-gradient(135deg, var(--white), #fafaf8);
-  border: 2px solid var(--primary-100);
+  background: linear-gradient(135deg, #fcf9f4, #f9f1e8);
+  border: 2px solid #e8d5c4;
   border-radius: var(--radius-xl);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 20px 40px rgba(62, 39, 35, 0.15);
   min-width: 200px;
   opacity: 0;
   visibility: hidden;
@@ -272,7 +268,7 @@
   text-align: left;
   background: none;
   border: none;
-  color: var(--primary-700);
+  color: #8b6f47;
   text-decoration: none;
   font-weight: 500;
   cursor: pointer;
@@ -284,10 +280,10 @@
 .dropdown-item:hover {
   background: linear-gradient(
     90deg,
-    rgba(193, 122, 74, 0.1),
-    rgba(212, 165, 116, 0.08)
+    rgba(212, 165, 116, 0.12),
+    rgba(139, 111, 71, 0.08)
   );
-  color: var(--accent-warm);
+  color: #3e2723;
   padding-left: 1.6rem;
 }
 
@@ -304,7 +300,7 @@
 }
 
 .auth-link {
-  color: var(--primary-700);
+  color: #8b6f47;
   text-decoration: none;
   font-weight: 600;
   font-size: 0.95rem;
@@ -320,12 +316,12 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: var(--accent-warm);
+  background: #d4a574;
   transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .auth-link:hover {
-  color: var(--accent-warm);
+  color: #3e2723;
 }
 
 .auth-link:hover::after {
@@ -334,8 +330,8 @@
 
 .auth-button {
   display: inline-block;
-  background: linear-gradient(135deg, var(--primary-900), var(--primary-800));
-  color: var(--white);
+  background: linear-gradient(135deg, #3e2723, #5c4933);
+  color: #fcf9f4;
   padding: 0.75rem 1.8rem;
   border-radius: var(--radius-lg);
   text-decoration: none;
@@ -345,14 +341,15 @@
   cursor: pointer;
   border: 2px solid transparent;
   font-family: var(--font-display);
-  box-shadow: 0 8px 20px rgba(26, 20, 16, 0.15);
+  box-shadow: 0 8px 20px rgba(62, 39, 35, 0.18);
 }
 
 .auth-button:hover {
-  background: linear-gradient(135deg, var(--accent-warm), var(--accent-gold));
+  background: linear-gradient(135deg, #d4a574, #e0b89c);
   transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(193, 122, 74, 0.25);
-  border-color: var(--white);
+  box-shadow: 0 12px 30px rgba(212, 165, 116, 0.3);
+  border-color: #f9f1e8;
+  color: #3e2723;
 }
 
 /* ============= MOBILE TOGGLE ============= */
@@ -361,7 +358,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--primary-900);
+  color: #3e2723;
   padding: 0.6rem;
   transition: all 0.3s ease;
   width: 44px;
@@ -372,8 +369,8 @@
 }
 
 .mobile-toggle:hover {
-  color: var(--accent-warm);
-  background-color: rgba(193, 122, 74, 0.1);
+  color: #d4a574;
+  background-color: rgba(212, 165, 116, 0.12);
 }
 
 .mobile-toggle svg {
@@ -384,8 +381,8 @@
 /* ============= MOBILE MENU ============= */
 .mobile-menu {
   display: none;
-  background: linear-gradient(180deg, var(--white), #fafaf8);
-  border-top: 2px solid var(--accent-warm);
+  background: linear-gradient(180deg, #fcf9f4, #f9f1e8);
+  border-top: 2px solid #d4a574;
   padding: 1.2rem 0;
   animation: slideDown 0.3s ease-out;
 }
@@ -394,7 +391,7 @@
   display: block;
   width: 100%;
   padding: 1rem 1.5rem;
-  color: var(--primary-700);
+  color: #8b6f47;
   text-decoration: none;
   font-weight: 500;
   transition: all 0.2s ease;
@@ -407,13 +404,13 @@
 }
 
 .mobile-menu-item:hover {
-  background: rgba(193, 122, 74, 0.1);
-  color: var(--accent-warm);
+  background: rgba(212, 165, 116, 0.12);
+  color: #3e2723;
   padding-left: 2rem;
 }
 
 .mobile-menu-item.logout {
-  color: var(--danger);
+  color: #8b3a3a;
 }
 
 .mobile-menu-item.logout:hover {
