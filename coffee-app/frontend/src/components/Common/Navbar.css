@@ -1,14 +1,14 @@
 /* ============================================================================
-   PREMIUM NAVBAR - MODERN COFFEE SHOP DESIGN
+   PREMIUM NAVBAR - MODERN CLEAN DESIGN
    ============================================================================ */
 
 .navbar-header {
-  background: linear-gradient(135deg, #fcf9f4 0%, #f9f1e8 100%);
-  border-bottom: 2px solid #d4a574;
+  background: linear-gradient(135deg, #fefdf8 0%, #faf8f3 100%);
+  border-bottom: 2px solid #8b6f47;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 8px 24px rgba(62, 39, 35, 0.12);
+  box-shadow: 0 8px 24px rgba(139, 111, 71, 0.08);
   backdrop-filter: blur(10px);
 }
 
@@ -32,7 +32,7 @@
   align-items: center;
   gap: 0.8rem;
   text-decoration: none;
-  color: #3e2723;
+  color: #8b6f47;
   font-weight: 800;
   font-size: 1.4rem;
   letter-spacing: -1px;
@@ -40,15 +40,11 @@
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
-  background: linear-gradient(135deg, #3e2723 0%, #d4a574 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .navbar-logo:hover {
   transform: scale(1.08) translateY(-2px);
-  filter: drop-shadow(0 8px 16px rgba(212, 165, 116, 0.25));
+  color: #6b5344;
 }
 
 .logo-icon {
@@ -108,13 +104,13 @@
   left: -100%;
   width: 100%;
   height: 3px;
-  background: linear-gradient(90deg, #3e2723, #d4a574);
+  background: linear-gradient(90deg, #6b5344, #a8844a);
   transition: left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .menu-link:hover {
-  color: #3e2723;
-  background-color: rgba(212, 165, 116, 0.12);
+  color: #6b5344;
+  background-color: rgba(168, 132, 74, 0.12);
 }
 
 .menu-link:hover::before {
@@ -146,8 +142,8 @@
 }
 
 .cart-button:hover {
-  color: #3e2723;
-  background: rgba(212, 165, 116, 0.12);
+  color: #6b5344;
+  background: rgba(168, 132, 74, 0.12);
   transform: scale(1.1) rotate(5deg);
 }
 
@@ -162,8 +158,8 @@
   position: absolute;
   top: -6px;
   right: -6px;
-  background: linear-gradient(135deg, #3e2723, #d4a574);
-  color: #fcf9f4;
+  background: linear-gradient(135deg, #6b5344, #a8844a);
+  color: #fefdf8;
   border-radius: 50%;
   width: 26px;
   height: 26px;
@@ -172,7 +168,7 @@
   justify-content: center;
   font-size: 0.75rem;
   font-weight: 800;
-  box-shadow: 0 4px 12px rgba(212, 165, 116, 0.4);
+  box-shadow: 0 4px 12px rgba(168, 132, 74, 0.4);
   animation: bounce 2s ease-in-out infinite;
 }
 
@@ -198,14 +194,14 @@
   background: linear-gradient(
     135deg,
     rgba(255, 255, 255, 0.85),
-    rgba(249, 241, 232, 0.85)
+    rgba(250, 248, 243, 0.85)
   );
-  border: 2px solid #d4a574;
+  border: 2px solid #a8844a;
   padding: 0.7rem 1.2rem;
   border-radius: var(--radius-lg);
   cursor: pointer;
   font-weight: 600;
-  color: #3e2723;
+  color: #6b5344;
   font-size: 0.95rem;
   transition: all 0.3s ease;
   font-family: var(--font-body);
@@ -214,14 +210,14 @@
 
 .user-button:hover {
   border-color: #8b6f47;
-  color: #3e2723;
+  color: #6b5344;
   background: linear-gradient(
     135deg,
-    rgba(212, 165, 116, 0.12),
+    rgba(168, 132, 74, 0.12),
     rgba(139, 111, 71, 0.08)
   );
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(212, 165, 116, 0.18);
+  box-shadow: 0 8px 24px rgba(168, 132, 74, 0.18);
 }
 
 .user-icon {
@@ -240,10 +236,10 @@
   position: absolute;
   top: calc(100% + 0.8rem);
   right: 0;
-  background: linear-gradient(135deg, #fcf9f4, #f9f1e8);
+  background: linear-gradient(135deg, #fefdf8, #faf8f3);
   border: 2px solid #e8d5c4;
   border-radius: var(--radius-xl);
-  box-shadow: 0 20px 40px rgba(62, 39, 35, 0.15);
+  box-shadow: 0 20px 40px rgba(107, 83, 68, 0.15);
   min-width: 200px;
   opacity: 0;
   visibility: hidden;
@@ -280,10 +276,10 @@
 .dropdown-item:hover {
   background: linear-gradient(
     90deg,
-    rgba(212, 165, 116, 0.12),
+    rgba(168, 132, 74, 0.12),
     rgba(139, 111, 71, 0.08)
   );
-  color: #3e2723;
+  color: #6b5344;
   padding-left: 1.6rem;
 }
 
@@ -316,12 +312,12 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: #d4a574;
+  background: #a8844a;
   transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .auth-link:hover {
-  color: #3e2723;
+  color: #6b5344;
 }
 
 .auth-link:hover::after {
@@ -330,8 +326,8 @@
 
 .auth-button {
   display: inline-block;
-  background: linear-gradient(135deg, #3e2723, #5c4933);
-  color: #fcf9f4;
+  background: linear-gradient(135deg, #52b788, #74c69d);
+  color: #fefdf8;
   padding: 0.75rem 1.8rem;
   border-radius: var(--radius-lg);
   text-decoration: none;
@@ -341,15 +337,15 @@
   cursor: pointer;
   border: 2px solid transparent;
   font-family: var(--font-display);
-  box-shadow: 0 8px 20px rgba(62, 39, 35, 0.18);
+  box-shadow: 0 8px 20px rgba(82, 183, 136, 0.18);
 }
 
 .auth-button:hover {
-  background: linear-gradient(135deg, #d4a574, #e0b89c);
+  background: linear-gradient(135deg, #6b9c7d, #88d4a0);
   transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(212, 165, 116, 0.3);
-  border-color: #f9f1e8;
-  color: #3e2723;
+  box-shadow: 0 12px 30px rgba(82, 183, 136, 0.3);
+  border-color: #fefdf8;
+  color: #ffffff;
 }
 
 /* ============= MOBILE TOGGLE ============= */
@@ -358,7 +354,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #3e2723;
+  color: #6b5344;
   padding: 0.6rem;
   transition: all 0.3s ease;
   width: 44px;
@@ -369,8 +365,8 @@
 }
 
 .mobile-toggle:hover {
-  color: #d4a574;
-  background-color: rgba(212, 165, 116, 0.12);
+  color: #a8844a;
+  background-color: rgba(168, 132, 74, 0.12);
 }
 
 .mobile-toggle svg {
@@ -381,8 +377,8 @@
 /* ============= MOBILE MENU ============= */
 .mobile-menu {
   display: none;
-  background: linear-gradient(180deg, #fcf9f4, #f9f1e8);
-  border-top: 2px solid #d4a574;
+  background: linear-gradient(180deg, #fefdf8, #faf8f3);
+  border-top: 2px solid #a8844a;
   padding: 1.2rem 0;
   animation: slideDown 0.3s ease-out;
 }
@@ -404,17 +400,17 @@
 }
 
 .mobile-menu-item:hover {
-  background: rgba(212, 165, 116, 0.12);
-  color: #3e2723;
+  background: rgba(168, 132, 74, 0.12);
+  color: #6b5344;
   padding-left: 2rem;
 }
 
 .mobile-menu-item.logout {
-  color: #8b3a3a;
+  color: #d64545;
 }
 
 .mobile-menu-item.logout:hover {
-  background: rgba(139, 58, 58, 0.1);
+  background: rgba(214, 69, 69, 0.1);
 }
 
 @keyframes slideDown {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const Footer: React.FC = () => {
   return (
@@ -19,19 +19,28 @@ const Footer: React.FC = () => {
           {/* Quick Links */}
           <div>
             <h3 className="font-bold mb-4">Quick Links</h3>
-            <ul className="space-y-2 text-coffee-300">
+            <ul className="space-y-2">
               <li>
-                <a href="/" className="hover:text-white transition">
+                <a
+                  href="/"
+                  className="text-coffee-300 hover:text-white transition"
+                >
                   Home
                 </a>
               </li>
               <li>
-                <a href="/menu" className="hover:text-white transition">
+                <a
+                  href="/menu"
+                  className="text-coffee-300 hover:text-white transition"
+                >
                   Menu
                 </a>
               </li>
               <li>
-                <a href="/orders" className="hover:text-white transition">
+                <a
+                  href="/orders"
+                  className="text-coffee-300 hover:text-white transition"
+                >
                   Orders
                 </a>
               </li>
