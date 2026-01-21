@@ -326,7 +326,7 @@
 
 .auth-button {
   display: inline-block;
-  background: linear-gradient(135deg, #52b788, #74c69d);
+  background: linear-gradient(135deg, #8b6f47, #a8844a);
   color: #fefdf8;
   padding: 0.75rem 1.8rem;
   border-radius: var(--radius-lg);
@@ -337,13 +337,13 @@
   cursor: pointer;
   border: 2px solid transparent;
   font-family: var(--font-display);
-  box-shadow: 0 8px 20px rgba(82, 183, 136, 0.18);
+  box-shadow: 0 8px 20px rgba(139, 111, 71, 0.18);
 }
 
 .auth-button:hover {
-  background: linear-gradient(135deg, #6b9c7d, #88d4a0);
+  background: linear-gradient(135deg, #6b5344, #8b6f47);
   transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(82, 183, 136, 0.3);
+  box-shadow: 0 12px 30px rgba(139, 111, 71, 0.3);
   border-color: #fefdf8;
   color: #ffffff;
 }
