@@ -1,154 +1,211 @@
-import { Request, Response } from 'express';
-import { AuthRequest } from '../middleware/auth.ts';
-import { productService } from '../services/productService.ts';
-import { logger } from '../utils/logger.ts';
+// src/controllers/productController.ts
+import { Request, Response } from "express";
+import { PrismaClient } from "@prisma/client";
 
-export const productController = {
-  // Get all products
-  getAllProducts: async (_req: Request, res: Response): Promise<void> => {
-    try {
-      const products = await productService.getAllProducts();
-      res.status(200).json({
-        success: true,
-        count: products.length,
-        products
+const prisma = new PrismaClient();
+
+// Get all products
+export const getAllProducts = async (req: Request, res: Response) => {
+  try {
+    const products = await prisma.product.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    res.status(200).json({
+      success: true,
+      data: products,
+      total: products.length,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch products",
+      error: error.message,
+    });
+  }
+};
+
+// Get single product by ID
+export const getProductById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const product = await prisma.product.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
       });
-    } catch (error) {
-      logger.error('Get all products error', error);
-      res.status(500).json({ message: 'Failed to get products' });
     }
-  },
 
-  // Get product by ID
-  getProductById: async (req: Request, res: Response): Promise<void> => {
-    try {
-      const { id } = req.params;
-      const product = await productService.getProductById(id);
+    res.status(200).json({
+      success: true,
+      data: product,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch product",
+      error: error.message,
+    });
+  }
+};
 
-      if (!product) {
-        res.status(404).json({ message: 'Product not found' });
-        return;
-      }
+// Create product (Admin only)
+export const createProduct = async (req: Request, res: Response) => {
+  try {
+    const { name, description, price, roastLevel, grind, size, image, stock } =
+      req.body;
 
-      res.status(200).json({
-        success: true,
-        product
+    // Validation
+    if (
+      !name ||
+      !description ||
+      !price ||
+      !roastLevel ||
+      !grind ||
+      !size ||
+      !image
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
       });
-    } catch (error) {
-      logger.error('Get product error', error);
-      res.status(500).json({ message: 'Failed to get product' });
     }
-  },
 
-  // Get products by category
-  getByCategory: async (req: Request, res: Response): Promise<void> => {
-    try {
-      const { category } = req.params;
-      const products = await productService.getProductsByCategory(category);
+    // Check if product already exists
+    const existingProduct = await prisma.product.findUnique({
+      where: { name },
+    });
 
-      res.status(200).json({
-        success: true,
-        count: products.length,
-        products
+    if (existingProduct) {
+      return res.status(409).json({
+        success: false,
+        message: "Product already exists",
       });
-    } catch (error) {
-      logger.error('Get products by category error', error);
-      res.status(500).json({ message: 'Failed to get products' });
     }
-  },
 
-  // Create product (admin)
-  createProduct: async (req: AuthRequest, res: Response): Promise<void> => {
-    try {
-      const { name, description, price, image, category } = req.body;
-
-      if (!name || !price || !category) {
-        res.status(400).json({ message: 'Missing required fields' });
-        return;
-      }
-
-      const product = await productService.createProduct({
+    const product = await prisma.product.create({
+      data: {
         name,
         description,
-        price,
+        price: parseFloat(price),
+        roastLevel,
+        grind,
+        size,
         image,
-        category
-      });
+        stock: parseInt(stock) || 0,
+      },
+    });
 
-      logger.success('Product created', { productId: product.id });
+    res.status(201).json({
+      success: true,
+      message: "Product created successfully",
+      data: product,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to create product",
+      error: error.message,
+    });
+  }
+};
 
-      res.status(201).json({
-        success: true,
-        message: 'Product created successfully',
-        product
+// Update product (Admin only)
+export const updateProduct = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { name, description, price, roastLevel, grind, size, image, stock } =
+      req.body;
+
+    // Check if product exists
+    const existingProduct = await prisma.product.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    if (!existingProduct) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
       });
-    } catch (error) {
-      logger.error('Create product error', error);
-      res.status(500).json({ message: 'Failed to create product' });
     }
-  },
 
-  // Update product (admin)
-  updateProduct: async (req: AuthRequest, res: Response): Promise<void> => {
-    try {
-      const { id } = req.params;
-      const { name, description, price, image, category } = req.body;
-
-      const product = await productService.updateProduct(id, {
-        name,
-        description,
-        price,
-        image,
-        category
+    // Check if new name already exists (if name is being changed)
+    if (name && name !== existingProduct.name) {
+      const duplicateProduct = await prisma.product.findUnique({
+        where: { name },
       });
-
-      logger.success('Product updated', { productId: id });
-
-      res.status(200).json({
-        success: true,
-        message: 'Product updated successfully',
-        product
-      });
-    } catch (error) {
-      logger.error('Update product error', error);
-      res.status(500).json({ message: 'Failed to update product' });
+      if (duplicateProduct) {
+        return res.status(409).json({
+          success: false,
+          message: "Product name already exists",
+        });
+      }
     }
-  },
 
-  // Delete product (admin)
-  deleteProduct: async (req: AuthRequest, res: Response): Promise<void> => {
-    try {
-      const { id } = req.params;
-      await productService.deleteProduct(id);
+    const updatedProduct = await prisma.product.update({
+      where: { id: parseInt(id) },
+      data: {
+        ...(name && { name }),
+        ...(description && { description }),
+        ...(price && { price: parseFloat(price) }),
+        ...(roastLevel && { roastLevel }),
+        ...(grind && { grind }),
+        ...(size && { size }),
+        ...(image && { image }),
+        ...(stock !== undefined && { stock: parseInt(stock) }),
+      },
+    });
 
-      logger.success('Product deleted', { productId: id });
+    res.status(200).json({
+      success: true,
+      message: "Product updated successfully",
+      data: updatedProduct,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to update product",
+      error: error.message,
+    });
+  }
+};
 
-      res.status(200).json({
-        success: true,
-        message: 'Product deleted successfully'
+// Delete product (Admin only)
+export const deleteProduct = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    // Check if product exists
+    const product = await prisma.product.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
       });
-    } catch (error) {
-      logger.error('Delete product error', error);
-      res.status(500).json({ message: 'Failed to delete product' });
     }
-  },
 
-  // Toggle availability
-  toggleAvailability: async (req: AuthRequest, res: Response): Promise<void> => {
-    try {
-      const { id } = req.params;
-      const product = await productService.toggleAvailability(id);
+    await prisma.product.delete({
+      where: { id: parseInt(id) },
+    });
 
-      logger.success('Product availability toggled', { productId: id });
-
-      res.status(200).json({
-        success: true,
-        message: 'Product availability updated',
-        product
-      });
-    } catch (error) {
-      logger.error('Toggle availability error', error);
-      res.status(500).json({ message: 'Failed to toggle availability' });
-    }
+    res.status(200).json({
+      success: true,
+      message: "Product deleted successfully",
+      data: { id: parseInt(id) },
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete product",
+      error: error.message,
+    });
   }
 };

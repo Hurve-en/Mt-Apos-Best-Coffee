@@ -1,18 +1,23 @@
-import { Router } from 'express';
-import { productController } from '../controllers/productController.ts';
-import { authMiddleware, adminMiddleware } from '../middleware/auth.ts';
+import { Router } from "express";
+import {
+  getAllProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} from "../controllers/productController";
+import { authMiddleware } from "../middleware/auth.ts"; // Use your existing one
+import { adminMiddleware } from "../middleware/auth.ts"; // Use your existing one too!
 
 const router = Router();
 
 // Public routes
-router.get('/', productController.getAllProducts);
-router.get('/:id', productController.getProductById);
-router.get('/category/:category', productController.getByCategory);
+router.get("/", getAllProducts);
+router.get("/:id", getProductById);
 
-// Admin routes
-router.post('/', authMiddleware, adminMiddleware, productController.createProduct);
-router.put('/:id', authMiddleware, adminMiddleware, productController.updateProduct);
-router.delete('/:id', authMiddleware, adminMiddleware, productController.deleteProduct);
-router.patch('/:id/toggle', authMiddleware, adminMiddleware, productController.toggleAvailability);
+// Admin only routes
+router.post("/", authMiddleware, adminMiddleware, createProduct);
+router.put("/:id", authMiddleware, adminMiddleware, updateProduct);
+router.delete("/:id", authMiddleware, adminMiddleware, deleteProduct);
 
 export default router;

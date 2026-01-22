@@ -1,10 +1,15 @@
+// src/middleware/adminMiddleware.ts
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
 
+// Extend Express Request to include user
 declare global {
   namespace Express {
     interface Request {
-      user?: any;
+      user?: {
+        id: number;
+        email: string;
+        role: string;
+      };
     }
   }
 }
@@ -12,29 +17,30 @@ declare global {
 export const adminMiddleware = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1];
-
-    if (!token) {
-      return res
-        .status(401)
-        .json({ success: false, message: "No token provided" });
+    // Check if user exists (should come from authMiddleware)
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized - Please login first",
+      });
     }
 
-    const decoded: any = jwt.verify(token, process.env.JWT_SECRET || "secret");
-
-    if (!decoded.role || !decoded.role.includes("ADMIN")) {
-      return res
-        .status(403)
-        .json({ success: false, message: "Admin access required" });
+    // Check if user is admin
+    if (req.user.role !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Forbidden - Admin access required",
+      });
     }
 
-    req.user = decoded;
     next();
   } catch (error) {
-    console.error("Admin middleware error:", error);
-    return res.status(401).json({ success: false, message: "Invalid token" });
+    res.status(500).json({
+      success: false,
+      message: "Server error in admin middleware",
+    });
   }
 };
