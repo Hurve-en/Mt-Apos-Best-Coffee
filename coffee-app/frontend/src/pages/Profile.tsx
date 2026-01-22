@@ -1,99 +1,72 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAppSelector, useAppDispatch } from '../hooks/useRedux';
-import { apiService } from '../services/api';
-import { setUser } from '../redux/slices/authSlice';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector, useAppDispatch } from "../hooks/useRedux";
+import { logout } from "../redux/slices/authSlice";
+import axios from "axios";
+import "../styles/premium.css";
 
-const Profile: React.FC = () => {
+interface Order {
+  id: number;
+  createdAt: string;
+  totalPrice: number;
+  deliveryAddress: string;
+  status: string;
+}
+
+export default function Profile() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { isAuthenticated, user } = useAppSelector((state: any) => state.auth);
-  const mapContainerRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<L.Map | null>(null);
-  const markerRef = useRef<L.Marker | null>(null);
 
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-    city: '',
-    postalCode: '',
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
   });
-  const [coordinates, setCoordinates] = useState<[number, number] | null>(null);
+
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
+  const [activeTab, setActiveTab] = useState<"settings" | "orders">("settings");
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
     // Set initial form data
     if (user) {
       setFormData({
-        name: user.name || '',
-        email: user.email || '',
-        phone: user.phone || '',
-        address: user.address || '',
-        city: user.city || '',
-        postalCode: user.postalCode || '',
+        name: user.name || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        address: user.address || "",
       });
     }
 
-    if (!mapContainerRef.current) return;
-
-    // Initialize map
-    const map = L.map(mapContainerRef.current).setView([10.3157, 123.8854], 12);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
-      maxZoom: 19,
-    }).addTo(map);
-
-    mapRef.current = map;
-
-    // Add initial marker if address exists
-    if (user?.address) {
-      const marker = L.marker([10.3157, 123.8854])
-        .addTo(map)
-        .bindPopup('📍 Your Delivery Address');
-      markerRef.current = marker;
-    }
-
-    // Click to pin location
-    map.on('click', (e: L.LeafletMouseEvent) => {
-      const { lat, lng } = e.latlng;
-      setCoordinates([lat, lng]);
-
-      if (markerRef.current) {
-        map.removeLayer(markerRef.current);
-      }
-
-      const marker = L.marker([lat, lng], {
-        icon: L.icon({
-          iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-          iconSize: [25, 41],
-          iconAnchor: [12, 41],
-          popupAnchor: [1, -34],
-          shadowSize: [41, 41],
-        }),
-      })
-        .addTo(map)
-        .bindPopup(`📍 Your Location<br>Lat: ${lat.toFixed(4)}<br>Lng: ${lng.toFixed(4)}`);
-
-      markerRef.current = marker;
-    });
-
-    return () => {
-      map.remove();
-    };
+    // Fetch orders
+    fetchOrders();
   }, [isAuthenticated, navigate, user]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const fetchOrders = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("http://localhost:5000/api/orders", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.data.success) {
+        setOrders(response.data.data || []);
+      }
+    } catch (error) {
+      console.error("Failed to fetch orders:", error);
+    }
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -104,18 +77,31 @@ const Profile: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setMessage('');
+    setMessage("");
 
     try {
-      const updatedUser = await apiService.updateProfile(formData);
-      dispatch(setUser(updatedUser));
-      setMessage('✓ Profile updated successfully!');
-      setTimeout(() => setMessage(''), 3000);
+      const token = localStorage.getItem("token");
+      const response = await axios.put(
+        "http://localhost:5000/api/users/profile",
+        formData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      if (response.data.success) {
+        setMessage("✓ Profile updated successfully!");
+        setTimeout(() => setMessage(""), 3000);
+      }
     } catch (error: any) {
-      setMessage('Failed to update profile');
+      setMessage("Failed to update profile");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
   };
 
   if (!isAuthenticated) {
@@ -123,154 +109,283 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-coffee-50 to-white py-12">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-4xl font-bold text-coffee-900 mb-8">👤 My Profile</h1>
+    <div className="min-h-screen bg-cream">
+      {/* Header */}
+      <section className="section-gap bg-gradient-to-r from-amber-900 to-amber-800 text-cream">
+        <div className="container">
+          <h1 className="text-5xl font-bold mb-2">👤 My Profile</h1>
+          <p className="text-lg opacity-90">
+            Manage your account and view your orders
+          </p>
+        </div>
+      </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Profile Form */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Personal Info */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-2xl font-bold text-coffee-900 mb-4">Personal Information</h2>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    disabled
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500"
-                  />
-                </div>
-              </div>
-            </div>
+      {/* Main Content */}
+      <section className="section-gap">
+        <div className="container">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            {/* Profile Card - Sticky Sidebar */}
+            <aside className="lg:col-span-1">
+              <div className="sticky top-20 bg-white rounded-2xl shadow-lg p-6 text-center">
+                <div className="text-6xl mb-4">☕</div>
+                <h3 className="text-2xl font-bold text-brown mb-1">
+                  {user?.name || "User"}
+                </h3>
+                <p className="text-muted text-sm mb-6">{user?.email}</p>
 
-            {/* Map Section */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-2xl font-bold text-coffee-900 mb-4">📍 Set Default Delivery Location</h2>
-              <p className="text-gray-600 mb-4">Click on the map to set your preferred delivery location</p>
-              <div
-                ref={mapContainerRef}
-                className="w-full h-80 rounded-lg border-2 border-coffee-200"
-                style={{ minHeight: '320px' }}
-              />
-              {coordinates && (
-                <p className="mt-4 text-sm text-green-600">
-                  ✓ Location set at ({coordinates[0].toFixed(4)}, {coordinates[1].toFixed(4)})
-                </p>
-              )}
-            </div>
-
-            {/* Address Section */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-2xl font-bold text-coffee-900 mb-4">📮 Delivery Address</h2>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
-                  <textarea
-                    name="address"
-                    value={formData.address}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500"
-                    rows={3}
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
-                    <input
-                      type="text"
-                      name="city"
-                      value={formData.city}
-                      onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500"
-                    />
+                <div className="border-t border-caramel border-opacity-20 pt-6 space-y-4">
+                  <div className="bg-cream rounded-lg p-3">
+                    <p className="text-xs text-muted mb-1">Phone</p>
+                    <p className="font-bold text-brown text-sm">
+                      {user?.phone || "Not set"}
+                    </p>
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Postal Code</label>
-                    <input
-                      type="text"
-                      name="postalCode"
-                      value={formData.postalCode}
-                      onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500"
-                    />
-                  </div>
-                </div>
 
-                {message && (
-                  <div
-                    className={`px-4 py-3 rounded-lg ${
-                      message.includes('✓') ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
-                    }`}
+                  <div className="bg-cream rounded-lg p-3">
+                    <p className="text-xs text-muted mb-1">Member Since</p>
+                    <p className="font-bold text-brown text-sm">
+                      {user?.createdAt
+                        ? new Date(user.createdAt).toLocaleDateString()
+                        : "N/A"}
+                    </p>
+                  </div>
+
+                  <div className="bg-cream rounded-lg p-3">
+                    <p className="text-xs text-muted mb-1">Total Orders</p>
+                    <p className="font-bold text-brown text-sm">
+                      {orders.length}
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={handleLogout}
+                    className="w-full btn btn-secondary mt-6"
                   >
-                    {message}
-                  </div>
-                )}
+                    Logout
+                  </button>
+                </div>
+              </div>
+            </aside>
 
+            {/* Main Content */}
+            <div className="lg:col-span-3">
+              {/* Tab Navigation */}
+              <div className="flex gap-4 mb-8 border-b border-caramel border-opacity-20">
                 <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full py-3 bg-coffee-900 text-white font-bold rounded-lg hover:bg-coffee-800 transition disabled:opacity-50"
+                  onClick={() => setActiveTab("settings")}
+                  className={`pb-4 px-4 font-semibold transition ${
+                    activeTab === "settings"
+                      ? "text-accent border-b-2 border-accent"
+                      : "text-muted hover:text-brown"
+                  }`}
                 >
-                  {loading ? 'Saving...' : '✓ Save Changes'}
+                  Account Settings
                 </button>
-              </form>
-            </div>
-          </div>
+                <button
+                  onClick={() => setActiveTab("orders")}
+                  className={`pb-4 px-4 font-semibold transition ${
+                    activeTab === "orders"
+                      ? "text-accent border-b-2 border-accent"
+                      : "text-muted hover:text-brown"
+                  }`}
+                >
+                  Order History ({orders.length})
+                </button>
+              </div>
 
-          {/* Profile Card */}
-          <div className="bg-white rounded-lg shadow p-6 h-fit sticky top-20">
-            <div className="text-center mb-6">
-              <div className="text-6xl mb-4">👤</div>
-              <h3 className="text-2xl font-bold text-coffee-900">{user?.name}</h3>
-              <p className="text-gray-600">{user?.email}</p>
-            </div>
+              {/* Settings Tab */}
+              {activeTab === "settings" && (
+                <div className="space-y-6">
+                  {/* Personal Information */}
+                  <div className="bg-white rounded-2xl shadow-lg p-8">
+                    <h2 className="text-2xl font-bold text-brown mb-6">
+                      Personal Information
+                    </h2>
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                      <div>
+                        <label className="block text-sm font-semibold text-brown mb-2">
+                          Full Name
+                        </label>
+                        <input
+                          type="text"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                        />
+                      </div>
 
-            <div className="space-y-4 border-t-2 border-coffee-200 pt-6">
-              <div>
-                <p className="text-sm text-gray-600">Phone</p>
-                <p className="font-bold text-coffee-900">{user?.phone || 'Not set'}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">City</p>
-                <p className="font-bold text-coffee-900">{user?.city || 'Not set'}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Member Since</p>
-                <p className="font-bold text-coffee-900">
-                  {new Date(user?.createdAt).toLocaleDateString()}
-                </p>
-              </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-brown mb-2">
+                          Email (Cannot change)
+                        </label>
+                        <input
+                          type="email"
+                          value={formData.email}
+                          disabled
+                          className="w-full px-4 py-3 border border-caramel bg-cream text-muted rounded-lg cursor-not-allowed"
+                        />
+                        <p className="text-xs text-muted mt-1">
+                          Email is your login credential and cannot be changed
+                        </p>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-brown mb-2">
+                          Phone Number
+                        </label>
+                        <input
+                          type="tel"
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleChange}
+                          placeholder="+63 9XX XXX XXXX"
+                          className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                        />
+                      </div>
+
+                      {message && (
+                        <div
+                          className={`px-4 py-3 rounded-lg ${
+                            message.includes("✓")
+                              ? "bg-green-50 text-green-800"
+                              : "bg-red-50 text-red-800"
+                          }`}
+                        >
+                          {message}
+                        </div>
+                      )}
+
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="btn btn-primary w-full"
+                      >
+                        {loading ? "⏳ Saving..." : "✓ Save Changes"}
+                      </button>
+                    </form>
+                  </div>
+
+                  {/* Delivery Address */}
+                  <div className="bg-white rounded-2xl shadow-lg p-8">
+                    <h2 className="text-2xl font-bold text-brown mb-6">
+                      Default Delivery Address
+                    </h2>
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                      <div>
+                        <label className="block text-sm font-semibold text-brown mb-2">
+                          Address
+                        </label>
+                        <textarea
+                          name="address"
+                          value={formData.address}
+                          onChange={handleChange}
+                          placeholder="Street address, building, apartment, etc."
+                          rows={3}
+                          className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="btn btn-primary"
+                      >
+                        {loading ? "⏳ Saving..." : "✓ Update Address"}
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              )}
+
+              {/* Orders Tab */}
+              {activeTab === "orders" && (
+                <div className="space-y-6">
+                  {orders.length === 0 ? (
+                    <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
+                      <p className="text-4xl mb-4">📦</p>
+                      <h3 className="text-2xl font-bold text-brown mb-2">
+                        No Orders Yet
+                      </h3>
+                      <p className="text-muted mb-6">
+                        You haven't placed any orders yet. Start shopping to see
+                        your orders here!
+                      </p>
+                      <button
+                        onClick={() => navigate("/menu")}
+                        className="btn btn-primary"
+                      >
+                        Start Shopping
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {orders.map((order) => (
+                        <div
+                          key={order.id}
+                          className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition cursor-pointer"
+                          onClick={() => navigate(`/orders/${order.id}`)}
+                        >
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div>
+                              <p className="text-xs text-muted font-semibold uppercase mb-1">
+                                Order ID
+                              </p>
+                              <p className="font-bold text-brown">
+                                #{order.id}
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-muted font-semibold uppercase mb-1">
+                                Date
+                              </p>
+                              <p className="font-bold text-brown">
+                                {new Date(order.createdAt).toLocaleDateString()}
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-muted font-semibold uppercase mb-1">
+                                Amount
+                              </p>
+                              <p className="font-bold text-accent">
+                                ₱{order.totalPrice.toFixed(2)}
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-muted font-semibold uppercase mb-1">
+                                Status
+                              </p>
+                              <span
+                                className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${
+                                  order.status === "completed"
+                                    ? "bg-green-100 text-green-800"
+                                    : order.status === "pending"
+                                      ? "bg-yellow-100 text-yellow-800"
+                                      : order.status === "cancelled"
+                                        ? "bg-red-100 text-red-800"
+                                        : "bg-blue-100 text-blue-800"
+                                }`}
+                              >
+                                {order.status.charAt(0).toUpperCase() +
+                                  order.status.slice(1)}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="mt-4 pt-4 border-t border-caramel border-opacity-20">
+                            <p className="text-sm text-muted">
+                              📍 {order.deliveryAddress}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
-};
-
-export default Profile;
+}

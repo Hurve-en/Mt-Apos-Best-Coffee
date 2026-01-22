@@ -47,18 +47,22 @@ export interface Product {
 
 export interface ProductCustomization {
   id: string;
-  type: 'size' | 'milk' | 'extra';
+  type: "size" | "milk" | "extra";
   name: string;
   priceAdd: number;
 }
 
 // Cart types
 export interface CartItem {
-  productId: string;
-  product: Product;
+  productId: number | string;
+  name: string;
   quantity: number;
   customizations?: string;
   price: number;
+  image?: string;
+  roastLevel?: string;
+  grind?: string;
+  size?: string;
 }
 
 export interface Cart {
@@ -83,7 +87,13 @@ export interface OrderRequest {
 export interface Order {
   id: string;
   customerId: string;
-  status: 'PENDING' | 'CONFIRMED' | 'PREPARING' | 'READY' | 'DELIVERED' | 'CANCELLED';
+  status:
+    | "PENDING"
+    | "CONFIRMED"
+    | "PREPARING"
+    | "READY"
+    | "DELIVERED"
+    | "CANCELLED";
   totalPrice: number;
   deliveryAddress: string;
   items: OrderItem[];
