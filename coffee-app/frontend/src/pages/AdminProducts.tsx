@@ -81,14 +81,23 @@ export default function AdminProducts() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      console.log("📷 Image file selected:", file.name, file.type, file.size);
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result as string;
+        console.log(
+          "✅ Image converted to base64, length:",
+          base64String.length,
+        );
         setFormData((prev) => ({
           ...prev,
           image: base64String,
         }));
         setImagePreview(base64String);
+      };
+      reader.onerror = () => {
+        console.error("❌ Error reading file");
+        alert("Error reading image file");
       };
       reader.readAsDataURL(file);
     }
@@ -175,12 +184,24 @@ export default function AdminProducts() {
     if (!confirm("Are you sure you want to delete this product?")) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/products/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      console.log("🗑️ Deleting product:", id);
+      console.log("Token present:", !!token);
+      const response = await axios.delete(
+        `http://localhost:5000/api/products/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      console.log("✅ Delete response:", response.data);
+      alert("✅ Product deleted successfully!");
       fetchProducts();
-    } catch (err) {
-      alert("Failed to delete product");
+    } catch (err: any) {
+      console.error("❌ Delete error:", err);
+      console.error("❌ Error response:", err.response?.data);
+      console.error("❌ Error status:", err.response?.status);
+      const errorMsg =
+        err.response?.data?.message || "Failed to delete product";
+      alert("❌ Error: " + errorMsg);
     }
   };
 
