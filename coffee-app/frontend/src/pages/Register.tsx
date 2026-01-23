@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../hooks/useRedux";
 import { loginSuccess } from "../redux/slices/authSlice";
 import axios from "axios";
+import logo from "../Images/Logo.jpg";
 import "../styles/premium.css";
 
 export default function Register() {
@@ -112,7 +113,11 @@ export default function Register() {
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
           {/* Header */}
           <div className="bg-gradient-to-r from-amber-900 to-amber-800 text-cream py-12 text-center">
-            <div className="text-7xl mb-4">☕</div>
+            <img
+              src={logo}
+              alt="Apo Coffee Logo"
+              className="w-24 h-24 mx-auto mb-4"
+            />
             <h1 className="text-4xl font-bold mb-2">Apo Coffee</h1>
             <p className="text-lg opacity-90">Join our coffee community!</p>
           </div>

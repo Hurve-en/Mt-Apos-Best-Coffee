@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../../hooks/useRedux";
 import { logout } from "../../redux/slices/authSlice";
+import logo from "../../Images/Logo.jpg";
 import "./Navbar.css";
 
 const Navbar: React.FC = () => {
@@ -28,7 +29,7 @@ const Navbar: React.FC = () => {
         <div className="navbar-container">
           {/* Logo */}
           <Link to="/" className="navbar-logo">
-            <span className="logo-icon">☕</span>
+            <img src={logo} alt="Apo Coffee Logo" className="logo-icon" />
             <span className="logo-text">Apo Coffee</span>
           </Link>
 

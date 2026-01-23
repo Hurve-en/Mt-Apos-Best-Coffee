@@ -1,0 +1,25 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer circle background -->
+  <circle cx="100" cy="100" r="95" fill="#3e2723" stroke="#d4a574" stroke-width="2"/>
+  
+  <!-- Coffee cup body -->
+  <path d="M 60 70 L 65 140 Q 65 150 75 150 L 125 150 Q 135 150 135 140 L 140 70 Z" 
+        fill="none" stroke="#d4a574" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Coffee cup handle -->
+  <path d="M 140 90 Q 160 90 160 110 Q 160 130 140 130" 
+        fill="none" stroke="#d4a574" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- Coffee inside cup -->
+  <path d="M 68 80 L 72 140 Q 72 147 80 147 L 120 147 Q 128 147 132 140 L 136 80 Z" 
+        fill="#8B6F47" opacity="0.7"/>
+  
+  <!-- Steam wisps -->
+  <path d="M 85 65 Q 80 55 85 45" fill="none" stroke="#d4a574" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 100 60 Q 95 48 100 38" fill="none" stroke="#d4a574" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 115 65 Q 110 55 115 45" fill="none" stroke="#d4a574" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- "BEST" text at bottom -->
+  <text x="100" y="175" font-family="Arial, sans-serif" font-size="14" font-weight="bold" 
+        fill="#d4a574" text-anchor="middle" letter-spacing="2">BEST</text>
+</svg>

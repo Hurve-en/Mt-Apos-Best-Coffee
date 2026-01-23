@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAppDispatch } from "../hooks/useRedux";
 import { loginSuccess } from "../redux/slices/authSlice";
 import axios from "axios";
+import logo from "../Images/Logo.jpg";
 import "../styles/premium.css";
 
 export default function Login() {
@@ -30,13 +31,18 @@ export default function Login() {
     setLoading(true);
 
     try {
+      console.log("Attempting login with:", formData);
       const response = await axios.post(
         "http://localhost:5000/api/auth/login",
         formData,
       );
 
-      if (response.data.success) {
+      console.log("Full response:", response);
+      console.log("Response data:", response.data);
+
+      if (response.data && response.data.success) {
         const { token, user } = response.data;
+        console.log("Login successful! Token:", token, "User:", user);
         localStorage.setItem("token", token);
 
         dispatch(
@@ -52,8 +58,13 @@ export default function Login() {
         } else {
           navigate("/");
         }
+      } else {
+        console.warn("Response success is false:", response.data);
+        setError(response.data?.message || "Login failed. Please try again.");
       }
     } catch (err: any) {
+      console.error("Login error caught:", err);
+      console.error("Error response:", err.response?.data);
       const errorMsg =
         err.response?.data?.message || "Login failed. Please try again.";
       setError(errorMsg);
@@ -69,7 +80,11 @@ export default function Login() {
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
           {/* Header */}
           <div className="bg-gradient-to-r from-amber-900 to-amber-800 text-cream py-12 text-center">
-            <div className="text-7xl mb-4">☕</div>
+            <img
+              src={logo}
+              alt="Apo Coffee Logo"
+              className="w-24 h-24 mx-auto mb-4"
+            />
             <h1 className="text-4xl font-bold mb-2">Apo Coffee</h1>
             <p className="text-lg opacity-90">Welcome back, coffee lover!</p>
           </div>

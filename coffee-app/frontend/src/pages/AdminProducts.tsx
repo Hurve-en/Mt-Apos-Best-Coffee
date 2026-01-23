@@ -22,6 +22,7 @@ export default function AdminProducts() {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [imagePreview, setImagePreview] = useState<string>("");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -71,9 +72,26 @@ export default function AdminProducts() {
       newErrors.description = "Description is required";
     if (formData.price <= 0) newErrors.price = "Price must be greater than 0";
     if (formData.stock < 0) newErrors.stock = "Stock cannot be negative";
+    if (!formData.image) newErrors.image = "Product image is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setFormData((prev) => ({
+          ...prev,
+          image: base64String,
+        }));
+        setImagePreview(base64String);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -82,14 +100,19 @@ export default function AdminProducts() {
     if (!validateForm()) return;
 
     try {
+      console.log("Submitting product:", formData);
+      console.log("Token:", token);
+
       if (editingId) {
+        console.log("Updating product:", editingId);
         await axios.put(
-          `http://localhost:5000/api/admin/products/${editingId}`,
+          `http://localhost:5000/api/products/${editingId}`,
           formData,
           { headers: { Authorization: `Bearer ${token}` } },
         );
       } else {
-        await axios.post("http://localhost:5000/api/admin/products", formData, {
+        console.log("Creating new product");
+        await axios.post("http://localhost:5000/api/products", formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
       }
@@ -107,8 +130,11 @@ export default function AdminProducts() {
       setShowForm(false);
       setEditingId(null);
       setErrors({});
+      setImagePreview("");
       fetchProducts();
     } catch (err: any) {
+      console.error("Submit error:", err);
+      console.error("Error response:", err.response?.data);
       setErrors({
         submit: err.response?.data?.message || "Failed to save product",
       });
@@ -126,6 +152,7 @@ export default function AdminProducts() {
       image: product.image,
       stock: product.stock,
     });
+    setImagePreview(product.image);
     setEditingId(product.id);
     setShowForm(true);
   };
@@ -134,7 +161,7 @@ export default function AdminProducts() {
     if (!confirm("Are you sure you want to delete this product?")) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/admin/products/${id}`, {
+      await axios.delete(`http://localhost:5000/api/products/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchProducts();
@@ -157,6 +184,7 @@ export default function AdminProducts() {
       stock: 10,
     });
     setErrors({});
+    setImagePreview("");
   };
 
   if (loading) {
@@ -363,19 +391,32 @@ export default function AdminProducts() {
                   </div>
                 </div>
 
-                {/* Image URL */}
+                {/* Product Image Upload */}
                 <div>
                   <label className="block text-sm font-semibold text-brown mb-2">
-                    Image URL
+                    Product Image *
                   </label>
                   <input
-                    type="text"
-                    name="image"
-                    value={formData.image}
-                    onChange={handleFormChange}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
                     className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
-                    placeholder="https://example.com/image.jpg"
                   />
+                  {errors.image && (
+                    <p className="mt-1 text-sm text-red-600">
+                      ✕ {errors.image}
+                    </p>
+                  )}
+                  {imagePreview && (
+                    <div className="mt-4 flex flex-col items-center">
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        className="w-32 h-32 object-cover rounded-lg border-2 border-caramel"
+                      />
+                      <p className="text-xs text-muted mt-2">Image Preview</p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Buttons */}
