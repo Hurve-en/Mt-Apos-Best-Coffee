@@ -1,4 +1,5 @@
-import express, { Request, Response, NextFunction } from "express";
+import express from "express";
+import type { Request, Response, NextFunction } from "express";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
@@ -12,13 +13,14 @@ import { logger } from "./utils/logger.ts";
 
 // Load environment variables
 dotenv.config();
+console.log("env PORT after dotenv:", process.env.PORT);
 
 // Initialize Prisma
 export const prisma = new PrismaClient();
 
 // Initialize Express app
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000; // default to 3000 (frontend relies on this)
 
 // ============================================================================
 // MIDDLEWARE

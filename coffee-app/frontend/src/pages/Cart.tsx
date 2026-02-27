@@ -38,10 +38,10 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-cream flex items-center justify-center">
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <div className="text-center max-w-md">
           <div className="text-8xl mb-6 opacity-50">🛒</div>
-          <h1 className="text-4xl font-bold text-brown mb-4">
+          <h1 className="text-4xl font-bold text-black mb-4">
             Your cart is empty
           </h1>
           <p className="text-muted text-lg mb-8">
@@ -66,9 +66,9 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen bg-gray-100">
       {/* Header */}
-      <section className="section-gap bg-gradient-to-r from-amber-900 to-amber-800 text-cream">
+      <section className="section-gap bg-gradient-to-r from-amber-900 to-amber-800 text-white">
         <div className="container">
           <h1 className="text-5xl font-bold mb-2">🛒 Shopping Cart</h1>
           <p className="text-lg opacity-90">
@@ -91,22 +91,22 @@ export default function CartPage() {
                   >
                     {/* Product Info */}
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-brown mb-2">
+                      <h3 className="text-xl font-bold text-black mb-2">
                         {item.name || "Product"}
                       </h3>
                       <div className="flex flex-wrap gap-3 mb-3">
                         {item.roastLevel && (
-                          <span className="text-xs bg-caramel bg-opacity-20 text-brown px-3 py-1 rounded-full font-semibold">
+                          <span className="text-xs bg-gray-300 bg-opacity-20 text-black px-3 py-1 rounded-full font-semibold">
                             {item.roastLevel} Roast
                           </span>
                         )}
                         {item.grind && (
-                          <span className="text-xs bg-sage-green bg-opacity-20 text-brown px-3 py-1 rounded-full font-semibold">
+                          <span className="text-xs bg-gray-500 bg-opacity-20 text-black px-3 py-1 rounded-full font-semibold">
                             {item.grind}
                           </span>
                         )}
                         {item.size && (
-                          <span className="text-xs bg-caramel bg-opacity-20 text-brown px-3 py-1 rounded-full font-semibold">
+                          <span className="text-xs bg-gray-300 bg-opacity-20 text-black px-3 py-1 rounded-full font-semibold">
                             {item.size}
                           </span>
                         )}
@@ -118,7 +118,7 @@ export default function CartPage() {
 
                     {/* Quantity Controls */}
                     <div className="flex items-center gap-4">
-                      <div className="flex items-center bg-cream rounded-lg border-2 border-caramel border-opacity-30">
+                      <div className="flex items-center bg-gray-100 rounded-lg border-2 border-gray-300 border-opacity-30">
                         <button
                           onClick={() =>
                             handleQuantityChange(
@@ -126,11 +126,11 @@ export default function CartPage() {
                               item.quantity - 1,
                             )
                           }
-                          className="px-3 py-2 text-brown font-bold hover:bg-caramel hover:bg-opacity-20 transition rounded-l-lg"
+                          className="px-3 py-2 text-black font-bold hover:bg-gray-300 hover:bg-opacity-20 transition rounded-l-lg"
                         >
                           −
                         </button>
-                        <span className="px-4 font-bold text-brown min-w-12 text-center">
+                        <span className="px-4 font-bold text-black min-w-12 text-center">
                           {item.quantity}
                         </span>
                         <button
@@ -140,7 +140,7 @@ export default function CartPage() {
                               item.quantity + 1,
                             )
                           }
-                          className="px-3 py-2 text-brown font-bold hover:bg-caramel hover:bg-opacity-20 transition rounded-r-lg"
+                          className="px-3 py-2 text-black font-bold hover:bg-gray-300 hover:bg-opacity-20 transition rounded-r-lg"
                         >
                           +
                         </button>
@@ -149,7 +149,7 @@ export default function CartPage() {
                       {/* Subtotal */}
                       <div className="text-right min-w-24">
                         <p className="text-sm text-muted mb-1">Subtotal</p>
-                        <p className="text-2xl font-bold text-brown">
+                        <p className="text-2xl font-bold text-black">
                           ₱{(item.price * item.quantity).toFixed(2)}
                         </p>
                       </div>
@@ -171,16 +171,16 @@ export default function CartPage() {
             {/* Cart Summary */}
             <div className="lg:col-span-1">
               <div className="sticky top-20 bg-white rounded-2xl shadow-lg p-8">
-                <h2 className="text-2xl font-bold text-brown mb-6">
+                <h2 className="text-2xl font-bold text-black mb-6">
                   Order Summary
                 </h2>
 
-                <div className="space-y-4 mb-6 pb-6 border-b-2 border-caramel border-opacity-20">
+                <div className="space-y-4 mb-6 pb-6 border-b-2 border-gray-300 border-opacity-20">
                   <div className="flex justify-between items-center">
                     <span className="text-muted">
                       Subtotal ({itemsCount} items)
                     </span>
-                    <span className="font-bold text-brown">
+                    <span className="font-bold text-black">
                       ₱{totalPrice.toFixed(2)}
                     </span>
                   </div>
@@ -194,7 +194,7 @@ export default function CartPage() {
                       )}
                     </span>
                     <span
-                      className={`font-bold ${deliveryFee === 0 ? "text-green-600" : "text-brown"}`}
+                      className={`font-bold ${deliveryFee === 0 ? "text-green-600" : "text-black"}`}
                     >
                       ₱{deliveryFee.toFixed(2)}
                     </span>
@@ -203,7 +203,7 @@ export default function CartPage() {
 
                 <div className="mb-8">
                   <div className="flex justify-between items-center">
-                    <span className="text-lg font-bold text-brown">Total</span>
+                    <span className="text-lg font-bold text-black">Total</span>
                     <span className="text-3xl font-bold text-accent">
                       ₱{finalTotal.toFixed(2)}
                     </span>

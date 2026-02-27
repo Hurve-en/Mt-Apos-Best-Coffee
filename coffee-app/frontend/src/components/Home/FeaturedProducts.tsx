@@ -25,7 +25,7 @@ export default function FeaturedProducts() {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:5000/api/products");
+        const response = await axios.get("http://localhost:3000/api/products");
         if (response.data.success) {
           // Get first 4 products as featured
           setProducts(response.data.data.slice(0, 4));
@@ -97,7 +97,7 @@ export default function FeaturedProducts() {
       <div className="flex justify-center items-center min-h-96">
         <div className="text-center">
           <div className="animate-pulse text-5xl mb-4">☕</div>
-          <p className="text-secondary-brown">Loading our best sellers...</p>
+          <p className="text-gray-600">Loading our best sellers...</p>
         </div>
       </div>
     );

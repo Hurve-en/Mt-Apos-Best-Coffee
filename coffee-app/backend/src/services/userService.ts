@@ -1,7 +1,7 @@
 import { prisma } from "../index.ts";
 import { authService } from "./authService.ts";
 import { AppError } from "../utils/errorHandler.ts";
-import { IUserInput, IUser } from "../types/index.ts";
+import type { IUserInput, IUser } from "../types/user.ts";
 
 export const userService = {
   // Create new user

@@ -45,7 +45,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="card hover:shadow-xl transition-all duration-300">
       {/* Product Image */}
-      <div className="relative overflow-hidden rounded-lg mb-4 bg-cream h-48">
+      <div className="relative overflow-hidden rounded-lg mb-4 bg-gray-100 h-48">
         <img
           src={product.image}
           alt={product.name}
@@ -65,38 +65,38 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       {/* Product Info */}
       <div className="mb-4">
-        <h3 className="text-lg font-semibold text-brown mb-2">
+        <h3 className="text-lg font-semibold text-black mb-2">
           {product.name}
         </h3>
-        <p className="text-sm text-muted mb-3 line-clamp-2">
+        <p className="text-sm text-gray-600 mb-3 line-clamp-2">
           {product.description}
         </p>
 
         {/* Specifications */}
-        <div className="grid grid-cols-3 gap-2 mb-4 text-xs text-secondary-brown">
+        <div className="grid grid-cols-3 gap-2 mb-4 text-xs text-gray-600">
           <div className="flex flex-col items-center text-center">
-            <span className="font-semibold text-caramel">
+            <span className="font-semibold text-black">
               {product.roastLevel}
             </span>
             <span className="opacity-75">Roast</span>
           </div>
-          <div className="flex flex-col items-center text-center border-x border-caramel/20">
-            <span className="font-semibold text-caramel">{product.grind}</span>
+          <div className="flex flex-col items-center text-center border-x border-gray-300">
+            <span className="font-semibold text-black">{product.grind}</span>
             <span className="opacity-75">Type</span>
           </div>
           <div className="flex flex-col items-center text-center">
-            <span className="font-semibold text-caramel">{product.size}</span>
+            <span className="font-semibold text-black">{product.size}</span>
             <span className="opacity-75">Size</span>
           </div>
         </div>
       </div>
 
       {/* Price */}
-      <div className="mb-4 pb-4 border-b border-caramel/20">
-        <p className="text-2xl font-bold text-caramel">
+      <div className="mb-4 pb-4 border-b border-gray-300">
+        <p className="text-2xl font-bold text-black">
           ₱{product.price.toLocaleString()}
         </p>
-        <p className="text-xs text-muted mt-1">
+        <p className="text-xs text-gray-500 mt-1">
           {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
         </p>
       </div>

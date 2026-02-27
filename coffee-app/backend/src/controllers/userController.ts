@@ -1,5 +1,5 @@
-import { Response } from "express";
-import { AuthRequest } from "../middleware/auth.ts";
+import type { Response } from "express";
+import type { AuthRequest } from "../middleware/auth.ts";
 import { userService } from "../services/userService.ts";
 import { logger } from "../utils/logger.ts";
 

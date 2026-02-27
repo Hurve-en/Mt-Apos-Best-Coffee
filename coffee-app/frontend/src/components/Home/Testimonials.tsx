@@ -44,14 +44,14 @@ export default function Testimonials() {
   return (
     <div className="grid-4 lg:grid-5">
       {testimonials.map((testimonial) => (
-        <div key={testimonial.id} className="card-cream card animate-fadeInUp">
+        <div key={testimonial.id} className="card card animate-fadeInUp">
           {/* Avatar */}
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-caramel to-tertiary-brown flex items-center justify-center text-cream font-bold text-sm">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center text-white font-bold text-sm">
               {testimonial.avatar}
             </div>
             <div>
-              <h4 className="font-semibold text-brown">{testimonial.name}</h4>
+              <h4 className="font-semibold text-black">{testimonial.name}</h4>
               <p className="text-xs text-muted">
                 {renderStars(testimonial.rating)}
               </p>

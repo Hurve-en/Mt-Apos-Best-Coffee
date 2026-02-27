@@ -47,8 +47,8 @@ export default function AdminOrders() {
   const fetchOrders = async () => {
     try {
       const url = statusFilter
-        ? `http://localhost:5000/api/admin/orders?status=${statusFilter}`
-        : "http://localhost:5000/api/admin/orders";
+        ? `http://localhost:3000/api/admin/orders?status=${statusFilter}`
+        : "http://localhost:3000/api/admin/orders";
       const response = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -64,7 +64,7 @@ export default function AdminOrders() {
     setUpdating(true);
     try {
       const response = await axios.patch(
-        `http://localhost:5000/api/admin/orders/${orderId}/status`,
+        `http://localhost:3000/api/admin/orders/${orderId}/status`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -110,7 +110,7 @@ export default function AdminOrders() {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-5xl font-bold text-brown mb-2">
+            <h1 className="text-5xl font-bold text-black mb-2">
               📦 Order Management
             </h1>
             <p className="text-lg text-muted">Manage all customer orders</p>
@@ -125,13 +125,13 @@ export default function AdminOrders() {
 
         {/* Filter */}
         <div className="mb-8 max-w-64">
-          <label className="block text-sm font-semibold text-brown mb-3">
+          <label className="block text-sm font-semibold text-black mb-3">
             Filter by Status
           </label>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
           >
             <option value="">All Orders</option>
             <option value="pending">Pending</option>
@@ -150,7 +150,7 @@ export default function AdminOrders() {
             {orders.length === 0 ? (
               <div className="bg-white rounded-3xl shadow-lg p-12 text-center">
                 <div className="text-6xl mb-4">📭</div>
-                <h3 className="text-2xl font-bold text-brown mb-2">
+                <h3 className="text-2xl font-bold text-black mb-2">
                   No Orders Found
                 </h3>
                 <p className="text-muted">
@@ -168,7 +168,7 @@ export default function AdminOrders() {
                 >
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h3 className="text-xl font-bold text-brown">
+                      <h3 className="text-xl font-bold text-black">
                         Order #{String(order.id).padStart(4, "0")}
                       </h3>
                       <p className="text-sm text-muted mt-1">
@@ -200,14 +200,14 @@ export default function AdminOrders() {
           {/* Order Details Sidebar */}
           {selectedOrder && (
             <div className="bg-white rounded-3xl shadow-lg p-6 h-fit sticky top-8">
-              <h2 className="text-3xl font-bold text-brown mb-6">📋 Details</h2>
+              <h2 className="text-3xl font-bold text-black mb-6">📋 Details</h2>
 
               {/* Customer Info */}
-              <div className="mb-6 pb-6 border-b-2 border-caramel">
-                <h3 className="font-bold text-brown mb-3 text-lg">
+              <div className="mb-6 pb-6 border-b-2 border-gray-300">
+                <h3 className="font-bold text-black mb-3 text-lg">
                   👤 Customer
                 </h3>
-                <p className="text-sm font-semibold text-brown">
+                <p className="text-sm font-semibold text-black">
                   {selectedOrder.user?.name}
                 </p>
                 <p className="text-sm text-muted">
@@ -219,8 +219,8 @@ export default function AdminOrders() {
               </div>
 
               {/* Items */}
-              <div className="mb-6 pb-6 border-b-2 border-caramel">
-                <h3 className="font-bold text-brown mb-3 text-lg">☕ Items</h3>
+              <div className="mb-6 pb-6 border-b-2 border-gray-300">
+                <h3 className="font-bold text-black mb-3 text-lg">☕ Items</h3>
                 <div className="space-y-2">
                   {selectedOrder.orderItems?.map((item, idx) => (
                     <div
@@ -228,7 +228,7 @@ export default function AdminOrders() {
                       className="flex justify-between text-sm bg-amber-50 p-3 rounded-lg"
                     >
                       <div>
-                        <p className="font-semibold text-brown">
+                        <p className="font-semibold text-black">
                           {item.product?.name}
                         </p>
                         <p className="text-xs text-muted">×{item.quantity}</p>
@@ -242,8 +242,8 @@ export default function AdminOrders() {
               </div>
 
               {/* Delivery Address */}
-              <div className="mb-6 pb-6 border-b-2 border-caramel">
-                <h3 className="font-bold text-brown mb-3 text-lg">
+              <div className="mb-6 pb-6 border-b-2 border-gray-300">
+                <h3 className="font-bold text-black mb-3 text-lg">
                   📍 Address
                 </h3>
                 <p className="text-sm text-muted leading-relaxed">
@@ -252,9 +252,9 @@ export default function AdminOrders() {
               </div>
 
               {/* Total */}
-              <div className="mb-6 pb-6 border-b-2 border-caramel">
+              <div className="mb-6 pb-6 border-b-2 border-gray-300">
                 <div className="flex justify-between items-center">
-                  <span className="font-bold text-lg text-brown">Total</span>
+                  <span className="font-bold text-lg text-black">Total</span>
                   <span className="font-bold text-2xl text-accent">
                     ₱{selectedOrder.total}
                   </span>
@@ -263,7 +263,7 @@ export default function AdminOrders() {
 
               {/* Status Update */}
               <div>
-                <label className="block text-sm font-semibold text-brown mb-3">
+                <label className="block text-sm font-semibold text-black mb-3">
                   Update Status
                 </label>
                 <select
@@ -272,7 +272,7 @@ export default function AdminOrders() {
                     handleStatusChange(selectedOrder.id, e.target.value)
                   }
                   disabled={updating}
-                  className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent font-semibold"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent font-semibold"
                 >
                   <option value="pending">Pending</option>
                   <option value="confirmed">Confirmed</option>

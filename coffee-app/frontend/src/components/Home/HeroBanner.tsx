@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../hooks/useRedux";
+import bannerImage from "../../Images/image7.png";
 
 export default function HeroBanner() {
   const { isAuthenticated } = useAppSelector((state: any) => state.auth);
 
   return (
-    <section className="relative overflow-hidden py-20 md:py-32 lg:py-40 bg-gradient-to-r from-amber-50 via-yellow-50 to-amber-50">
-      {/* Decorative elements */}
-      <div className="absolute top-10 right-10 opacity-5 text-9xl">☕</div>
-      <div className="absolute bottom-10 left-10 opacity-5 text-9xl">☕</div>
+    <section className="relative overflow-hidden py-20 md:py-32 lg:py-40 bg-gradient-to-r from-white via-gray-50 to-white">
+      {/* Decorative elements removed */}
 
       <div className="container relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -18,7 +17,7 @@ export default function HeroBanner() {
             <p className="text-xl text-muted mb-8 leading-relaxed max-w-xl">
               Handpicked. Perfectly Roasted. Delivered Fast.
             </p>
-            <p className="text-lg text-secondary-brown mb-12 leading-relaxed max-w-xl">
+            <p className="text-lg text-gray-600 mb-12 leading-relaxed max-w-xl">
               Premium 100% Arabica coffee from Mt. Apo, Davao. Carefully sourced
               and roasted to perfection. Experience the true taste of Philippine
               coffee craftsmanship.
@@ -35,31 +34,29 @@ export default function HeroBanner() {
           {/* Hero Image */}
           <div className="animate-slideInRight relative flex justify-center items-center">
             <div className="relative w-full h-96 flex items-center justify-center">
-              {/* Placeholder for product image - replace with actual image */}
-              <div className="text-center">
-                <div className="text-8xl mb-4 animate-float">☕</div>
-                <p className="text-secondary-brown font-semibold">
-                  Mt. Apo's Best
-                </p>
-                <p className="text-caramel text-sm">Premium Arabica Coffee</p>
-              </div>
+              {/* Product image */}
+              <img
+                src={bannerImage}
+                alt="Mt. Apo's Best Coffee"
+                className="w-full h-full object-contain drop-shadow-2xl"
+              />
             </div>
           </div>
         </div>
 
         {/* Stats Row */}
-        <div className="grid grid-cols-3 gap-8 mt-20 pt-12 border-t border-caramel/30">
+        <div className="grid grid-cols-3 gap-8 mt-20 pt-12 border-t border-gray-300/30">
           <div className="text-center">
-            <p className="text-3xl font-bold text-caramel mb-2">100%</p>
-            <p className="text-secondary-brown">Pure Arabica</p>
+            <p className="text-3xl font-bold text-black mb-2">100%</p>
+            <p className="text-gray-600">Pure Arabica</p>
           </div>
           <div className="text-center">
-            <p className="text-3xl font-bold text-caramel mb-2">Fast</p>
-            <p className="text-secondary-brown">Free Delivery</p>
+            <p className="text-3xl font-bold text-black mb-2">Fast</p>
+            <p className="text-gray-600">Free Delivery</p>
           </div>
           <div className="text-center">
-            <p className="text-3xl font-bold text-caramel mb-2">Fresh</p>
-            <p className="text-secondary-brown">Roasted Daily</p>
+            <p className="text-3xl font-bold text-black mb-2">Fresh</p>
+            <p className="text-gray-600">Roasted Daily</p>
           </div>
         </div>
       </div>

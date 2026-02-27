@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { AppError } from "../utils/errorHandler.ts";
-import { ITokenPayload } from "../types/index.ts";
+import type { ITokenPayload } from "../types/user.ts";
 
 export const authService = {
   // Hash password

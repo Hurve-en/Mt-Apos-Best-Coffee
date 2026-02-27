@@ -16,10 +16,10 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-amber-50 to-yellow-50">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-white to-gray-100">
         <div className="text-center">
           <div className="animate-pulse mb-4">☕</div>
-          <p className="text-primary-brown font-semibold">
+          <p className="text-black font-semibold">
             Loading premium coffee experience...
           </p>
         </div>
@@ -33,10 +33,10 @@ export default function Home() {
       <HeroBanner />
 
       {/* Featured Products */}
-      <section className="section-gap bg-gradient-to-b from-yellow-50 to-white">
+      <section className="section-gap bg-gradient-to-b from-white to-gray-100">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-brown mb-4">Our Best Sellers</h2>
+            <h2 className="text-black mb-4">Our Best Sellers</h2>
             <p className="text-muted text-lg max-w-2xl mx-auto">
               Handpicked from Mt. Apo's finest harvest. Each batch is carefully
               roasted to perfection
@@ -50,7 +50,7 @@ export default function Home() {
       <section className="section-gap bg-white">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-brown mb-4">Why Choose Apo Coffee</h2>
+            <h2 className="text-black mb-4">Why Choose Apo Coffee</h2>
             <p className="text-muted text-lg max-w-2xl mx-auto">
               Premium quality meets exceptional service
             </p>
@@ -60,10 +60,10 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="section-gap bg-gradient-to-b from-yellow-50 to-white">
+      <section className="section-gap bg-gradient-to-b from-white to-gray-100">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-brown mb-4">What Our Customers Say</h2>
+            <h2 className="text-black mb-4">What Our Customers Say</h2>
             <p className="text-muted text-lg max-w-2xl mx-auto">
               Real reviews from real coffee lovers
             </p>
@@ -73,7 +73,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="section-gap bg-gradient-to-r from-amber-900 to-amber-800 text-cream">
+      <section className="section-gap bg-gradient-to-r from-black to-neutral-900 text-white">
         <div className="container text-center">
           <h2 className="mb-4">Ready for the Perfect Brew?</h2>
           <p className="text-lg mb-8 opacity-90 max-w-2xl mx-auto">

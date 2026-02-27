@@ -33,7 +33,7 @@ export default function Login() {
     try {
       console.log("Attempting login with:", formData);
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "http://localhost:3000/api/auth/login",
         formData,
       );
 
@@ -74,12 +74,12 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-cream to-yellow-50 flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50 flex items-center justify-center py-12 px-4">
       <div className="max-w-md w-full">
         {/* Card */}
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-amber-900 to-amber-800 text-cream py-12 text-center">
+          <div className="bg-gray-800 text-white py-12 text-center">
             <img
               src={logo}
               alt="Apo Coffee Logo"
@@ -104,7 +104,7 @@ export default function Login() {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-semibold text-brown mb-2"
+                  className="block text-sm font-semibold text-black mb-2"
                 >
                   Email Address
                 </label>
@@ -115,7 +115,7 @@ export default function Login() {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
                   placeholder="you@example.com"
                 />
               </div>
@@ -124,7 +124,7 @@ export default function Login() {
               <div>
                 <label
                   htmlFor="password"
-                  className="block text-sm font-semibold text-brown mb-2"
+                  className="block text-sm font-semibold text-black mb-2"
                 >
                   Password
                 </label>
@@ -136,13 +136,13 @@ export default function Login() {
                     required
                     value={formData.password}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 pr-12 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
+                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
                     placeholder="••••••••"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-brown transition"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-black transition"
                   >
                     {showPassword ? "👁️" : "👁️‍🗨️"}
                   </button>
@@ -162,7 +162,7 @@ export default function Login() {
             {/* Divider */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-caramel border-opacity-30"></div>
+                <div className="w-full border-t border-gray-300 border-opacity-30"></div>
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-2 bg-white text-muted">or</span>
@@ -179,20 +179,22 @@ export default function Login() {
             </button>
 
             {/* Test Credentials */}
-            <div className="bg-cream border-2 border-caramel border-opacity-30 rounded-lg p-4">
-              <p className="text-xs font-bold text-brown uppercase tracking-wide mb-3">
+            <div className="bg-gray-100 border-2 border-gray-300 border-opacity-30 rounded-lg p-4">
+              <p className="text-xs font-bold text-black uppercase tracking-wide mb-3">
                 Demo Credentials
               </p>
               <div className="space-y-2 text-xs">
                 <div>
                   <p className="text-muted font-semibold">Customer:</p>
-                  <p className="text-brown font-mono">customer@apocoffee.com</p>
-                  <p className="text-brown font-mono">customer123</p>
+                  <p className="text-gray-700 font-mono">
+                    customer@apocoffee.com
+                  </p>
+                  <p className="text-gray-700 font-mono">customer123</p>
                 </div>
-                <div className="border-t border-caramel border-opacity-30 pt-2">
+                <div className="border-t border-gray-300 border-opacity-30 pt-2">
                   <p className="text-muted font-semibold">Admin:</p>
-                  <p className="text-brown font-mono">admin@apocoffee.com</p>
-                  <p className="text-brown font-mono">admin123</p>
+                  <p className="text-gray-700 font-mono">admin@apocoffee.com</p>
+                  <p className="text-gray-700 font-mono">admin123</p>
                 </div>
               </div>
             </div>

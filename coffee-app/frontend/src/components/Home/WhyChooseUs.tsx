@@ -31,10 +31,10 @@ export default function WhyChooseUs() {
       {reasons.map((reason) => (
         <div
           key={reason.id}
-          className="card text-center hover:border-b-4 hover:border-caramel transition-all duration-300"
+          className="card text-center hover:border-b-4 hover:border-gray-300 transition-all duration-300"
         >
           <div className="text-5xl mb-4">{reason.icon}</div>
-          <h3 className="text-brown font-semibold mb-3">{reason.title}</h3>
+          <h3 className="text-black font-semibold mb-3">{reason.title}</h3>
           <p className="text-muted text-sm leading-relaxed">
             {reason.description}
           </p>

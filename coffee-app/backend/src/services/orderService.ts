@@ -1,6 +1,6 @@
 import { prisma } from "../index.ts";
 import { AppError } from "../utils/errorHandler.ts";
-import { IOrder, IOrderInput } from "../types/index.ts";
+import type { IOrder, IOrderInput } from "../types/order.ts";
 
 export const orderService = {
   // Create order

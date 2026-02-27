@@ -75,7 +75,7 @@ export default function Register() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        "http://localhost:3000/api/auth/register",
         {
           email: formData.email,
           password: formData.password,
@@ -107,12 +107,12 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-cream to-yellow-50 flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50 flex items-center justify-center py-12 px-4">
       <div className="max-w-md w-full">
         {/* Card */}
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-amber-900 to-amber-800 text-cream py-12 text-center">
+          <div className="bg-gray-800 text-white py-12 text-center">
             <img
               src={logo}
               alt="Apo Coffee Logo"
@@ -137,7 +137,7 @@ export default function Register() {
               <div>
                 <label
                   htmlFor="name"
-                  className="block text-sm font-semibold text-brown mb-2"
+                  className="block text-sm font-semibold text-black mb-2"
                 >
                   Full Name
                 </label>
@@ -151,7 +151,7 @@ export default function Register() {
                   className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition ${
                     errors.name
                       ? "border-red-500 focus:ring-red-300"
-                      : "border-caramel focus:ring-accent"
+                      : "border-gray-300 focus:ring-accent"
                   }`}
                   placeholder="Juan Dela Cruz"
                 />
@@ -164,7 +164,7 @@ export default function Register() {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-semibold text-brown mb-2"
+                  className="block text-sm font-semibold text-black mb-2"
                 >
                   Email Address
                 </label>
@@ -178,7 +178,7 @@ export default function Register() {
                   className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition ${
                     errors.email
                       ? "border-red-500 focus:ring-red-300"
-                      : "border-caramel focus:ring-accent"
+                      : "border-gray-300 focus:ring-accent"
                   }`}
                   placeholder="you@example.com"
                 />
@@ -191,7 +191,7 @@ export default function Register() {
               <div>
                 <label
                   htmlFor="phone"
-                  className="block text-sm font-semibold text-brown mb-2"
+                  className="block text-sm font-semibold text-black mb-2"
                 >
                   Phone Number (Optional)
                 </label>
@@ -201,7 +201,7 @@ export default function Register() {
                   type="tel"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
                   placeholder="+63 9XX XXX XXXX"
                 />
               </div>
@@ -210,7 +210,7 @@ export default function Register() {
               <div>
                 <label
                   htmlFor="password"
-                  className="block text-sm font-semibold text-brown mb-2"
+                  className="block text-sm font-semibold text-black mb-2"
                 >
                   Password
                 </label>
@@ -225,14 +225,14 @@ export default function Register() {
                     className={`w-full px-4 py-3 pr-12 border rounded-lg focus:outline-none focus:ring-2 transition ${
                       errors.password
                         ? "border-red-500 focus:ring-red-300"
-                        : "border-caramel focus:ring-accent"
+                        : "border-gray-300 focus:ring-accent"
                     }`}
                     placeholder="••••••••"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-brown transition"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-black transition"
                   >
                     {showPassword ? "👁️" : "👁️‍🗨️"}
                   </button>
@@ -281,7 +281,7 @@ export default function Register() {
               <div>
                 <label
                   htmlFor="confirmPassword"
-                  className="block text-sm font-semibold text-brown mb-2"
+                  className="block text-sm font-semibold text-black mb-2"
                 >
                   Confirm Password
                 </label>
@@ -296,14 +296,14 @@ export default function Register() {
                     className={`w-full px-4 py-3 pr-12 border rounded-lg focus:outline-none focus:ring-2 transition ${
                       errors.confirmPassword
                         ? "border-red-500 focus:ring-red-300"
-                        : "border-caramel focus:ring-accent"
+                        : "border-gray-300 focus:ring-accent"
                     }`}
                     placeholder="••••••••"
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-brown transition"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-black transition"
                   >
                     {showConfirmPassword ? "👁️" : "👁️‍🗨️"}
                   </button>
@@ -328,7 +328,7 @@ export default function Register() {
             {/* Divider */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-caramel border-opacity-30"></div>
+                <div className="w-full border-t border-gray-300 border-opacity-30"></div>
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-2 bg-white text-muted">or</span>

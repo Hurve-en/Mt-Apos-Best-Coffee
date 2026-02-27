@@ -31,7 +31,7 @@ export default function AdminDashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:5000/api/admin/stats",
+        "http://localhost:3000/api/admin/stats",
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -53,10 +53,10 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-cream">
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="text-center">
           <div className="text-4xl mb-4 animate-pulse">☕</div>
-          <p className="text-2xl text-brown font-semibold">
+          <p className="text-2xl text-black font-semibold">
             Loading admin dashboard...
           </p>
         </div>
@@ -69,9 +69,9 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen bg-gray-100">
       {/* Header */}
-      <div className="bg-gradient-to-r from-amber-900 to-amber-800 text-cream sticky top-0 z-40 shadow-lg">
+      <div className="bg-gray-800 text-white sticky top-0 z-40 shadow-lg">
         <div className="container py-6">
           <div className="flex justify-between items-center">
             <div>
@@ -103,7 +103,7 @@ export default function AdminDashboard() {
                 </div>
                 <div className="text-6xl opacity-20">📦</div>
               </div>
-              <div className="mt-4 pt-4 border-t border-caramel border-opacity-20">
+              <div className="mt-4 pt-4 border-t border-gray-300 border-opacity-20">
                 <p className="text-xs text-muted">View all orders</p>
               </div>
             </div>
@@ -121,7 +121,7 @@ export default function AdminDashboard() {
                 </div>
                 <div className="text-6xl opacity-20">☕</div>
               </div>
-              <div className="mt-4 pt-4 border-t border-caramel border-opacity-20">
+              <div className="mt-4 pt-4 border-t border-gray-300 border-opacity-20">
                 <p className="text-xs text-muted">Manage inventory</p>
               </div>
             </div>
@@ -142,7 +142,7 @@ export default function AdminDashboard() {
                 </div>
                 <div className="text-6xl opacity-20">💰</div>
               </div>
-              <div className="mt-4 pt-4 border-t border-caramel border-opacity-20">
+              <div className="mt-4 pt-4 border-t border-gray-300 border-opacity-20">
                 <p className="text-xs text-muted">All-time earnings</p>
               </div>
             </div>
@@ -165,7 +165,7 @@ export default function AdminDashboard() {
               <p className="text-sm font-semibold text-muted uppercase tracking-wide mb-2">
                 Management
               </p>
-              <h3 className="text-2xl font-bold text-brown mb-3">
+              <h3 className="text-2xl font-bold text-black mb-3">
                 Manage Products
               </h3>
               <p className="text-muted">
@@ -188,7 +188,7 @@ export default function AdminDashboard() {
               <p className="text-sm font-semibold text-muted uppercase tracking-wide mb-2">
                 Management
               </p>
-              <h3 className="text-2xl font-bold text-brown mb-3">
+              <h3 className="text-2xl font-bold text-black mb-3">
                 Manage Orders
               </h3>
               <p className="text-muted">
@@ -200,7 +200,7 @@ export default function AdminDashboard() {
           {/* Recent Orders */}
           {stats?.recentOrders && stats.recentOrders.length > 0 && (
             <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h2 className="text-3xl font-bold text-brown mb-8">
+              <h2 className="text-3xl font-bold text-black mb-8">
                 Recent Orders
               </h2>
               <div className="space-y-4">
@@ -212,7 +212,7 @@ export default function AdminDashboard() {
                   >
                     <div className="flex justify-between items-start flex-col sm:flex-row gap-4">
                       <div>
-                        <p className="font-bold text-brown text-lg">
+                        <p className="font-bold text-black text-lg">
                           Order #{order.id}
                         </p>
                         <p className="text-sm text-muted mt-1">
@@ -250,7 +250,7 @@ export default function AdminDashboard() {
           {(!stats?.recentOrders || stats.recentOrders.length === 0) && (
             <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
               <p className="text-5xl mb-4">📭</p>
-              <h3 className="text-2xl font-bold text-brown mb-2">
+              <h3 className="text-2xl font-bold text-black mb-2">
                 No Orders Yet
               </h3>
               <p className="text-muted mb-6">

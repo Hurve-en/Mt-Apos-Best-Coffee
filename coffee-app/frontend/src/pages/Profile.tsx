@@ -53,7 +53,7 @@ export default function Profile() {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:5000/api/orders", {
+      const response = await axios.get("http://localhost:3000/api/orders", {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (response.data.success) {
@@ -82,7 +82,7 @@ export default function Profile() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        "http://localhost:5000/api/users/profile",
+        "http://localhost:3000/api/users/profile",
         formData,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -109,9 +109,9 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen bg-gray-100">
       {/* Header */}
-      <section className="section-gap bg-gradient-to-r from-amber-900 to-amber-800 text-cream">
+      <section className="section-gap bg-gray-800 text-white">
         <div className="container">
           <h1 className="text-5xl font-bold mb-2">👤 My Profile</h1>
           <p className="text-lg opacity-90">
@@ -128,31 +128,31 @@ export default function Profile() {
             <aside className="lg:col-span-1">
               <div className="sticky top-20 bg-white rounded-2xl shadow-lg p-6 text-center">
                 <div className="text-6xl mb-4">☕</div>
-                <h3 className="text-2xl font-bold text-brown mb-1">
+                <h3 className="text-2xl font-bold text-black mb-1">
                   {user?.name || "User"}
                 </h3>
                 <p className="text-muted text-sm mb-6">{user?.email}</p>
 
-                <div className="border-t border-caramel border-opacity-20 pt-6 space-y-4">
-                  <div className="bg-cream rounded-lg p-3">
+                <div className="border-t border-gray-300 border-opacity-20 pt-6 space-y-4">
+                  <div className="bg-gray-100 rounded-lg p-3">
                     <p className="text-xs text-muted mb-1">Phone</p>
-                    <p className="font-bold text-brown text-sm">
+                    <p className="font-bold text-black text-sm">
                       {user?.phone || "Not set"}
                     </p>
                   </div>
 
-                  <div className="bg-cream rounded-lg p-3">
+                  <div className="bg-gray-100 rounded-lg p-3">
                     <p className="text-xs text-muted mb-1">Member Since</p>
-                    <p className="font-bold text-brown text-sm">
+                    <p className="font-bold text-black text-sm">
                       {user?.createdAt
                         ? new Date(user.createdAt).toLocaleDateString()
                         : "N/A"}
                     </p>
                   </div>
 
-                  <div className="bg-cream rounded-lg p-3">
+                  <div className="bg-gray-100 rounded-lg p-3">
                     <p className="text-xs text-muted mb-1">Total Orders</p>
-                    <p className="font-bold text-brown text-sm">
+                    <p className="font-bold text-black text-sm">
                       {orders.length}
                     </p>
                   </div>
@@ -170,13 +170,13 @@ export default function Profile() {
             {/* Main Content */}
             <div className="lg:col-span-3">
               {/* Tab Navigation */}
-              <div className="flex gap-4 mb-8 border-b border-caramel border-opacity-20">
+              <div className="flex gap-4 mb-8 border-b border-gray-300 border-opacity-20">
                 <button
                   onClick={() => setActiveTab("settings")}
                   className={`pb-4 px-4 font-semibold transition ${
                     activeTab === "settings"
                       ? "text-accent border-b-2 border-accent"
-                      : "text-muted hover:text-brown"
+                      : "text-muted hover:text-black"
                   }`}
                 >
                   Account Settings
@@ -186,7 +186,7 @@ export default function Profile() {
                   className={`pb-4 px-4 font-semibold transition ${
                     activeTab === "orders"
                       ? "text-accent border-b-2 border-accent"
-                      : "text-muted hover:text-brown"
+                      : "text-muted hover:text-black"
                   }`}
                 >
                   Order History ({orders.length})
@@ -198,12 +198,12 @@ export default function Profile() {
                 <div className="space-y-6">
                   {/* Personal Information */}
                   <div className="bg-white rounded-2xl shadow-lg p-8">
-                    <h2 className="text-2xl font-bold text-brown mb-6">
+                    <h2 className="text-2xl font-bold text-black mb-6">
                       Personal Information
                     </h2>
                     <form onSubmit={handleSubmit} className="space-y-6">
                       <div>
-                        <label className="block text-sm font-semibold text-brown mb-2">
+                        <label className="block text-sm font-semibold text-black mb-2">
                           Full Name
                         </label>
                         <input
@@ -211,19 +211,19 @@ export default function Profile() {
                           name="name"
                           value={formData.name}
                           onChange={handleChange}
-                          className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-semibold text-brown mb-2">
+                        <label className="block text-sm font-semibold text-black mb-2">
                           Email (Cannot change)
                         </label>
                         <input
                           type="email"
                           value={formData.email}
                           disabled
-                          className="w-full px-4 py-3 border border-caramel bg-cream text-muted rounded-lg cursor-not-allowed"
+                          className="w-full px-4 py-3 border border-gray-300 bg-gray-100 text-muted rounded-lg cursor-not-allowed"
                         />
                         <p className="text-xs text-muted mt-1">
                           Email is your login credential and cannot be changed
@@ -231,7 +231,7 @@ export default function Profile() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-semibold text-brown mb-2">
+                        <label className="block text-sm font-semibold text-black mb-2">
                           Phone Number
                         </label>
                         <input
@@ -240,7 +240,7 @@ export default function Profile() {
                           value={formData.phone}
                           onChange={handleChange}
                           placeholder="+63 9XX XXX XXXX"
-                          className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                         />
                       </div>
 
@@ -268,12 +268,12 @@ export default function Profile() {
 
                   {/* Delivery Address */}
                   <div className="bg-white rounded-2xl shadow-lg p-8">
-                    <h2 className="text-2xl font-bold text-brown mb-6">
+                    <h2 className="text-2xl font-bold text-black mb-6">
                       Default Delivery Address
                     </h2>
                     <form onSubmit={handleSubmit} className="space-y-6">
                       <div>
-                        <label className="block text-sm font-semibold text-brown mb-2">
+                        <label className="block text-sm font-semibold text-black mb-2">
                           Address
                         </label>
                         <textarea
@@ -282,7 +282,7 @@ export default function Profile() {
                           onChange={handleChange}
                           placeholder="Street address, building, apartment, etc."
                           rows={3}
-                          className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                         />
                       </div>
 
@@ -304,7 +304,7 @@ export default function Profile() {
                   {orders.length === 0 ? (
                     <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
                       <p className="text-4xl mb-4">📦</p>
-                      <h3 className="text-2xl font-bold text-brown mb-2">
+                      <h3 className="text-2xl font-bold text-black mb-2">
                         No Orders Yet
                       </h3>
                       <p className="text-muted mb-6">
@@ -331,7 +331,7 @@ export default function Profile() {
                               <p className="text-xs text-muted font-semibold uppercase mb-1">
                                 Order ID
                               </p>
-                              <p className="font-bold text-brown">
+                              <p className="font-bold text-black">
                                 #{order.id}
                               </p>
                             </div>
@@ -339,7 +339,7 @@ export default function Profile() {
                               <p className="text-xs text-muted font-semibold uppercase mb-1">
                                 Date
                               </p>
-                              <p className="font-bold text-brown">
+                              <p className="font-bold text-black">
                                 {new Date(order.createdAt).toLocaleDateString()}
                               </p>
                             </div>
@@ -371,7 +371,7 @@ export default function Profile() {
                               </span>
                             </div>
                           </div>
-                          <div className="mt-4 pt-4 border-t border-caramel border-opacity-20">
+                          <div className="mt-4 pt-4 border-t border-gray-300 border-opacity-20">
                             <p className="text-sm text-muted">
                               📍 {order.deliveryAddress}
                             </p>

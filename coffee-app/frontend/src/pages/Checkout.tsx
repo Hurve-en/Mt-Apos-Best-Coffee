@@ -240,7 +240,7 @@ export default function Checkout() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:5000/api/orders",
+        "http://localhost:3000/api/orders",
         {
           deliveryAddress: `${formData.address}, ${formData.city} ${formData.postalCode}`,
           paymentMethod: formData.paymentMethod,
@@ -269,9 +269,9 @@ export default function Checkout() {
 
   if (!isAuthenticated || items.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-cream">
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-brown">Invalid checkout</h1>
+          <h1 className="text-2xl font-bold text-black">Invalid checkout</h1>
           <button
             onClick={() => navigate("/menu")}
             className="mt-4 btn btn-primary"
@@ -284,9 +284,9 @@ export default function Checkout() {
   }
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen bg-gray-100">
       {/* Header */}
-      <section className="section-gap bg-gradient-to-r from-amber-900 to-amber-800 text-cream">
+      <section className="section-gap bg-gray-800 text-white">
         <div className="container">
           <h1 className="text-5xl font-bold mb-2">🛍️ Checkout</h1>
           <p className="text-lg opacity-90">Complete your coffee order</p>
@@ -294,7 +294,7 @@ export default function Checkout() {
       </section>
 
       {/* Step Indicator */}
-      <section className="section-gap bg-white border-b border-caramel border-opacity-20">
+      <section className="section-gap bg-white border-b border-gray-300 border-opacity-20">
         <div className="container">
           <div className="flex justify-between items-center max-w-2xl mx-auto">
             {(["delivery", "payment", "review"] as const).map((step, index) => (
@@ -302,11 +302,11 @@ export default function Checkout() {
                 <div
                   className={`flex items-center justify-center w-12 h-12 rounded-full font-bold transition ${
                     currentStep === step
-                      ? "bg-accent text-cream"
+                      ? "bg-accent text-white"
                       : ["delivery", "payment", "review"].indexOf(currentStep) >
                           index
-                        ? "bg-green-500 text-cream"
-                        : "bg-caramel bg-opacity-30 text-brown"
+                        ? "bg-green-500 text-white"
+                        : "bg-gray-300 bg-opacity-30 text-black"
                   }`}
                 >
                   {["delivery", "payment", "review"].indexOf(currentStep) >
@@ -315,14 +315,14 @@ export default function Checkout() {
                     : index + 1}
                 </div>
                 <span
-                  className={`ml-2 font-semibold ${currentStep === step ? "text-brown" : "text-muted"}`}
+                  className={`ml-2 font-semibold ${currentStep === step ? "text-black" : "text-muted"}`}
                 >
                   {step === "delivery" && "Delivery"}
                   {step === "payment" && "Payment"}
                   {step === "review" && "Review"}
                 </span>
                 {index < 2 && (
-                  <div className="flex-1 h-1 mx-4 bg-caramel bg-opacity-20" />
+                  <div className="flex-1 h-1 mx-4 bg-gray-300 bg-opacity-20" />
                 )}
               </div>
             ))}
@@ -346,12 +346,12 @@ export default function Checkout() {
                 {/* Delivery Step */}
                 {currentStep === "delivery" && (
                   <div className="space-y-6">
-                    <h2 className="text-2xl font-bold text-brown mb-6">
+                    <h2 className="text-2xl font-bold text-black mb-6">
                       📍 Delivery Information
                     </h2>
 
                     <div>
-                      <label className="block text-sm font-semibold text-brown mb-2">
+                      <label className="block text-sm font-semibold text-black mb-2">
                         Full Name *
                       </label>
                       <input
@@ -360,13 +360,13 @@ export default function Checkout() {
                         value={formData.fullName}
                         onChange={handleInputChange}
                         placeholder="Your full name"
-                        className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-semibold text-brown mb-2">
+                        <label className="block text-sm font-semibold text-black mb-2">
                           Email *
                         </label>
                         <input
@@ -375,11 +375,11 @@ export default function Checkout() {
                           value={formData.email}
                           onChange={handleInputChange}
                           placeholder="your@email.com"
-                          className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-semibold text-brown mb-2">
+                        <label className="block text-sm font-semibold text-black mb-2">
                           Phone Number *
                         </label>
                         <input
@@ -388,25 +388,25 @@ export default function Checkout() {
                           value={formData.phone}
                           onChange={handleInputChange}
                           placeholder="+63 9XX XXX XXXX"
-                          className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                         />
                       </div>
                     </div>
 
                     {/* MAP CONTAINER */}
                     <div>
-                      <label className="block text-sm font-semibold text-brown mb-3">
+                      <label className="block text-sm font-semibold text-black mb-3">
                         📍 Click on map to pin your location
                       </label>
                       <div
                         id="checkout-map"
-                        className="w-full h-96 rounded-2xl border-4 border-caramel overflow-hidden"
+                        className="w-full h-96 rounded-2xl border-4 border-gray-300 overflow-hidden"
                       />
                     </div>
 
                     {/* Address Search */}
                     <div className="relative">
-                      <label className="block text-sm font-semibold text-brown mb-2">
+                      <label className="block text-sm font-semibold text-black mb-2">
                         Delivery Address *
                       </label>
                       <input
@@ -415,17 +415,17 @@ export default function Checkout() {
                         value={formData.address}
                         onChange={handleInputChange}
                         placeholder="Search or type your address..."
-                        className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                       />
                       {showSuggestions && suggestions.length > 0 && (
-                        <div className="absolute top-full left-0 right-0 bg-white border border-caramel rounded-lg shadow-lg mt-1 z-50">
+                        <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-lg shadow-lg mt-1 z-50">
                           {suggestions.map((suggestion, idx) => (
                             <button
                               key={idx}
                               onClick={() => selectSuggestion(suggestion)}
-                              className="w-full text-left px-4 py-3 hover:bg-amber-50 border-b border-caramel last:border-0 transition"
+                              className="w-full text-left px-4 py-3 hover:bg-amber-50 border-b border-gray-300 last:border-0 transition"
                             >
-                              <p className="text-sm font-semibold text-brown">
+                              <p className="text-sm font-semibold text-black">
                                 {suggestion.name}
                               </p>
                             </button>
@@ -436,7 +436,7 @@ export default function Checkout() {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-semibold text-brown mb-2">
+                        <label className="block text-sm font-semibold text-black mb-2">
                           City *
                         </label>
                         <input
@@ -444,11 +444,11 @@ export default function Checkout() {
                           name="city"
                           value={formData.city}
                           onChange={handleInputChange}
-                          className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-semibold text-brown mb-2">
+                        <label className="block text-sm font-semibold text-black mb-2">
                           Postal Code *
                         </label>
                         <input
@@ -457,7 +457,7 @@ export default function Checkout() {
                           value={formData.postalCode}
                           onChange={handleInputChange}
                           placeholder="6000"
-                          className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                         />
                       </div>
                     </div>
@@ -467,13 +467,13 @@ export default function Checkout() {
                 {/* Payment Step */}
                 {currentStep === "payment" && (
                   <div className="space-y-6">
-                    <h2 className="text-2xl font-bold text-brown mb-6">
+                    <h2 className="text-2xl font-bold text-black mb-6">
                       Payment Method
                     </h2>
 
                     <div className="space-y-4">
                       <label
-                        className="flex items-center p-4 border-2 border-caramel rounded-lg cursor-pointer hover:bg-cream transition"
+                        className="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100 transition"
                         style={{
                           borderColor:
                             formData.paymentMethod === "cash"
@@ -489,7 +489,7 @@ export default function Checkout() {
                           onChange={handleInputChange}
                           className="w-4 h-4"
                         />
-                        <span className="ml-3 font-semibold text-brown">
+                        <span className="ml-3 font-semibold text-black">
                           💵 Cash on Delivery (COD)
                         </span>
                         <span className="ml-auto text-sm text-muted">
@@ -498,7 +498,7 @@ export default function Checkout() {
                       </label>
 
                       <label
-                        className="flex items-center p-4 border-2 border-caramel rounded-lg cursor-pointer hover:bg-cream transition"
+                        className="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100 transition"
                         style={{
                           borderColor:
                             formData.paymentMethod === "card"
@@ -514,16 +514,16 @@ export default function Checkout() {
                           onChange={handleInputChange}
                           className="w-4 h-4"
                         />
-                        <span className="ml-3 font-semibold text-brown">
+                        <span className="ml-3 font-semibold text-black">
                           💳 Credit/Debit Card
                         </span>
                       </label>
                     </div>
 
                     {formData.paymentMethod === "card" && (
-                      <div className="space-y-4 pt-6 border-t border-caramel border-opacity-20">
+                      <div className="space-y-4 pt-6 border-t border-gray-300 border-opacity-20">
                         <div>
-                          <label className="block text-sm font-semibold text-brown mb-2">
+                          <label className="block text-sm font-semibold text-black mb-2">
                             Card Number *
                           </label>
                           <input
@@ -540,13 +540,13 @@ export default function Checkout() {
                             }}
                             placeholder="1234 5678 9012 3456"
                             maxLength={19}
-                            className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                           />
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <label className="block text-sm font-semibold text-brown mb-2">
+                            <label className="block text-sm font-semibold text-black mb-2">
                               Expiry (MM/YY) *
                             </label>
                             <input
@@ -568,11 +568,11 @@ export default function Checkout() {
                               }}
                               placeholder="MM/YY"
                               maxLength={5}
-                              className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                             />
                           </div>
                           <div>
-                            <label className="block text-sm font-semibold text-brown mb-2">
+                            <label className="block text-sm font-semibold text-black mb-2">
                               CVV *
                             </label>
                             <input
@@ -590,7 +590,7 @@ export default function Checkout() {
                               }}
                               placeholder="123"
                               maxLength={4}
-                              className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                             />
                           </div>
                         </div>
@@ -602,35 +602,35 @@ export default function Checkout() {
                 {/* Review Step */}
                 {currentStep === "review" && (
                   <div className="space-y-6">
-                    <h2 className="text-2xl font-bold text-brown mb-6">
+                    <h2 className="text-2xl font-bold text-black mb-6">
                       Review Your Order
                     </h2>
 
-                    <div className="bg-cream rounded-lg p-4">
-                      <h3 className="font-semibold text-brown mb-4">
+                    <div className="bg-gray-100 rounded-lg p-4">
+                      <h3 className="font-semibold text-black mb-4">
                         Delivery Details
                       </h3>
                       <div className="space-y-2 text-sm">
                         <p>
-                          <span className="font-semibold text-brown">
+                          <span className="font-semibold text-black">
                             Name:
                           </span>{" "}
                           {formData.fullName}
                         </p>
                         <p>
-                          <span className="font-semibold text-brown">
+                          <span className="font-semibold text-black">
                             Email:
                           </span>{" "}
                           {formData.email}
                         </p>
                         <p>
-                          <span className="font-semibold text-brown">
+                          <span className="font-semibold text-black">
                             Phone:
                           </span>{" "}
                           {formData.phone}
                         </p>
                         <p>
-                          <span className="font-semibold text-brown">
+                          <span className="font-semibold text-black">
                             Address:
                           </span>{" "}
                           {formData.address}, {formData.city}{" "}
@@ -639,8 +639,8 @@ export default function Checkout() {
                       </div>
                     </div>
 
-                    <div className="bg-cream rounded-lg p-4">
-                      <h3 className="font-semibold text-brown mb-4">
+                    <div className="bg-gray-100 rounded-lg p-4">
+                      <h3 className="font-semibold text-black mb-4">
                         Payment Method
                       </h3>
                       <p className="text-sm">
@@ -650,7 +650,7 @@ export default function Checkout() {
                       </p>
                     </div>
 
-                    <div className="border-t border-caramel border-opacity-20 pt-6">
+                    <div className="border-t border-gray-300 border-opacity-20 pt-6">
                       <p className="text-green-600 font-semibold text-center mb-4">
                         ✓ All information is correct. Ready to place order?
                       </p>
@@ -694,7 +694,7 @@ export default function Checkout() {
             {/* Order Summary - Sticky */}
             <div className="lg:col-span-1">
               <div className="sticky top-20 bg-white rounded-2xl shadow-lg p-6">
-                <h3 className="text-xl font-bold text-brown mb-6">
+                <h3 className="text-xl font-bold text-black mb-6">
                   Order Summary
                 </h3>
 
@@ -702,20 +702,20 @@ export default function Checkout() {
                   {items.map((item: any) => (
                     <div
                       key={item.productId}
-                      className="flex justify-between text-sm py-2 border-b border-caramel border-opacity-20"
+                      className="flex justify-between text-sm py-2 border-b border-gray-300 border-opacity-20"
                     >
-                      <span className="text-brown">
+                      <span className="text-black">
                         {item.name} ×{" "}
                         <span className="font-bold">{item.quantity}</span>
                       </span>
-                      <span className="font-bold text-brown">
+                      <span className="font-bold text-black">
                         ₱{(item.price * item.quantity).toFixed(2)}
                       </span>
                     </div>
                   ))}
                 </div>
 
-                <div className="border-t-2 border-caramel border-opacity-30 pt-4 space-y-3">
+                <div className="border-t-2 border-gray-300 border-opacity-30 pt-4 space-y-3">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted">Subtotal</span>
                     <span className="font-semibold">
@@ -725,7 +725,7 @@ export default function Checkout() {
                   <div className="flex justify-between text-sm">
                     <span className="text-muted">Delivery Fee</span>
                     <span
-                      className={`font-semibold ${deliveryFee === 0 ? "text-green-600" : "text-brown"}`}
+                      className={`font-semibold ${deliveryFee === 0 ? "text-green-600" : "text-black"}`}
                     >
                       ₱{deliveryFee.toFixed(2)}{" "}
                       {deliveryFee === 0 && (
@@ -733,8 +733,8 @@ export default function Checkout() {
                       )}
                     </span>
                   </div>
-                  <div className="flex justify-between pt-3 border-t border-caramel border-opacity-30">
-                    <span className="font-bold text-brown">Total</span>
+                  <div className="flex justify-between pt-3 border-t border-gray-300 border-opacity-30">
+                    <span className="font-bold text-black">Total</span>
                     <span className="text-2xl font-bold text-accent">
                       ₱{finalTotal.toFixed(2)}
                     </span>

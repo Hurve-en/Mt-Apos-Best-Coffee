@@ -43,7 +43,7 @@ export default function AdminProducts() {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/products");
+      const response = await axios.get("http://localhost:3000/api/products");
       setProducts(response.data.data || response.data);
       setLoading(false);
     } catch (err) {
@@ -116,7 +116,7 @@ export default function AdminProducts() {
       if (editingId) {
         console.log("🟡 Updating product:", editingId);
         const response = await axios.put(
-          `http://localhost:5000/api/products/${editingId}`,
+          `http://localhost:3000/api/products/${editingId}`,
           formData,
           { headers: { Authorization: `Bearer ${token}` } },
         );
@@ -125,7 +125,7 @@ export default function AdminProducts() {
       } else {
         console.log("🟡 Creating new product");
         const response = await axios.post(
-          "http://localhost:5000/api/products",
+          "http://localhost:3000/api/products",
           formData,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -187,7 +187,7 @@ export default function AdminProducts() {
       console.log("🗑️ Deleting product:", id);
       console.log("Token present:", !!token);
       const response = await axios.delete(
-        `http://localhost:5000/api/products/${id}`,
+        `http://localhost:3000/api/products/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -239,7 +239,7 @@ export default function AdminProducts() {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-5xl font-bold text-brown mb-2">
+            <h1 className="text-5xl font-bold text-black mb-2">
               ☕ Product Management
             </h1>
             <p className="text-lg text-muted">Manage your coffee products</p>
@@ -264,7 +264,7 @@ export default function AdminProducts() {
         {showForm && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-              <div className="bg-gradient-to-r from-amber-900 to-amber-800 text-cream py-6 px-8">
+              <div className="bg-gradient-to-r from-amber-900 to-amber-800 text-white py-6 px-8">
                 <h2 className="text-3xl font-bold">
                   {editingId ? "✏️ Edit Product" : "➕ Add New Product"}
                 </h2>
@@ -281,7 +281,7 @@ export default function AdminProducts() {
 
                 {/* Product Name */}
                 <div>
-                  <label className="block text-sm font-semibold text-brown mb-2">
+                  <label className="block text-sm font-semibold text-black mb-2">
                     Product Name
                   </label>
                   <input
@@ -292,7 +292,7 @@ export default function AdminProducts() {
                     className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition ${
                       errors.name
                         ? "border-red-500 focus:ring-red-300"
-                        : "border-caramel focus:ring-accent"
+                        : "border-gray-300 focus:ring-accent"
                     }`}
                     placeholder="Premium Mt. Apo Arabica"
                   />
@@ -303,7 +303,7 @@ export default function AdminProducts() {
 
                 {/* Description */}
                 <div>
-                  <label className="block text-sm font-semibold text-brown mb-2">
+                  <label className="block text-sm font-semibold text-black mb-2">
                     Description
                   </label>
                   <textarea
@@ -313,7 +313,7 @@ export default function AdminProducts() {
                     className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition h-24 ${
                       errors.description
                         ? "border-red-500 focus:ring-red-300"
-                        : "border-caramel focus:ring-accent"
+                        : "border-gray-300 focus:ring-accent"
                     }`}
                     placeholder="Describe your coffee..."
                   />
@@ -327,7 +327,7 @@ export default function AdminProducts() {
                 <div className="grid grid-cols-2 gap-4">
                   {/* Price */}
                   <div>
-                    <label className="block text-sm font-semibold text-brown mb-2">
+                    <label className="block text-sm font-semibold text-black mb-2">
                       Price (₱)
                     </label>
                     <input
@@ -338,7 +338,7 @@ export default function AdminProducts() {
                       className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition ${
                         errors.price
                           ? "border-red-500 focus:ring-red-300"
-                          : "border-caramel focus:ring-accent"
+                          : "border-gray-300 focus:ring-accent"
                       }`}
                       placeholder="0"
                     />
@@ -351,7 +351,7 @@ export default function AdminProducts() {
 
                   {/* Stock */}
                   <div>
-                    <label className="block text-sm font-semibold text-brown mb-2">
+                    <label className="block text-sm font-semibold text-black mb-2">
                       Stock
                     </label>
                     <input
@@ -362,7 +362,7 @@ export default function AdminProducts() {
                       className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition ${
                         errors.stock
                           ? "border-red-500 focus:ring-red-300"
-                          : "border-caramel focus:ring-accent"
+                          : "border-gray-300 focus:ring-accent"
                       }`}
                       placeholder="10"
                     />
@@ -377,14 +377,14 @@ export default function AdminProducts() {
                 <div className="grid grid-cols-3 gap-4">
                   {/* Roast Level */}
                   <div>
-                    <label className="block text-sm font-semibold text-brown mb-2">
+                    <label className="block text-sm font-semibold text-black mb-2">
                       Roast Level
                     </label>
                     <select
                       name="roastLevel"
                       value={formData.roastLevel}
                       onChange={handleFormChange}
-                      className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
                     >
                       <option value="light">Light</option>
                       <option value="medium">Medium</option>
@@ -394,14 +394,14 @@ export default function AdminProducts() {
 
                   {/* Grind */}
                   <div>
-                    <label className="block text-sm font-semibold text-brown mb-2">
+                    <label className="block text-sm font-semibold text-black mb-2">
                       Grind Type
                     </label>
                     <select
                       name="grind"
                       value={formData.grind}
                       onChange={handleFormChange}
-                      className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
                     >
                       <option value="whole">Whole Bean</option>
                       <option value="ground">Ground</option>
@@ -410,14 +410,14 @@ export default function AdminProducts() {
 
                   {/* Size */}
                   <div>
-                    <label className="block text-sm font-semibold text-brown mb-2">
+                    <label className="block text-sm font-semibold text-black mb-2">
                       Size
                     </label>
                     <select
                       name="size"
                       value={formData.size}
                       onChange={handleFormChange}
-                      className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
                     >
                       <option value="250g">250g</option>
                       <option value="500g">500g</option>
@@ -428,14 +428,14 @@ export default function AdminProducts() {
 
                 {/* Product Image Upload */}
                 <div>
-                  <label className="block text-sm font-semibold text-brown mb-2">
+                  <label className="block text-sm font-semibold text-black mb-2">
                     Product Image *
                   </label>
                   <input
                     type="file"
                     accept="image/*"
                     onChange={handleImageChange}
-                    className="w-full px-4 py-3 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
                   />
                   {errors.image && (
                     <p className="mt-1 text-sm text-red-600">
@@ -447,7 +447,7 @@ export default function AdminProducts() {
                       <img
                         src={imagePreview}
                         alt="Preview"
-                        className="w-32 h-32 object-cover rounded-lg border-2 border-caramel"
+                        className="w-32 h-32 object-cover rounded-lg border-2 border-gray-300"
                       />
                       <p className="text-xs text-muted mt-2">Image Preview</p>
                     </div>
@@ -476,7 +476,7 @@ export default function AdminProducts() {
         {products.length === 0 ? (
           <div className="bg-white rounded-3xl shadow-lg p-12 text-center">
             <div className="text-7xl mb-4">📦</div>
-            <h3 className="text-2xl font-bold text-brown mb-2">
+            <h3 className="text-2xl font-bold text-black mb-2">
               No Products Yet
             </h3>
             <p className="text-muted mb-6">
@@ -510,20 +510,20 @@ export default function AdminProducts() {
 
                   {/* Product Info */}
                   <div className={product.image ? "md:col-span-3" : ""}>
-                    <h3 className="text-2xl font-bold text-brown mb-2">
+                    <h3 className="text-2xl font-bold text-black mb-2">
                       {product.name}
                     </h3>
                     <p className="text-muted mb-4">{product.description}</p>
 
                     <div className="grid grid-cols-2 gap-3 mb-4 text-sm">
                       <div>
-                        <span className="font-semibold text-brown">Price:</span>
+                        <span className="font-semibold text-black">Price:</span>
                         <span className="ml-2 text-accent">
                           ₱{product.price}
                         </span>
                       </div>
                       <div>
-                        <span className="font-semibold text-brown">Stock:</span>
+                        <span className="font-semibold text-black">Stock:</span>
                         <span
                           className={`ml-2 ${
                             product.stock > 0
@@ -535,18 +535,18 @@ export default function AdminProducts() {
                         </span>
                       </div>
                       <div>
-                        <span className="font-semibold text-brown">Roast:</span>
+                        <span className="font-semibold text-black">Roast:</span>
                         <span className="ml-2">
                           {product.roastLevel.charAt(0).toUpperCase() +
                             product.roastLevel.slice(1)}
                         </span>
                       </div>
                       <div>
-                        <span className="font-semibold text-brown">Size:</span>
+                        <span className="font-semibold text-black">Size:</span>
                         <span className="ml-2">{product.size}</span>
                       </div>
                       <div>
-                        <span className="font-semibold text-brown">Grind:</span>
+                        <span className="font-semibold text-black">Grind:</span>
                         <span className="ml-2">
                           {product.grind.charAt(0).toUpperCase() +
                             product.grind.slice(1)}

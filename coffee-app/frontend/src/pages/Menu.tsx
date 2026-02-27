@@ -46,23 +46,24 @@ export default function Menu() {
     searchTerm: "",
   });
 
+  // Fetch products helper
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("http://localhost:3000/api/products");
+      if (response.data.success) {
+        setAllProducts(response.data.data || []);
+      }
+    } catch (err) {
+      setError("Failed to load products");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Fetch products on mount
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get("http://localhost:5000/api/products");
-        if (response.data.success) {
-          setAllProducts(response.data.data || []);
-        }
-      } catch (err) {
-        setError("Failed to load products");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchProducts();
   }, []);
 
@@ -186,7 +187,7 @@ export default function Menu() {
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-amber-50 to-yellow-50">
         <div className="text-center">
           <div className="animate-pulse mb-4 text-4xl">☕</div>
-          <p className="text-primary-brown font-semibold">
+          <p className="text-black font-semibold">
             Loading premium coffee menu...
           </p>
         </div>
@@ -195,9 +196,9 @@ export default function Menu() {
   }
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen bg-gray-100">
       {/* Header */}
-      <section className="section-gap bg-gradient-to-r from-amber-900 to-amber-800 text-cream">
+      <section className="section-gap bg-gray-800 text-white">
         <div className="container">
           <h1 className="text-5xl font-bold mb-2">Our Coffee Menu</h1>
           <p className="text-lg opacity-90">
@@ -214,7 +215,7 @@ export default function Menu() {
             <aside className="lg:col-span-1">
               <div className="sticky top-20 bg-white rounded-2xl shadow-lg p-6">
                 <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-xl font-bold text-brown">Filters</h3>
+                  <h3 className="text-xl font-bold text-black">Filters</h3>
                   {(filters.roastLevel.length > 0 ||
                     filters.grind.length > 0 ||
                     filters.size.length > 0 ||
@@ -223,7 +224,7 @@ export default function Menu() {
                     filters.priceRange[1] !== 2000) && (
                     <button
                       onClick={handleClearFilters}
-                      className="text-sm text-accent hover:text-brown transition"
+                      className="text-sm text-accent hover:text-black transition"
                     >
                       Clear All
                     </button>
@@ -232,7 +233,7 @@ export default function Menu() {
 
                 {/* Search */}
                 <div className="mb-6">
-                  <label className="block text-sm font-semibold text-brown mb-2">
+                  <label className="block text-sm font-semibold text-black mb-2">
                     Search
                   </label>
                   <input
@@ -240,13 +241,13 @@ export default function Menu() {
                     value={filters.searchTerm}
                     onChange={(e) => handleSearchChange(e.target.value)}
                     placeholder="Search products..."
-                    className="w-full px-4 py-2 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                 </div>
 
                 {/* Roast Level */}
-                <div className="mb-6 pb-6 border-b border-caramel border-opacity-30">
-                  <h4 className="font-semibold text-brown mb-3">Roast Level</h4>
+                <div className="mb-6 pb-6 border-b border-gray-300 border-opacity-30">
+                  <h4 className="font-semibold text-black mb-3">Roast Level</h4>
                   <div className="space-y-2">
                     {["Light", "Medium", "Dark"].map((roast) => (
                       <label
@@ -259,7 +260,7 @@ export default function Menu() {
                           onChange={() => handleRoastLevelChange(roast)}
                           className="w-4 h-4 text-accent rounded cursor-pointer"
                         />
-                        <span className="ml-2 text-brown group-hover:text-accent transition">
+                        <span className="ml-2 text-black group-hover:text-accent transition">
                           {roast}
                         </span>
                       </label>
@@ -268,8 +269,8 @@ export default function Menu() {
                 </div>
 
                 {/* Grind Type */}
-                <div className="mb-6 pb-6 border-b border-caramel border-opacity-30">
-                  <h4 className="font-semibold text-brown mb-3">Grind Type</h4>
+                <div className="mb-6 pb-6 border-b border-gray-300 border-opacity-30">
+                  <h4 className="font-semibold text-black mb-3">Grind Type</h4>
                   <div className="space-y-2">
                     {["Whole Beans", "Ground", "Espresso"].map((grind) => (
                       <label
@@ -282,7 +283,7 @@ export default function Menu() {
                           onChange={() => handleGrindChange(grind)}
                           className="w-4 h-4 text-accent rounded cursor-pointer"
                         />
-                        <span className="ml-2 text-brown group-hover:text-accent transition">
+                        <span className="ml-2 text-black group-hover:text-accent transition">
                           {grind}
                         </span>
                       </label>
@@ -291,8 +292,8 @@ export default function Menu() {
                 </div>
 
                 {/* Size */}
-                <div className="mb-6 pb-6 border-b border-caramel border-opacity-30">
-                  <h4 className="font-semibold text-brown mb-3">Size</h4>
+                <div className="mb-6 pb-6 border-b border-gray-300 border-opacity-30">
+                  <h4 className="font-semibold text-black mb-3">Size</h4>
                   <div className="space-y-2">
                     {["250g", "500g", "1kg"].map((size) => (
                       <label
@@ -305,7 +306,7 @@ export default function Menu() {
                           onChange={() => handleSizeChange(size)}
                           className="w-4 h-4 text-accent rounded cursor-pointer"
                         />
-                        <span className="ml-2 text-brown group-hover:text-accent transition">
+                        <span className="ml-2 text-black group-hover:text-accent transition">
                           {size}
                         </span>
                       </label>
@@ -315,7 +316,7 @@ export default function Menu() {
 
                 {/* Price Range */}
                 <div>
-                  <h4 className="font-semibold text-brown mb-3">Price Range</h4>
+                  <h4 className="font-semibold text-black mb-3">Price Range</h4>
                   <div className="space-y-3">
                     <div>
                       <label className="text-sm text-muted mb-2 block">
@@ -386,7 +387,7 @@ export default function Menu() {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as any)}
-                    className="px-4 py-2 border border-caramel rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+                    className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
                   >
                     <option value="price-asc">Price: Low to High</option>
                     <option value="price-desc">Price: High to Low</option>
@@ -399,12 +400,20 @@ export default function Menu() {
               {filteredProducts.length === 0 ? (
                 <div className="text-center py-16">
                   <p className="text-2xl text-muted mb-4">No products found</p>
-                  <button
-                    onClick={handleClearFilters}
-                    className="text-accent font-semibold hover:text-brown transition"
-                  >
-                    Clear filters and try again
-                  </button>
+                  <div className="space-x-4">
+                    <button
+                      onClick={handleClearFilters}
+                      className="text-accent font-semibold hover:text-black transition"
+                    >
+                      Clear filters
+                    </button>
+                    <button
+                      onClick={fetchProducts}
+                      className="text-accent font-semibold hover:text-black transition"
+                    >
+                      Reload products
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <>
@@ -422,7 +431,7 @@ export default function Menu() {
                           setCurrentPage((p) => Math.max(1, p - 1))
                         }
                         disabled={currentPage === 1}
-                        className="px-4 py-2 border border-caramel rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-cream transition"
+                        className="px-4 py-2 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 transition"
                       >
                         ← Previous
                       </button>
@@ -434,8 +443,8 @@ export default function Menu() {
                             onClick={() => setCurrentPage(page)}
                             className={`px-4 py-2 rounded-lg transition ${
                               currentPage === page
-                                ? "bg-accent text-cream font-semibold"
-                                : "border border-caramel hover:bg-cream"
+                                ? "bg-accent text-white font-semibold"
+                                : "border border-gray-300 hover:bg-gray-100"
                             }`}
                           >
                             {page}
@@ -448,7 +457,7 @@ export default function Menu() {
                           setCurrentPage((p) => Math.min(totalPages, p + 1))
                         }
                         disabled={currentPage === totalPages}
-                        className="px-4 py-2 border border-caramel rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-cream transition"
+                        className="px-4 py-2 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 transition"
                       >
                         Next →
                       </button>
