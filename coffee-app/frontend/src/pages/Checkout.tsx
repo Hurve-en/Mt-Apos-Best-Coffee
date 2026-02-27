@@ -315,7 +315,7 @@ export default function Checkout() {
                     : index + 1}
                 </div>
                 <span
-                  className={`ml-2 font-semibold ${currentStep === step ? "text-black" : "text-muted"}`}
+                  className={`ml-2 font-semibold ${currentStep === step ? "text-black" : "text-coffee-700"}`}
                 >
                   {step === "delivery" && "Delivery"}
                   {step === "payment" && "Payment"}
@@ -492,7 +492,7 @@ export default function Checkout() {
                         <span className="ml-3 font-semibold text-black">
                           💵 Cash on Delivery (COD)
                         </span>
-                        <span className="ml-auto text-sm text-muted">
+                        <span className="ml-auto text-sm text-coffee-700">
                           Pay when order arrives
                         </span>
                       </label>
@@ -717,13 +717,13 @@ export default function Checkout() {
 
                 <div className="border-t-2 border-gray-300 border-opacity-30 pt-4 space-y-3">
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted">Subtotal</span>
+                    <span className="text-coffee-700">Subtotal</span>
                     <span className="font-semibold">
                       ₱{totalPrice.toFixed(2)}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted">Delivery Fee</span>
+                    <span className="text-coffee-700">Delivery Fee</span>
                     <span
                       className={`font-semibold ${deliveryFee === 0 ? "text-green-600" : "text-black"}`}
                     >

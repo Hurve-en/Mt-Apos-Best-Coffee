@@ -131,18 +131,18 @@ export default function Profile() {
                 <h3 className="text-2xl font-bold text-black mb-1">
                   {user?.name || "User"}
                 </h3>
-                <p className="text-muted text-sm mb-6">{user?.email}</p>
+                <p className="text-coffee-700 text-sm mb-6">{user?.email}</p>
 
                 <div className="border-t border-gray-300 border-opacity-20 pt-6 space-y-4">
                   <div className="bg-gray-100 rounded-lg p-3">
-                    <p className="text-xs text-muted mb-1">Phone</p>
+                    <p className="text-xs text-coffee-700 mb-1">Phone</p>
                     <p className="font-bold text-black text-sm">
                       {user?.phone || "Not set"}
                     </p>
                   </div>
 
                   <div className="bg-gray-100 rounded-lg p-3">
-                    <p className="text-xs text-muted mb-1">Member Since</p>
+                    <p className="text-xs text-coffee-700 mb-1">Member Since</p>
                     <p className="font-bold text-black text-sm">
                       {user?.createdAt
                         ? new Date(user.createdAt).toLocaleDateString()
@@ -151,7 +151,7 @@ export default function Profile() {
                   </div>
 
                   <div className="bg-gray-100 rounded-lg p-3">
-                    <p className="text-xs text-muted mb-1">Total Orders</p>
+                    <p className="text-xs text-coffee-700 mb-1">Total Orders</p>
                     <p className="font-bold text-black text-sm">
                       {orders.length}
                     </p>
@@ -176,7 +176,7 @@ export default function Profile() {
                   className={`pb-4 px-4 font-semibold transition ${
                     activeTab === "settings"
                       ? "text-accent border-b-2 border-accent"
-                      : "text-muted hover:text-black"
+                      : "text-coffee-700 hover:text-black"
                   }`}
                 >
                   Account Settings
@@ -186,7 +186,7 @@ export default function Profile() {
                   className={`pb-4 px-4 font-semibold transition ${
                     activeTab === "orders"
                       ? "text-accent border-b-2 border-accent"
-                      : "text-muted hover:text-black"
+                      : "text-coffee-700 hover:text-black"
                   }`}
                 >
                   Order History ({orders.length})
@@ -223,9 +223,9 @@ export default function Profile() {
                           type="email"
                           value={formData.email}
                           disabled
-                          className="w-full px-4 py-3 border border-gray-300 bg-gray-100 text-muted rounded-lg cursor-not-allowed"
+                          className="w-full px-4 py-3 border border-gray-300 bg-gray-100 text-coffee-700 rounded-lg cursor-not-allowed"
                         />
-                        <p className="text-xs text-muted mt-1">
+                        <p className="text-xs text-coffee-700 mt-1">
                           Email is your login credential and cannot be changed
                         </p>
                       </div>
@@ -307,7 +307,7 @@ export default function Profile() {
                       <h3 className="text-2xl font-bold text-black mb-2">
                         No Orders Yet
                       </h3>
-                      <p className="text-muted mb-6">
+                      <p className="text-coffee-700 mb-6">
                         You haven't placed any orders yet. Start shopping to see
                         your orders here!
                       </p>
@@ -328,7 +328,7 @@ export default function Profile() {
                         >
                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div>
-                              <p className="text-xs text-muted font-semibold uppercase mb-1">
+                              <p className="text-xs text-coffee-700 font-semibold uppercase mb-1">
                                 Order ID
                               </p>
                               <p className="font-bold text-black">
@@ -336,7 +336,7 @@ export default function Profile() {
                               </p>
                             </div>
                             <div>
-                              <p className="text-xs text-muted font-semibold uppercase mb-1">
+                              <p className="text-xs text-coffee-700 font-semibold uppercase mb-1">
                                 Date
                               </p>
                               <p className="font-bold text-black">
@@ -344,7 +344,7 @@ export default function Profile() {
                               </p>
                             </div>
                             <div>
-                              <p className="text-xs text-muted font-semibold uppercase mb-1">
+                              <p className="text-xs text-coffee-700 font-semibold uppercase mb-1">
                                 Amount
                               </p>
                               <p className="font-bold text-accent">
@@ -352,7 +352,7 @@ export default function Profile() {
                               </p>
                             </div>
                             <div>
-                              <p className="text-xs text-muted font-semibold uppercase mb-1">
+                              <p className="text-xs text-coffee-700 font-semibold uppercase mb-1">
                                 Status
                               </p>
                               <span
@@ -372,7 +372,7 @@ export default function Profile() {
                             </div>
                           </div>
                           <div className="mt-4 pt-4 border-t border-gray-300 border-opacity-20">
-                            <p className="text-sm text-muted">
+                            <p className="text-sm text-coffee-700">
                               📍 {order.deliveryAddress}
                             </p>
                           </div>

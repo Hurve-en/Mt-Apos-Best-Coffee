@@ -84,7 +84,7 @@ const Orders: React.FC = () => {
           <h1 className="text-4xl font-bold text-coffee-900 mb-4">
             No orders yet
           </h1>
-          <p className="text-gray-600 mb-8">
+          <p className="text-coffee-700 mb-8">
             Start ordering your favorite Mt. Apo coffee!
           </p>
           <button
@@ -117,13 +117,13 @@ const Orders: React.FC = () => {
                   <h3 className="text-lg font-bold text-coffee-900">
                     Order #{order.id.slice(0, 8).toUpperCase()}
                   </h3>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-coffee-700">
                     Placed on {new Date(order.createdAt).toLocaleDateString()}
                   </p>
                 </div>
                 <span
                   className={`px-4 py-2 rounded-full font-bold ${getStatusColor(
-                    order.status
+                    order.status,
                   )}`}
                 >
                   {getStatusIcon(order.status)} {order.status}
@@ -138,7 +138,7 @@ const Orders: React.FC = () => {
                     order.items.map((item, idx) => (
                       <div
                         key={idx}
-                        className="flex justify-between text-gray-700 bg-coffee-50 p-3 rounded"
+                        className="flex justify-between text-coffee-700 bg-coffee-50 p-3 rounded"
                       >
                         <span className="font-medium">
                           {/* Show product ID or generic name */}
@@ -150,7 +150,7 @@ const Orders: React.FC = () => {
                       </div>
                     ))
                   ) : (
-                    <p className="text-gray-600">No items in this order</p>
+                    <p className="text-coffee-700">No items in this order</p>
                   )}
                 </div>
               </div>
@@ -160,13 +160,13 @@ const Orders: React.FC = () => {
                 <h4 className="font-bold text-coffee-900 mb-2">
                   📍 Delivery Address:
                 </h4>
-                <p className="text-gray-700">{order.deliveryAddress}</p>
+                <p className="text-coffee-700">{order.deliveryAddress}</p>
               </div>
 
               {/* Total & Action */}
               <div className="flex justify-between items-center">
                 <div>
-                  <p className="text-gray-600">Total Amount</p>
+                  <p className="text-coffee-700">Total Amount</p>
                   <p className="text-2xl font-bold text-coffee-700">
                     ₱{order.totalPrice.toFixed(2)}
                   </p>

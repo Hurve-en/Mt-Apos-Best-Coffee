@@ -35,7 +35,7 @@ export default function WhyChooseUs() {
         >
           <div className="text-5xl mb-4">{reason.icon}</div>
           <h3 className="text-black font-semibold mb-3">{reason.title}</h3>
-          <p className="text-muted text-sm leading-relaxed">
+          <p className="text-coffee-700 text-sm leading-relaxed">
             {reason.description}
           </p>
         </div>

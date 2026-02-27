@@ -52,14 +52,14 @@ export default function Testimonials() {
             </div>
             <div>
               <h4 className="font-semibold text-black">{testimonial.name}</h4>
-              <p className="text-xs text-muted">
+              <p className="text-xs text-coffee-700">
                 {renderStars(testimonial.rating)}
               </p>
             </div>
           </div>
 
           {/* Review Text */}
-          <p className="text-muted text-sm italic">
+          <p className="text-coffee-700 text-sm italic">
             &quot;{testimonial.text}&quot;
           </p>
         </div>

@@ -3,6 +3,12 @@ import { useAppDispatch } from "../../hooks/useRedux";
 import axios from "axios";
 import ProductCard from "../Common/ProductCard";
 
+// local product images
+import img1 from "../../Images/image1.png";
+import img4 from "../../Images/image4.png";
+import img5 from "../../Images/image5.png";
+import img6 from "../../Images/image6.png";
+
 interface Product {
   id: number;
   name: string;
@@ -33,15 +39,14 @@ export default function FeaturedProducts() {
       } catch (err) {
         console.error("Error fetching products:", err);
         setError("Failed to load products");
-        // Use mock data for now
+        // Use mock data for now (local images imported at top)
         setProducts([
           {
             id: 1,
             name: "Mt. Apo Arabica 250g",
             description: "100% Premium Arabica from Mt. Apo",
             price: 399,
-            image:
-              "https://images.unsplash.com/photo-1599599810694-b5ac4dd994b5?w=400&h=400&fit=crop",
+            image: img1,
             roastLevel: "Medium",
             grind: "Whole Beans",
             size: "250g",
@@ -52,8 +57,7 @@ export default function FeaturedProducts() {
             name: "Mt. Apo Arabica 500g",
             description: "100% Premium Arabica from Mt. Apo",
             price: 689,
-            image:
-              "https://images.unsplash.com/photo-1599599810694-b5ac4dd994b5?w=400&h=400&fit=crop",
+            image: img4,
             roastLevel: "Medium",
             grind: "Ground",
             size: "500g",
@@ -64,8 +68,7 @@ export default function FeaturedProducts() {
             name: "Mt. Apo Dark Roast 250g",
             description: "Bold, rich dark roast coffee",
             price: 399,
-            image:
-              "https://images.unsplash.com/photo-1559056199-641a0ac8b3f7?w=400&h=400&fit=crop",
+            image: img5,
             roastLevel: "Dark",
             grind: "Espresso",
             size: "250g",
@@ -76,8 +79,7 @@ export default function FeaturedProducts() {
             name: "Mt. Apo Arabica 1kg",
             description: "Premium bulk option for regular customers",
             price: 1399,
-            image:
-              "https://images.unsplash.com/photo-1599599810694-b5ac4dd994b5?w=400&h=400&fit=crop",
+            image: img6,
             roastLevel: "Medium",
             grind: "Whole Beans",
             size: "1kg",
@@ -94,17 +96,17 @@ export default function FeaturedProducts() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-96">
-        <div className="text-center">
-          <div className="animate-pulse text-5xl mb-4">☕</div>
-          <p className="text-gray-600">Loading our best sellers...</p>
+      <div className="flex justify-center items-center min-h-96 bg-coffee-50">
+        <div className="text-center animate-fade-in-up">
+          <div className="w-10 h-10 border-4 border-coffee-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-coffee-700">Loading our best sellers...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}

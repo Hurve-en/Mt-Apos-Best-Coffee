@@ -227,7 +227,7 @@ export default function AdminProducts() {
       <div className="min-h-screen bg-gradient-to-br from-amber-50 to-yellow-50 flex items-center justify-center">
         <div className="text-center">
           <div className="text-6xl mb-4">☕</div>
-          <p className="text-xl text-muted">Loading products...</p>
+          <p className="text-xl text-coffee-700">Loading products...</p>
         </div>
       </div>
     );
@@ -242,7 +242,7 @@ export default function AdminProducts() {
             <h1 className="text-5xl font-bold text-black mb-2">
               ☕ Product Management
             </h1>
-            <p className="text-lg text-muted">Manage your coffee products</p>
+            <p className="text-lg text-coffee-700">Manage your coffee products</p>
           </div>
           <div className="flex gap-4">
             <button
@@ -449,7 +449,7 @@ export default function AdminProducts() {
                         alt="Preview"
                         className="w-32 h-32 object-cover rounded-lg border-2 border-gray-300"
                       />
-                      <p className="text-xs text-muted mt-2">Image Preview</p>
+                      <p className="text-xs text-coffee-700 mt-2">Image Preview</p>
                     </div>
                   )}
                 </div>
@@ -479,7 +479,7 @@ export default function AdminProducts() {
             <h3 className="text-2xl font-bold text-black mb-2">
               No Products Yet
             </h3>
-            <p className="text-muted mb-6">
+            <p className="text-coffee-700 mb-6">
               Add your first coffee product to get started!
             </p>
             <button
@@ -513,7 +513,7 @@ export default function AdminProducts() {
                     <h3 className="text-2xl font-bold text-black mb-2">
                       {product.name}
                     </h3>
-                    <p className="text-muted mb-4">{product.description}</p>
+                    <p className="text-coffee-700 mb-4">{product.description}</p>
 
                     <div className="grid grid-cols-2 gap-3 mb-4 text-sm">
                       <div>

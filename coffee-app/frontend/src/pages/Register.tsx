@@ -232,7 +232,7 @@ export default function Register() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-black transition"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-coffee-700 hover:text-black transition"
                   >
                     {showPassword ? "👁️" : "👁️‍🗨️"}
                   </button>
@@ -262,7 +262,7 @@ export default function Register() {
                         />
                       ))}
                     </div>
-                    <p className="text-xs text-muted mt-1">
+                    <p className="text-xs text-coffee-700 mt-1">
                       {passwordStrength === 0
                         ? "Very Weak"
                         : passwordStrength === 1
@@ -303,7 +303,7 @@ export default function Register() {
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-black transition"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-coffee-700 hover:text-black transition"
                   >
                     {showConfirmPassword ? "👁️" : "👁️‍🗨️"}
                   </button>
@@ -331,7 +331,7 @@ export default function Register() {
                 <div className="w-full border-t border-gray-300 border-opacity-30"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-muted">or</span>
+                <span className="px-2 bg-white text-coffee-700">or</span>
               </div>
             </div>
 
@@ -345,7 +345,7 @@ export default function Register() {
             </button>
 
             {/* Terms */}
-            <p className="text-center text-xs text-muted">
+            <p className="text-center text-xs text-coffee-700">
               By creating an account, you agree to our{" "}
               <a href="#" className="text-accent font-semibold hover:underline">
                 Terms & Conditions
@@ -355,7 +355,7 @@ export default function Register() {
         </div>
 
         {/* Footer Text */}
-        <p className="text-center text-sm text-muted mt-6">
+        <p className="text-center text-sm text-coffee-700 mt-6">
           Apo Coffee © 2024 - Premium Mt. Apo Arabica
         </p>
       </div>

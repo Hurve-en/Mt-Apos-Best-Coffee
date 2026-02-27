@@ -74,12 +74,12 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50 flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-coffee-50 flex items-center justify-center py-12 px-4">
       <div className="max-w-md w-full">
         {/* Card */}
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
           {/* Header */}
-          <div className="bg-gray-800 text-white py-12 text-center">
+          <div className="bg-coffee-700 text-pure-white py-12 text-center">
             <img
               src={logo}
               alt="Apo Coffee Logo"
@@ -115,7 +115,7 @@ export default function Login() {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
+                  className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500 transition"
                   placeholder="you@example.com"
                 />
               </div>
@@ -136,13 +136,13 @@ export default function Login() {
                     required
                     value={formData.password}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
+                    className="w-full px-4 py-3 pr-12 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500 transition"
                     placeholder="••••••••"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-black transition"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-coffee-600 hover:text-coffee-900 transition"
                   >
                     {showPassword ? "👁️" : "👁️‍🗨️"}
                   </button>
@@ -153,7 +153,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={loading}
-                className="btn btn-primary btn-lg w-full"
+                className="btn btn-lg w-full bg-coffee-500 text-pure-white hover:bg-coffee-600 shadow-md"
               >
                 {loading ? "⏳ Logging in..." : "✓ Login"}
               </button>
@@ -165,7 +165,7 @@ export default function Login() {
                 <div className="w-full border-t border-gray-300 border-opacity-30"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-muted">or</span>
+                <span className="px-2 bg-white text-coffee-600">or</span>
               </div>
             </div>
 
@@ -173,34 +173,36 @@ export default function Login() {
             <button
               onClick={() => navigate("/register")}
               type="button"
-              className="btn btn-secondary btn-lg w-full"
+              className="btn btn-lg w-full border-2 border-coffee-500 text-coffee-500 hover:bg-coffee-50"
             >
               Create New Account
             </button>
 
             {/* Test Credentials */}
-            <div className="bg-gray-100 border-2 border-gray-300 border-opacity-30 rounded-lg p-4">
+            <div className="bg-neutral-50 border-2 border-neutral-300 border-opacity-30 rounded-lg p-4">
               <p className="text-xs font-bold text-black uppercase tracking-wide mb-3">
                 Demo Credentials
               </p>
               <div className="space-y-2 text-xs">
                 <div>
-                  <p className="text-muted font-semibold">Customer:</p>
-                  <p className="text-gray-700 font-mono">
+                  <p className="text-coffee-700 font-semibold">Customer:</p>
+                  <p className="text-coffee-700 font-mono">
                     customer@apocoffee.com
                   </p>
-                  <p className="text-gray-700 font-mono">customer123</p>
+                  <p className="text-coffee-700 font-mono">customer123</p>
                 </div>
-                <div className="border-t border-gray-300 border-opacity-30 pt-2">
-                  <p className="text-muted font-semibold">Admin:</p>
-                  <p className="text-gray-700 font-mono">admin@apocoffee.com</p>
-                  <p className="text-gray-700 font-mono">admin123</p>
+                <div className="border-t border-neutral-300 border-opacity-30 pt-2">
+                  <p className="text-coffee-700 font-semibold">Admin:</p>
+                  <p className="text-coffee-700 font-mono">
+                    admin@apocoffee.com
+                  </p>
+                  <p className="text-coffee-700 font-mono">admin123</p>
                 </div>
               </div>
             </div>
 
             {/* Footer */}
-            <p className="text-center text-sm text-muted">
+            <p className="text-center text-sm text-coffee-600">
               By logging in, you agree to our{" "}
               <a href="#" className="text-accent font-semibold hover:underline">
                 Terms & Conditions
@@ -210,7 +212,7 @@ export default function Login() {
         </div>
 
         {/* Footer Text */}
-        <p className="text-center text-sm text-muted mt-6">
+        <p className="text-center text-sm text-coffee-600 mt-6">
           Apo Coffee © 2024 - Premium Mt. Apo Arabica
         </p>
       </div>

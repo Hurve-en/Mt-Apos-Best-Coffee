@@ -94,7 +94,7 @@ export default function AdminDashboard() {
             <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition transform hover:-translate-y-1">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-semibold text-muted uppercase tracking-wide">
+                  <p className="text-sm font-semibold text-coffee-700 uppercase tracking-wide">
                     Total Orders
                   </p>
                   <p className="text-5xl font-bold text-accent mt-3">
@@ -104,7 +104,7 @@ export default function AdminDashboard() {
                 <div className="text-6xl opacity-20">📦</div>
               </div>
               <div className="mt-4 pt-4 border-t border-gray-300 border-opacity-20">
-                <p className="text-xs text-muted">View all orders</p>
+                <p className="text-xs text-coffee-700">View all orders</p>
               </div>
             </div>
 
@@ -112,7 +112,7 @@ export default function AdminDashboard() {
             <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition transform hover:-translate-y-1">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-semibold text-muted uppercase tracking-wide">
+                  <p className="text-sm font-semibold text-coffee-700 uppercase tracking-wide">
                     Total Products
                   </p>
                   <p className="text-5xl font-bold text-accent mt-3">
@@ -122,7 +122,7 @@ export default function AdminDashboard() {
                 <div className="text-6xl opacity-20">☕</div>
               </div>
               <div className="mt-4 pt-4 border-t border-gray-300 border-opacity-20">
-                <p className="text-xs text-muted">Manage inventory</p>
+                <p className="text-xs text-coffee-700">Manage inventory</p>
               </div>
             </div>
 
@@ -130,7 +130,7 @@ export default function AdminDashboard() {
             <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition transform hover:-translate-y-1">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-semibold text-muted uppercase tracking-wide">
+                  <p className="text-sm font-semibold text-coffee-700 uppercase tracking-wide">
                     Total Revenue
                   </p>
                   <p className="text-5xl font-bold text-accent mt-3">
@@ -143,7 +143,7 @@ export default function AdminDashboard() {
                 <div className="text-6xl opacity-20">💰</div>
               </div>
               <div className="mt-4 pt-4 border-t border-gray-300 border-opacity-20">
-                <p className="text-xs text-muted">All-time earnings</p>
+                <p className="text-xs text-coffee-700">All-time earnings</p>
               </div>
             </div>
           </div>
@@ -162,13 +162,13 @@ export default function AdminDashboard() {
                   →
                 </span>
               </div>
-              <p className="text-sm font-semibold text-muted uppercase tracking-wide mb-2">
+              <p className="text-sm font-semibold text-coffee-700 uppercase tracking-wide mb-2">
                 Management
               </p>
               <h3 className="text-2xl font-bold text-black mb-3">
                 Manage Products
               </h3>
-              <p className="text-muted">
+              <p className="text-coffee-700">
                 Add, edit, or delete coffee products from your inventory
               </p>
             </button>
@@ -185,13 +185,13 @@ export default function AdminDashboard() {
                   →
                 </span>
               </div>
-              <p className="text-sm font-semibold text-muted uppercase tracking-wide mb-2">
+              <p className="text-sm font-semibold text-coffee-700 uppercase tracking-wide mb-2">
                 Management
               </p>
               <h3 className="text-2xl font-bold text-black mb-3">
                 Manage Orders
               </h3>
-              <p className="text-muted">
+              <p className="text-coffee-700">
                 View and update order status, and manage customer requests
               </p>
             </button>
@@ -215,7 +215,7 @@ export default function AdminDashboard() {
                         <p className="font-bold text-black text-lg">
                           Order #{order.id}
                         </p>
-                        <p className="text-sm text-muted mt-1">
+                        <p className="text-sm text-coffee-700 mt-1">
                           {order.customer?.name || "Unknown"} •{" "}
                           {new Date(order.createdAt).toLocaleDateString()}
                         </p>
@@ -253,7 +253,7 @@ export default function AdminDashboard() {
               <h3 className="text-2xl font-bold text-black mb-2">
                 No Orders Yet
               </h3>
-              <p className="text-muted mb-6">
+              <p className="text-coffee-700 mb-6">
                 Start processing orders to see them here
               </p>
             </div>

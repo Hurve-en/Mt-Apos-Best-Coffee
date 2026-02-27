@@ -43,66 +43,74 @@ export default function ProductCard({ product }: ProductCardProps) {
   const isOutOfStock = product.stock === 0;
 
   return (
-    <div className="card hover:shadow-xl transition-all duration-300">
+    <div className="group bg-pure-white rounded-2xl shadow-md hover:shadow-xl transition-transform transform hover:-translate-y-1 duration-300">
       {/* Product Image */}
-      <div className="relative overflow-hidden rounded-lg mb-4 bg-gray-100 h-48">
+      <div className="relative overflow-hidden rounded-t-2xl mb-4 bg-neutral-100 h-56">
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
         {isOutOfStock && (
-          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-            <span className="badge badge-danger">Out of Stock</span>
+          <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+            <span className="bg-danger text-pure-white px-3 py-1 rounded-full text-sm">
+              Out of Stock
+            </span>
           </div>
         )}
         {!isOutOfStock && product.stock < 10 && (
-          <div className="absolute top-4 right-4">
-            <span className="badge badge-warning">Low Stock</span>
+          <div className="absolute top-3 right-3">
+            <span className="bg-warning text-pure-white px-2 py-0.5 rounded-full text-xs">
+              Low Stock
+            </span>
           </div>
         )}
       </div>
 
       {/* Product Info */}
-      <div className="mb-4">
-        <h3 className="text-lg font-semibold text-black mb-2">
+      <div className="px-4 mb-4">
+        <h3 className="text-xl font-semibold text-coffee-900 mb-2">
           {product.name}
         </h3>
-        <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+        <p className="text-sm text-coffee-700 mb-3 line-clamp-2">
           {product.description}
         </p>
 
         {/* Specifications */}
-        <div className="grid grid-cols-3 gap-2 mb-4 text-xs text-gray-600">
+        <div className="grid grid-cols-3 gap-2 mb-4 text-xs text-coffee-700">
           <div className="flex flex-col items-center text-center">
-            <span className="font-semibold text-black">
+            <span className="font-semibold text-coffee-900">
               {product.roastLevel}
             </span>
             <span className="opacity-75">Roast</span>
           </div>
-          <div className="flex flex-col items-center text-center border-x border-gray-300">
-            <span className="font-semibold text-black">{product.grind}</span>
+          <div className="flex flex-col items-center text-center border-x border-neutral-300">
+            <span className="font-semibold text-coffee-900">
+              {product.grind}
+            </span>
             <span className="opacity-75">Type</span>
           </div>
           <div className="flex flex-col items-center text-center">
-            <span className="font-semibold text-black">{product.size}</span>
+            <span className="font-semibold text-coffee-900">
+              {product.size}
+            </span>
             <span className="opacity-75">Size</span>
           </div>
         </div>
       </div>
 
       {/* Price */}
-      <div className="mb-4 pb-4 border-b border-gray-300">
-        <p className="text-2xl font-bold text-black">
+      <div className="px-4 mb-4 pb-4 border-b border-neutral-300">
+        <p className="text-2xl font-bold text-coffee-900">
           ₱{product.price.toLocaleString()}
         </p>
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-coffee-600 mt-1">
           {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
         </p>
       </div>
 
       {/* Actions */}
-      <div className="space-y-3">
+      <div className="px-4 pb-6 space-y-3">
         {!isOutOfStock && (
           <div className="flex items-center gap-2">
             <button
@@ -124,7 +132,11 @@ export default function ProductCard({ product }: ProductCardProps) {
         <button
           onClick={handleAddToCart}
           disabled={isOutOfStock}
-          className={`w-full btn ${isOutOfStock ? "opacity-50 cursor-not-allowed" : "btn-primary"}`}
+          className={`w-full btn rounded-lg ${
+            isOutOfStock
+              ? "opacity-50 cursor-not-allowed bg-neutral-300"
+              : "bg-coffee-500 text-pure-white hover:bg-coffee-600"
+          }`}
         >
           {isOutOfStock ? "Out of Stock" : "Add to Cart"}
         </button>

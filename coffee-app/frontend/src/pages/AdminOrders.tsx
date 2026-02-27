@@ -98,7 +98,7 @@ export default function AdminOrders() {
       <div className="min-h-screen bg-gradient-to-br from-amber-50 to-yellow-50 flex items-center justify-center">
         <div className="text-center">
           <div className="text-6xl mb-4">☕</div>
-          <p className="text-xl text-muted">Loading orders...</p>
+          <p className="text-xl text-coffee-700">Loading orders...</p>
         </div>
       </div>
     );
@@ -113,7 +113,7 @@ export default function AdminOrders() {
             <h1 className="text-5xl font-bold text-black mb-2">
               📦 Order Management
             </h1>
-            <p className="text-lg text-muted">Manage all customer orders</p>
+            <p className="text-lg text-coffee-700">Manage all customer orders</p>
           </div>
           <button
             onClick={() => navigate("/admin-dashboard")}
@@ -153,7 +153,7 @@ export default function AdminOrders() {
                 <h3 className="text-2xl font-bold text-black mb-2">
                   No Orders Found
                 </h3>
-                <p className="text-muted">
+                <p className="text-coffee-700">
                   No orders match your filter criteria
                 </p>
               </div>
@@ -171,7 +171,7 @@ export default function AdminOrders() {
                       <h3 className="text-xl font-bold text-black">
                         Order #{String(order.id).padStart(4, "0")}
                       </h3>
-                      <p className="text-sm text-muted mt-1">
+                      <p className="text-sm text-coffee-700 mt-1">
                         {order.user?.name} •{" "}
                         {new Date(order.createdAt).toLocaleDateString()}
                       </p>
@@ -185,7 +185,7 @@ export default function AdminOrders() {
                   </div>
 
                   <div className="flex justify-between items-center text-lg">
-                    <span className="text-muted">
+                    <span className="text-coffee-700">
                       {order.orderItems?.length || 0} items
                     </span>
                     <span className="font-bold text-accent">
@@ -210,10 +210,10 @@ export default function AdminOrders() {
                 <p className="text-sm font-semibold text-black">
                   {selectedOrder.user?.name}
                 </p>
-                <p className="text-sm text-muted">
+                <p className="text-sm text-coffee-700">
                   {selectedOrder.user?.email}
                 </p>
-                <p className="text-sm text-muted">
+                <p className="text-sm text-coffee-700">
                   {selectedOrder.user?.phone}
                 </p>
               </div>
@@ -231,7 +231,7 @@ export default function AdminOrders() {
                         <p className="font-semibold text-black">
                           {item.product?.name}
                         </p>
-                        <p className="text-xs text-muted">×{item.quantity}</p>
+                        <p className="text-xs text-coffee-700">×{item.quantity}</p>
                       </div>
                       <p className="font-bold text-accent">
                         ₱{(item.price * item.quantity).toFixed(0)}
@@ -246,7 +246,7 @@ export default function AdminOrders() {
                 <h3 className="font-bold text-black mb-3 text-lg">
                   📍 Address
                 </h3>
-                <p className="text-sm text-muted leading-relaxed">
+                <p className="text-sm text-coffee-700 leading-relaxed">
                   {selectedOrder.deliveryAddress}
                 </p>
               </div>

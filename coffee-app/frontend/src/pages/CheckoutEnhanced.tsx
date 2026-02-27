@@ -593,11 +593,11 @@ export default function Checkout() {
                       📍 Delivery To:
                     </h3>
                     <p className="text-sm">{formData.fullName}</p>
-                    <p className="text-sm text-muted">{formData.address}</p>
-                    <p className="text-sm text-muted">
+                    <p className="text-sm text-coffee-700">{formData.address}</p>
+                    <p className="text-sm text-coffee-700">
                       {formData.city}, {formData.postalCode}
                     </p>
-                    <p className="text-sm text-muted">📱 {formData.phone}</p>
+                    <p className="text-sm text-coffee-700">📱 {formData.phone}</p>
                   </div>
 
                   {/* Payment Info */}
@@ -642,7 +642,7 @@ export default function Checkout() {
             <div className="space-y-3 mb-6 max-h-64 overflow-y-auto">
               {items.map((item: any) => (
                 <div key={item.id} className="flex justify-between text-sm">
-                  <span className="text-muted">
+                  <span className="text-coffee-700">
                     {item.name} × {item.quantity}
                   </span>
                   <span className="font-semibold text-black">
@@ -654,11 +654,11 @@ export default function Checkout() {
 
             <div className="space-y-3 border-t-2 border-gray-300 pt-4">
               <div className="flex justify-between">
-                <span className="text-muted">Subtotal:</span>
+                <span className="text-coffee-700">Subtotal:</span>
                 <span className="font-semibold">₱{totalPrice.toFixed(0)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted">Delivery Fee:</span>
+                <span className="text-coffee-700">Delivery Fee:</span>
                 <span className="font-semibold">
                   {deliveryFee === 0 ? "FREE" : `₱${deliveryFee}`}
                 </span>
