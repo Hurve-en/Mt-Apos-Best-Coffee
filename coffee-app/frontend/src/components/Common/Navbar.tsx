@@ -1,80 +1,97 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../../hooks/useRedux";
 import { logout } from "../../redux/slices/authSlice";
 import logo from "../../Images/Logo.jpg";
-// Tailwind is used for styling, previous CSS file removed
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const closeTimer = useRef<number | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
   const { isAuthenticated, user } = useAppSelector((state: any) => state.auth);
   const { items } = useAppSelector((state: any) => state.cart);
 
+  const clearCloseTimer = () => {
+    if (closeTimer.current) {
+      window.clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+
+  const delayedClose = () => {
+    clearCloseTimer();
+    closeTimer.current = window.setTimeout(() => {
+      setUserMenuOpen(false);
+    }, 160);
+  };
+
   const handleLogout = (): void => {
     dispatch(logout());
-    navigate("/");
+    setUserMenuOpen(false);
     setMobileMenuOpen(false);
+    navigate("/");
   };
 
   const toggleMobileMenu = (): void => {
-    setMobileMenuOpen(!mobileMenuOpen);
+    setMobileMenuOpen((prev) => !prev);
   };
+
+  const toggleUserMenu = () => {
+    setUserMenuOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const onDocumentClick = (event: MouseEvent) => {
+      if (!menuRef.current) return;
+      if (!menuRef.current.contains(event.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", onDocumentClick);
+    return () => {
+      document.removeEventListener("mousedown", onDocumentClick);
+      clearCloseTimer();
+    };
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 bg-coffee-50 backdrop-blur-md shadow-sm">
       <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
-          <img
-            src={logo}
-            alt="Apo Coffee Logo"
-            className="w-10 h-10 rounded-full"
-          />
-          <span className="text-xl font-extrabold text-coffee-900">
-            Apo Coffee
-          </span>
+          <img src={logo} alt="Apo Coffee Logo" className="w-10 h-10 rounded-full" />
+          <span className="text-xl font-extrabold text-coffee-900">Apo Coffee</span>
         </Link>
 
-        {/* Desktop menu */}
         <ul className="hidden md:flex gap-8 text-coffee-700">
           <li>
-            <Link
-              to="/"
-              className="relative py-2 hover:text-coffee-900 transition"
-            >
+            <Link to="/" className="relative py-2 hover:text-coffee-900 transition">
               Home
             </Link>
           </li>
           <li>
-            <Link
-              to="/menu"
-              className="relative py-2 hover:text-coffee-900 transition"
-            >
+            <Link to="/menu" className="relative py-2 hover:text-coffee-900 transition">
               Menu
             </Link>
           </li>
           {isAuthenticated && (
             <li>
-              <Link
-                to="/orders"
-                className="relative py-2 hover:text-coffee-900 transition"
-              >
+              <Link to="/orders" className="relative py-2 hover:text-coffee-900 transition">
                 Orders
               </Link>
             </li>
           )}
         </ul>
 
-        {/* right actions */}
         <div className="flex items-center gap-6">
           <Link
             to="/cart"
             className="relative p-2 text-coffee-700 hover:text-coffee-900 transition"
           >
-            {/* simple cart icon */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6"
@@ -97,8 +114,21 @@ const Navbar: React.FC = () => {
           </Link>
 
           {isAuthenticated ? (
-            <div className="relative group">
-              <button className="flex items-center gap-1 text-coffee-700 hover:text-coffee-900 transition">
+            <div
+              ref={menuRef}
+              className="relative"
+              onMouseEnter={() => {
+                clearCloseTimer();
+                setUserMenuOpen(true);
+              }}
+              onMouseLeave={delayedClose}
+            >
+              <button
+                onClick={toggleUserMenu}
+                className="flex items-center gap-1 text-coffee-700 hover:text-coffee-900 transition"
+                aria-haspopup="menu"
+                aria-expanded={userMenuOpen}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5"
@@ -113,27 +143,34 @@ const Navbar: React.FC = () => {
                 </svg>
                 <span className="hidden sm:inline">{user?.name || "User"}</span>
               </button>
-              <div className="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none group-hover:pointer-events-auto">
-                <Link
-                  to="/profile"
-                  className="block px-4 py-2 text-coffee-700 hover:bg-coffee-50"
-                >
-                  Profile
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="w-full text-left px-4 py-2 text-coffee-700 hover:bg-coffee-50"
-                >
-                  Logout
-                </button>
+
+              <div
+                className={`absolute right-0 top-full pt-2 transition-all duration-150 ${
+                  userMenuOpen
+                    ? "opacity-100 translate-y-0 pointer-events-auto"
+                    : "opacity-0 -translate-y-1 pointer-events-none"
+                }`}
+              >
+                <div className="w-44 bg-white rounded-xl shadow-xl border border-neutral-200 py-1">
+                  <Link
+                    to="/profile"
+                    className="block px-4 py-2 text-coffee-700 hover:bg-coffee-50"
+                    onClick={() => setUserMenuOpen(false)}
+                  >
+                    Profile
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 text-coffee-700 hover:bg-coffee-50"
+                  >
+                    Logout
+                  </button>
+                </div>
               </div>
             </div>
           ) : (
             <div className="hidden md:flex gap-4">
-              <Link
-                to="/login"
-                className="text-coffee-700 hover:text-coffee-900 transition"
-              >
+              <Link to="/login" className="text-coffee-700 hover:text-coffee-900 transition">
                 Login
               </Link>
               <Link
@@ -145,7 +182,6 @@ const Navbar: React.FC = () => {
             </div>
           )}
 
-          {/* mobile toggle */}
           <button
             className="md:hidden p-2 text-coffee-700 hover:text-coffee-900"
             onClick={toggleMobileMenu}
@@ -186,7 +222,6 @@ const Navbar: React.FC = () => {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-coffee-50 px-6 pb-4 space-y-2">
           <Link

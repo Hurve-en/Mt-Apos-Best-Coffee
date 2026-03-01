@@ -51,7 +51,7 @@ export const orderController = {
       }
 
       // Check if user owns the order (unless admin)
-      if (req.user?.role !== "ADMIN" && order.userId !== req.user?.id) {
+      if (req.user?.role?.toLowerCase() !== "admin" && order.userId !== req.user?.id) {
         res.status(403).json({ message: "Not authorized" });
         return;
       }

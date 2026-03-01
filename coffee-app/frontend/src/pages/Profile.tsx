@@ -8,7 +8,7 @@ import "../styles/premium.css";
 interface Order {
   id: number;
   createdAt: string;
-  totalPrice: number;
+  total: number;
   deliveryAddress: string;
   status: string;
 }
@@ -53,11 +53,11 @@ export default function Profile() {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:3000/api/orders", {
+      const response = await axios.get("http://localhost:3000/api/orders/my-orders", {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (response.data.success) {
-        setOrders(response.data.data || []);
+        setOrders(response.data.orders || []);
       }
     } catch (error) {
       console.error("Failed to fetch orders:", error);
@@ -348,7 +348,7 @@ export default function Profile() {
                                 Amount
                               </p>
                               <p className="font-bold text-accent">
-                                ₱{order.totalPrice.toFixed(2)}
+                                ₱{order.total.toFixed(2)}
                               </p>
                             </div>
                             <div>

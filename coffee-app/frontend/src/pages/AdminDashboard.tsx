@@ -21,7 +21,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (!isAuthenticated || user?.role !== "admin") {
-      navigate("/admin-login");
+      navigate("/admin/login");
       return;
     }
     fetchStats();

@@ -1,10 +1,7 @@
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../../hooks/useRedux";
 import bannerImage from "../../Images/image7.png";
 
 export default function HeroBanner() {
-  const { isAuthenticated } = useAppSelector((state: any) => state.auth);
-
   return (
     <section className="relative overflow-hidden py-20 md:py-32 lg:py-40 bg-coffee-50">
       {/* Decorative elements removed */}

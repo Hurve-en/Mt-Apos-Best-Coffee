@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAppDispatch } from "../../hooks/useRedux";
 import { addToCart } from "../../redux/slices/cartSlice";
+import { getProductImage } from "../../utils/productImages";
 
 interface Product {
   id: number;
@@ -29,26 +30,27 @@ export default function ProductCard({ product }: ProductCardProps) {
         name: product.name,
         price: product.price,
         quantity,
-        image: product.image,
+        image: getProductImage(product.name, product.image, product.id),
         roastLevel: product.roastLevel,
         grind: product.grind,
         size: product.size,
       }),
     );
     setQuantity(1);
-    // Show toast notification
     alert(`Added ${product.name} to cart!`);
   };
 
   const isOutOfStock = product.stock === 0;
+  const imageSrc = getProductImage(product.name, product.image, product.id);
 
   return (
     <div className="group bg-pure-white rounded-2xl shadow-md hover:shadow-xl transition-transform transform hover:-translate-y-1 duration-300">
-      {/* Product Image */}
-      <div className="relative overflow-hidden rounded-t-2xl mb-4 bg-neutral-100 h-56">
+      <div className="relative overflow-hidden rounded-t-2xl mb-4 bg-neutral-100 aspect-square">
         <img
-          src={product.image}
+          src={imageSrc}
           alt={product.name}
+          loading="lazy"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
         {isOutOfStock && (
@@ -67,49 +69,33 @@ export default function ProductCard({ product }: ProductCardProps) {
         )}
       </div>
 
-      {/* Product Info */}
       <div className="px-4 mb-4">
-        <h3 className="text-xl font-semibold text-coffee-900 mb-2">
-          {product.name}
-        </h3>
-        <p className="text-sm text-coffee-700 mb-3 line-clamp-2">
-          {product.description}
-        </p>
+        <h3 className="text-xl font-semibold text-coffee-900 mb-2">{product.name}</h3>
+        <p className="text-sm text-coffee-700 mb-3 line-clamp-2">{product.description}</p>
 
-        {/* Specifications */}
         <div className="grid grid-cols-3 gap-2 mb-4 text-xs text-coffee-700">
           <div className="flex flex-col items-center text-center">
-            <span className="font-semibold text-coffee-900">
-              {product.roastLevel}
-            </span>
+            <span className="font-semibold text-coffee-900">{product.roastLevel}</span>
             <span className="opacity-75">Roast</span>
           </div>
           <div className="flex flex-col items-center text-center border-x border-neutral-300">
-            <span className="font-semibold text-coffee-900">
-              {product.grind}
-            </span>
+            <span className="font-semibold text-coffee-900">{product.grind}</span>
             <span className="opacity-75">Type</span>
           </div>
           <div className="flex flex-col items-center text-center">
-            <span className="font-semibold text-coffee-900">
-              {product.size}
-            </span>
+            <span className="font-semibold text-coffee-900">{product.size}</span>
             <span className="opacity-75">Size</span>
           </div>
         </div>
       </div>
 
-      {/* Price */}
       <div className="px-4 mb-4 pb-4 border-b border-neutral-300">
-        <p className="text-2xl font-bold text-coffee-900">
-          ₱{product.price.toLocaleString()}
-        </p>
+        <p className="text-2xl font-bold text-coffee-900">₱{product.price.toLocaleString()}</p>
         <p className="text-xs text-coffee-600 mt-1">
           {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
         </p>
       </div>
 
-      {/* Actions */}
       <div className="px-4 pb-6 space-y-3">
         {!isOutOfStock && (
           <div className="flex items-center gap-2">

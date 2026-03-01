@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../hooks/useRedux";
 import { loginSuccess } from "../redux/slices/authSlice";
 import axios from "axios";
@@ -49,12 +49,13 @@ export default function Login() {
           loginSuccess({
             user,
             token,
+            refreshToken: response.data.refreshToken || "",
           }),
         );
 
         // Redirect based on role
         if (user.role === "admin") {
-          navigate("/admin-dashboard");
+          navigate("/admin/dashboard");
         } else {
           navigate("/");
         }

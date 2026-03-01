@@ -92,6 +92,7 @@ export default function Register() {
           loginSuccess({
             user,
             token,
+            refreshToken: response.data.refreshToken || "",
           }),
         );
 

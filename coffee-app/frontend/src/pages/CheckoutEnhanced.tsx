@@ -240,7 +240,7 @@ export default function Checkout() {
           deliveryAddress: `${formData.address}, ${formData.city} ${formData.postalCode}`,
           paymentMethod: formData.paymentMethod,
           items: items.map((item: any) => ({
-            productId: item.id,
+            productId: Number(item.productId),
             quantity: item.quantity,
             price: item.price,
           })),

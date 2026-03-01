@@ -258,7 +258,7 @@ export default function Checkout() {
 
       if (response.data.success) {
         dispatch(clearCart());
-        navigate("/orders");
+        navigate("/orders", { state: { orderPlaced: true } });
       }
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to place order");

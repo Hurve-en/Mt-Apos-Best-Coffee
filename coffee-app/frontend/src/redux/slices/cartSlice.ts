@@ -11,15 +11,17 @@ const initialState: CartState = {
   totalPrice: 0,
 };
 
+const isSameCartItem = (
+  a: Pick<CartItem, 'productId' | 'customizations'>,
+  b: Pick<CartItem, 'productId' | 'customizations'>,
+): boolean => String(a.productId) === String(b.productId) && a.customizations === b.customizations;
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
     addToCart: (state, action: PayloadAction<CartItem>) => {
-      const existingItem = state.items.find(
-        (item) => item.productId === action.payload.productId &&
-                  item.customizations === action.payload.customizations
-      );
+      const existingItem = state.items.find((item) => isSameCartItem(item, action.payload));
 
       if (existingItem) {
         existingItem.quantity += action.payload.quantity;
@@ -35,8 +37,8 @@ const cartSlice = createSlice({
       localStorage.setItem('cart', JSON.stringify(state.items));
     },
 
-    removeFromCart: (state, action: PayloadAction<string>) => {
-      state.items = state.items.filter((item) => item.productId !== action.payload);
+    removeFromCart: (state, action: PayloadAction<number | string>) => {
+      state.items = state.items.filter((item) => String(item.productId) !== String(action.payload));
       state.totalPrice = state.items.reduce(
         (total, item) => total + item.price * item.quantity,
         0
@@ -44,12 +46,12 @@ const cartSlice = createSlice({
       localStorage.setItem('cart', JSON.stringify(state.items));
     },
 
-    updateCartItem: (state, action: PayloadAction<{ productId: string; quantity: number }>) => {
-      const item = state.items.find((item) => item.productId === action.payload.productId);
+    updateCartItem: (state, action: PayloadAction<{ productId: number | string; quantity: number }>) => {
+      const item = state.items.find((i) => String(i.productId) === String(action.payload.productId));
       if (item) {
         item.quantity = action.payload.quantity;
         if (item.quantity <= 0) {
-          state.items = state.items.filter((i) => i.productId !== action.payload.productId);
+          state.items = state.items.filter((i) => String(i.productId) !== String(action.payload.productId));
         }
       }
 

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useAppDispatch } from "../../hooks/useRedux";
 import axios from "axios";
 import ProductCard from "../Common/ProductCard";
 
@@ -24,8 +23,6 @@ interface Product {
 export default function FeaturedProducts() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -38,8 +35,7 @@ export default function FeaturedProducts() {
         }
       } catch (err) {
         console.error("Error fetching products:", err);
-        setError("Failed to load products");
-        // Use mock data for now (local images imported at top)
+                // Use mock data for now (local images imported at top)
         setProducts([
           {
             id: 1,

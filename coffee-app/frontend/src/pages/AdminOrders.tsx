@@ -116,7 +116,7 @@ export default function AdminOrders() {
             <p className="text-lg text-coffee-700">Manage all customer orders</p>
           </div>
           <button
-            onClick={() => navigate("/admin-dashboard")}
+            onClick={() => navigate("/admin/dashboard")}
             className="btn btn-secondary"
           >
             ← Back to Dashboard

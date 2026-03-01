@@ -246,7 +246,7 @@ export default function AdminProducts() {
           </div>
           <div className="flex gap-4">
             <button
-              onClick={() => navigate("/admin-dashboard")}
+              onClick={() => navigate("/admin/dashboard")}
               className="btn btn-secondary"
             >
               ← Back to Dashboard
