@@ -128,7 +128,7 @@ export default function Register() {
             {/* Error Message */}
             {errors.submit && (
               <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
-                <p className="text-red-800 font-semibold">⚠️ {errors.submit}</p>
+                <p className="text-red-800 font-semibold">Error: {errors.submit}</p>
               </div>
             )}
 
@@ -157,7 +157,7 @@ export default function Register() {
                   placeholder="Juan Dela Cruz"
                 />
                 {errors.name && (
-                  <p className="mt-1 text-sm text-red-600">✕ {errors.name}</p>
+                  <p className="mt-1 text-sm text-red-600">Remove {errors.name}</p>
                 )}
               </div>
 
@@ -184,7 +184,7 @@ export default function Register() {
                   placeholder="you@example.com"
                 />
                 {errors.email && (
-                  <p className="mt-1 text-sm text-red-600">✕ {errors.email}</p>
+                  <p className="mt-1 text-sm text-red-600">Remove {errors.email}</p>
                 )}
               </div>
 
@@ -235,12 +235,12 @@ export default function Register() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-coffee-700 hover:text-black transition"
                   >
-                    {showPassword ? "👁️" : "👁️‍🗨️"}
+                    {showPassword ? "Hide" : "Show"}
                   </button>
                 </div>
                 {errors.password && (
                   <p className="mt-1 text-sm text-red-600">
-                    ✕ {errors.password}
+                    Remove {errors.password}
                   </p>
                 )}
                 {formData.password && (
@@ -306,12 +306,12 @@ export default function Register() {
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-coffee-700 hover:text-black transition"
                   >
-                    {showConfirmPassword ? "👁️" : "👁️‍🗨️"}
+                    {showConfirmPassword ? "Hide" : "Show"}
                   </button>
                 </div>
                 {errors.confirmPassword && (
                   <p className="mt-1 text-sm text-red-600">
-                    ✕ {errors.confirmPassword}
+                    Remove {errors.confirmPassword}
                   </p>
                 )}
               </div>
@@ -322,7 +322,7 @@ export default function Register() {
                 disabled={loading}
                 className="btn btn-primary btn-lg w-full"
               >
-                {loading ? "⏳ Creating Account..." : "✓ Create Account"}
+                {loading ? "Processing... Creating Account..." : "Done Create Account"}
               </button>
             </form>
 

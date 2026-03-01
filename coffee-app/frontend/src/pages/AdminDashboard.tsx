@@ -55,7 +55,7 @@ export default function AdminDashboard() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="text-center">
-          <div className="text-4xl mb-4 animate-pulse">☕</div>
+          <div className="text-4xl mb-4 animate-pulse">Coffee</div>
           <p className="text-2xl text-black font-semibold">
             Loading admin dashboard...
           </p>
@@ -75,7 +75,7 @@ export default function AdminDashboard() {
         <div className="container py-6">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-4xl font-bold">📊 Admin Dashboard</h1>
+              <h1 className="text-4xl font-bold">Dashboard Admin Dashboard</h1>
               <p className="text-lg opacity-90">Welcome back, {user?.name}!</p>
             </div>
             <button onClick={handleLogout} className="btn btn-secondary">
@@ -101,7 +101,7 @@ export default function AdminDashboard() {
                     {stats?.totalOrders || 0}
                   </p>
                 </div>
-                <div className="text-6xl opacity-20">📦</div>
+                <div className="text-6xl opacity-20">Orders</div>
               </div>
               <div className="mt-4 pt-4 border-t border-gray-300 border-opacity-20">
                 <p className="text-xs text-coffee-700">View all orders</p>
@@ -119,7 +119,7 @@ export default function AdminDashboard() {
                     {stats?.totalProducts || 0}
                   </p>
                 </div>
-                <div className="text-6xl opacity-20">☕</div>
+                <div className="text-6xl opacity-20">Coffee</div>
               </div>
               <div className="mt-4 pt-4 border-t border-gray-300 border-opacity-20">
                 <p className="text-xs text-coffee-700">Manage inventory</p>
@@ -140,7 +140,7 @@ export default function AdminDashboard() {
                     })}
                   </p>
                 </div>
-                <div className="text-6xl opacity-20">💰</div>
+                <div className="text-6xl opacity-20">Revenue</div>
               </div>
               <div className="mt-4 pt-4 border-t border-gray-300 border-opacity-20">
                 <p className="text-xs text-coffee-700">All-time earnings</p>
@@ -156,7 +156,7 @@ export default function AdminDashboard() {
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="text-4xl group-hover:scale-110 transition">
-                  📝
+                  Manage
                 </div>
                 <span className="text-accent font-bold group-hover:translate-x-2 transition">
                   →
@@ -179,7 +179,7 @@ export default function AdminDashboard() {
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="text-4xl group-hover:scale-110 transition">
-                  📦
+                  Orders
                 </div>
                 <span className="text-accent font-bold group-hover:translate-x-2 transition">
                   →
@@ -249,7 +249,7 @@ export default function AdminDashboard() {
           {/* Empty State */}
           {(!stats?.recentOrders || stats.recentOrders.length === 0) && (
             <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
-              <p className="text-5xl mb-4">📭</p>
+              <p className="text-5xl mb-4">No data</p>
               <h3 className="text-2xl font-bold text-black mb-2">
                 No Orders Yet
               </h3>

@@ -81,12 +81,12 @@ export default function AdminProducts() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      console.log("📷 Image file selected:", file.name, file.type, file.size);
+      console.log("Image file selected:", file.name, file.type, file.size);
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result as string;
         console.log(
-          "✅ Image converted to base64, length:",
+          "Image converted to base64, length:",
           base64String.length,
         );
         setFormData((prev) => ({
@@ -96,7 +96,7 @@ export default function AdminProducts() {
         setImagePreview(base64String);
       };
       reader.onerror = () => {
-        console.error("❌ Error reading file");
+        console.error("Error reading file");
         alert("Error reading image file");
       };
       reader.readAsDataURL(file);
@@ -109,21 +109,21 @@ export default function AdminProducts() {
     if (!validateForm()) return;
 
     try {
-      console.log("🔵 Submitting product:", formData);
-      console.log("🔵 Token:", token);
-      console.log("🔵 Token is present:", !!token);
+      console.log("Submitting product:", formData);
+      console.log("Token:", token);
+      console.log("Token is present:", !!token);
 
       if (editingId) {
-        console.log("🟡 Updating product:", editingId);
+        console.log("Updating product:", editingId);
         const response = await axios.put(
           `http://localhost:3000/api/products/${editingId}`,
           formData,
           { headers: { Authorization: `Bearer ${token}` } },
         );
-        console.log("✅ Update response:", response.data);
-        alert("✅ Product updated successfully!");
+        console.log("Update response:", response.data);
+        alert("Product updated successfully!");
       } else {
-        console.log("🟡 Creating new product");
+        console.log("Creating new product");
         const response = await axios.post(
           "http://localhost:3000/api/products",
           formData,
@@ -131,8 +131,8 @@ export default function AdminProducts() {
             headers: { Authorization: `Bearer ${token}` },
           },
         );
-        console.log("✅ Create response:", response.data);
-        alert("✅ Product created successfully!");
+        console.log("Create response:", response.data);
+        alert("Product created successfully!");
       }
 
       setFormData({
@@ -151,13 +151,13 @@ export default function AdminProducts() {
       setImagePreview("");
       fetchProducts();
     } catch (err: any) {
-      console.error("❌ Submit error:", err);
-      console.error("❌ Error response:", err.response?.data);
-      console.error("❌ Error status:", err.response?.status);
-      console.error("❌ Error message:", err.message);
+      console.error("Submit error:", err);
+      console.error("Error response:", err.response?.data);
+      console.error("Error status:", err.response?.status);
+      console.error("Error message:", err.message);
       const errorMsg =
         err.response?.data?.message || err.message || "Failed to save product";
-      alert("❌ Error: " + errorMsg);
+      alert("Error: " + errorMsg);
       setErrors({
         submit: errorMsg,
       });
@@ -184,7 +184,7 @@ export default function AdminProducts() {
     if (!confirm("Are you sure you want to delete this product?")) return;
 
     try {
-      console.log("🗑️ Deleting product:", id);
+      console.log("Delete Deleting product:", id);
       console.log("Token present:", !!token);
       const response = await axios.delete(
         `http://localhost:3000/api/products/${id}`,
@@ -192,16 +192,16 @@ export default function AdminProducts() {
           headers: { Authorization: `Bearer ${token}` },
         },
       );
-      console.log("✅ Delete response:", response.data);
-      alert("✅ Product deleted successfully!");
+      console.log("Delete response:", response.data);
+      alert("Product deleted successfully!");
       fetchProducts();
     } catch (err: any) {
-      console.error("❌ Delete error:", err);
-      console.error("❌ Error response:", err.response?.data);
-      console.error("❌ Error status:", err.response?.status);
+      console.error("Delete error:", err);
+      console.error("Error response:", err.response?.data);
+      console.error("Error status:", err.response?.status);
       const errorMsg =
         err.response?.data?.message || "Failed to delete product";
-      alert("❌ Error: " + errorMsg);
+      alert("Error: " + errorMsg);
     }
   };
 
@@ -226,7 +226,7 @@ export default function AdminProducts() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 to-yellow-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-6xl mb-4">☕</div>
+          <div className="text-6xl mb-4">Coffee</div>
           <p className="text-xl text-coffee-700">Loading products...</p>
         </div>
       </div>
@@ -240,7 +240,7 @@ export default function AdminProducts() {
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-5xl font-bold text-black mb-2">
-              ☕ Product Management
+              Coffee Product Management
             </h1>
             <p className="text-lg text-coffee-700">Manage your coffee products</p>
           </div>
@@ -255,7 +255,7 @@ export default function AdminProducts() {
               onClick={() => setShowForm(true)}
               className="btn btn-primary"
             >
-              ✓ Add New Product
+              Done Add New Product
             </button>
           </div>
         </div>
@@ -266,7 +266,7 @@ export default function AdminProducts() {
             <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <div className="bg-gradient-to-r from-amber-900 to-amber-800 text-white py-6 px-8">
                 <h2 className="text-3xl font-bold">
-                  {editingId ? "✏️ Edit Product" : "➕ Add New Product"}
+                  {editingId ? "Edit Edit Product" : "Add Add New Product"}
                 </h2>
               </div>
 
@@ -274,7 +274,7 @@ export default function AdminProducts() {
                 {errors.submit && (
                   <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
                     <p className="text-red-800 font-semibold">
-                      ⚠️ {errors.submit}
+                      Error: {errors.submit}
                     </p>
                   </div>
                 )}
@@ -297,7 +297,7 @@ export default function AdminProducts() {
                     placeholder="Premium Mt. Apo Arabica"
                   />
                   {errors.name && (
-                    <p className="mt-1 text-sm text-red-600">✕ {errors.name}</p>
+                    <p className="mt-1 text-sm text-red-600">Remove {errors.name}</p>
                   )}
                 </div>
 
@@ -319,7 +319,7 @@ export default function AdminProducts() {
                   />
                   {errors.description && (
                     <p className="mt-1 text-sm text-red-600">
-                      ✕ {errors.description}
+                      Remove {errors.description}
                     </p>
                   )}
                 </div>
@@ -344,7 +344,7 @@ export default function AdminProducts() {
                     />
                     {errors.price && (
                       <p className="mt-1 text-sm text-red-600">
-                        ✕ {errors.price}
+                        Remove {errors.price}
                       </p>
                     )}
                   </div>
@@ -368,7 +368,7 @@ export default function AdminProducts() {
                     />
                     {errors.stock && (
                       <p className="mt-1 text-sm text-red-600">
-                        ✕ {errors.stock}
+                        Remove {errors.stock}
                       </p>
                     )}
                   </div>
@@ -439,7 +439,7 @@ export default function AdminProducts() {
                   />
                   {errors.image && (
                     <p className="mt-1 text-sm text-red-600">
-                      ✕ {errors.image}
+                      Remove {errors.image}
                     </p>
                   )}
                   {imagePreview && (
@@ -457,14 +457,14 @@ export default function AdminProducts() {
                 {/* Buttons */}
                 <div className="flex gap-4 pt-6">
                   <button type="submit" className="btn btn-primary flex-1">
-                    {editingId ? "✓ Update Product" : "✓ Add Product"}
+                    {editingId ? "Done Update Product" : "Done Add Product"}
                   </button>
                   <button
                     type="button"
                     onClick={handleCancel}
                     className="btn btn-secondary flex-1"
                   >
-                    ✕ Cancel
+                    Remove Cancel
                   </button>
                 </div>
               </form>
@@ -475,7 +475,7 @@ export default function AdminProducts() {
         {/* Products Grid */}
         {products.length === 0 ? (
           <div className="bg-white rounded-3xl shadow-lg p-12 text-center">
-            <div className="text-7xl mb-4">📦</div>
+            <div className="text-7xl mb-4">Orders</div>
             <h3 className="text-2xl font-bold text-black mb-2">
               No Products Yet
             </h3>
@@ -486,7 +486,7 @@ export default function AdminProducts() {
               onClick={() => setShowForm(true)}
               className="btn btn-primary"
             >
-              ➕ Add Product
+              Add Add Product
             </button>
           </div>
         ) : (
@@ -560,13 +560,13 @@ export default function AdminProducts() {
                         onClick={() => handleEdit(product)}
                         className="btn btn-secondary text-sm"
                       >
-                        ✏️ Edit
+                        Edit Edit
                       </button>
                       <button
                         onClick={() => handleDelete(product.id)}
                         className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition font-semibold text-sm"
                       >
-                        🗑️ Delete
+                        Delete Delete
                       </button>
                     </div>
                   </div>

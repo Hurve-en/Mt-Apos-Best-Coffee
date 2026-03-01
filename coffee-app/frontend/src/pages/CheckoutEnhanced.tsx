@@ -266,7 +266,7 @@ export default function Checkout() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-50 p-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <h1 className="text-5xl font-bold text-black mb-8">☕ Checkout</h1>
+        <h1 className="text-5xl font-bold text-black mb-8">Coffee Checkout</h1>
 
         {/* Step Indicator */}
         <div className="flex gap-4 mb-8 justify-center">
@@ -304,7 +304,7 @@ export default function Checkout() {
 
         {error && (
           <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded mb-6">
-            <p className="text-red-800 font-semibold">⚠️ {error}</p>
+            <p className="text-red-800 font-semibold">Error: {error}</p>
           </div>
         )}
 
@@ -315,7 +315,7 @@ export default function Checkout() {
             {currentStep === "delivery" && (
               <div className="bg-white rounded-3xl shadow-lg p-8">
                 <h2 className="text-3xl font-bold text-black mb-6">
-                  📍 Delivery Information
+                  Location: Delivery Information
                 </h2>
 
                 <div className="space-y-5">
@@ -379,7 +379,7 @@ export default function Checkout() {
                   {/* Map */}
                   <div>
                     <label className="block text-sm font-semibold text-black mb-3">
-                      📍 Click on map to pin your location
+                      Location: Click on map to pin your location
                     </label>
                     <div
                       id="checkout-map"
@@ -439,7 +439,7 @@ export default function Checkout() {
                     onClick={handleNextStep}
                     className="btn btn-primary btn-lg w-full mt-6"
                   >
-                    ✓ Continue to Payment
+                    Done Continue to Payment
                   </button>
                 </div>
               </div>
@@ -449,7 +449,7 @@ export default function Checkout() {
             {currentStep === "payment" && (
               <div className="bg-white rounded-3xl shadow-lg p-8">
                 <h2 className="text-3xl font-bold text-black mb-6">
-                  💳 Payment Method
+                  Card Payment Method
                 </h2>
 
                 <div className="space-y-6">
@@ -465,7 +465,7 @@ export default function Checkout() {
                         className="w-5 h-5"
                       />
                       <span className="ml-3 font-semibold text-black">
-                        💵 Cash on Delivery
+                        Cash Cash on Delivery
                       </span>
                     </label>
 
@@ -479,7 +479,7 @@ export default function Checkout() {
                         className="w-5 h-5"
                       />
                       <span className="ml-3 font-semibold text-black">
-                        🏦 Credit Card
+                        Card Credit Card
                       </span>
                     </label>
                   </div>
@@ -572,7 +572,7 @@ export default function Checkout() {
                       onClick={handleNextStep}
                       className="btn btn-primary flex-1"
                     >
-                      Continue to Review ✓
+                      Continue to Review Done
                     </button>
                   </div>
                 </div>
@@ -583,32 +583,32 @@ export default function Checkout() {
             {currentStep === "review" && (
               <div className="bg-white rounded-3xl shadow-lg p-8">
                 <h2 className="text-3xl font-bold text-black mb-6">
-                  👀 Review Your Order
+                  Review Your Order
                 </h2>
 
                 <div className="space-y-6">
                   {/* Delivery Info */}
                   <div className="p-4 bg-amber-50 rounded-2xl">
                     <h3 className="font-bold text-black mb-2">
-                      📍 Delivery To:
+                      Location: Delivery To:
                     </h3>
                     <p className="text-sm">{formData.fullName}</p>
                     <p className="text-sm text-coffee-700">{formData.address}</p>
                     <p className="text-sm text-coffee-700">
                       {formData.city}, {formData.postalCode}
                     </p>
-                    <p className="text-sm text-coffee-700">📱 {formData.phone}</p>
+                    <p className="text-sm text-coffee-700">Phone: {formData.phone}</p>
                   </div>
 
                   {/* Payment Info */}
                   <div className="p-4 bg-amber-50 rounded-2xl">
                     <h3 className="font-bold text-black mb-2">
-                      💳 Payment Method:
+                      Card Payment Method:
                     </h3>
                     <p className="text-sm">
                       {formData.paymentMethod === "cash"
-                        ? "💵 Cash on Delivery"
-                        : "🏦 Credit Card"}
+                        ? "Cash Cash on Delivery"
+                        : "Card Credit Card"}
                     </p>
                   </div>
 
@@ -625,7 +625,7 @@ export default function Checkout() {
                       disabled={loading}
                       className="btn btn-primary flex-1"
                     >
-                      {loading ? "⏳ Placing Order..." : "✓ Place Order"}
+                      {loading ? "Processing... Placing Order..." : "Done Place Order"}
                     </button>
                   </div>
                 </div>
@@ -636,7 +636,7 @@ export default function Checkout() {
           {/* Order Summary Sidebar */}
           <div className="bg-white rounded-3xl shadow-lg p-6 h-fit sticky top-8">
             <h3 className="text-2xl font-bold text-black mb-6">
-              📋 Order Summary
+              Order Summary
             </h3>
 
             <div className="space-y-3 mb-6 max-h-64 overflow-y-auto">

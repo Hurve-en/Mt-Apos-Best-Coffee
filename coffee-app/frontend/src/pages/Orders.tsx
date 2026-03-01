@@ -157,7 +157,7 @@ const Orders: React.FC = () => {
 
         {visibleOrders.length === 0 ? (
           <div className="bg-white rounded-2xl shadow-lg p-12 text-center animate-fade-in-up">
-            <div className="text-6xl mb-4">📦</div>
+            <div className="text-6xl mb-4">Orders</div>
             <h2 className="text-2xl font-bold text-coffee-900 mb-3">No orders yet</h2>
             <p className="text-coffee-700 mb-8">Your placed orders will appear here.</p>
             <button onClick={() => navigate("/menu")} className="btn btn-primary">

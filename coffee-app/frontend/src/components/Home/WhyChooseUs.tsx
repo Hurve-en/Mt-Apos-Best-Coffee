@@ -30,7 +30,8 @@ export default function WhyChooseUs() {
       description: "100% Arabica beans from Mt. Apo",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" className={iconClass} stroke="currentColor" strokeWidth="1.8">
-          <path d="M12 21c-4-3-7-7-7-11a5 5 0 019-3 5 5 0 019 3c0 4-3 8-7 11l-2 1-2-1z" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M12 3l2.4 1.3 2.7-.5.5 2.7 2 1.9-2 1.9-.5 2.7-2.7-.5L12 14l-2.4-1.3-2.7.5-.5-2.7-2-1.9 2-1.9.5-2.7 2.7.5L12 3z" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M12 7.8l.95 1.92 2.12.3-1.54 1.5.36 2.11L12 12.6l-1.89 1 .36-2.11-1.54-1.5 2.12-.3L12 7.8z" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       ),
     },

@@ -60,7 +60,7 @@ const AdminLogin: React.FC = () => {
       <div className="max-w-md w-full space-y-8 bg-white rounded-2xl shadow-2xl p-8">
         {/* Header */}
         <div className="text-center">
-          <div className="text-5xl mb-4">👨‍💼</div>
+          <div className="text-5xl mb-4">Admin</div>
           <h1 className="text-3xl font-bold text-coffee-900">Admin Portal</h1>
           <p className="mt-2 text-gray-600">Mt. Apo's Best Coffee</p>
         </div>

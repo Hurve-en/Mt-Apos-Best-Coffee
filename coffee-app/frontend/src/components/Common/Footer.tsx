@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
           {/* Brand */}
           <div>
             <div className="flex items-center space-x-2 mb-4">
-              <span className="text-2xl">☕</span>
+              <span className="text-2xl">Coffee</span>
               <span className="font-bold text-lg">CoffeeHub</span>
             </div>
             <p className="text-coffee-300">
@@ -51,9 +51,9 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="font-bold mb-4">Contact Us</h3>
             <ul className="space-y-2 text-coffee-300">
-              <li>📧 info@coffeehub.com</li>
-              <li>📱 +63 9XX XXXX XXX</li>
-              <li>📍 Cebu, Philippines</li>
+              <li>Email: info@coffeehub.com</li>
+              <li>Phone: +63 9XX XXXX XXX</li>
+              <li>Location: Cebu, Philippines</li>
             </ul>
           </div>
         </div>

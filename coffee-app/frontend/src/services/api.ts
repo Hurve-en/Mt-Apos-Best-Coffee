@@ -14,16 +14,16 @@ const FALLBACK_API_URL = "http://localhost:5000/api";
 
 class ApiService {
   private api: AxiosInstance;
-  private baseURL: string;
+  private preferredBaseURL: string;
 
   constructor() {
-    this.baseURL = PRIMARY_API_URL;
+    this.preferredBaseURL = PRIMARY_API_URL;
     this.api = axios.create({
-      baseURL: this.baseURL,
+      baseURL: this.preferredBaseURL,
       headers: {
         "Content-Type": "application/json",
       },
-      timeout: 10000,
+      timeout: 15000,
     });
 
     this.api.interceptors.request.use((config) => {
@@ -48,24 +48,32 @@ class ApiService {
   }
 
   private async requestWithFallback<T>(config: AxiosRequestConfig): Promise<T> {
-    try {
-      const response = await this.api.request<T>(config);
-      return response.data;
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      const shouldFallback =
-        !axiosError.response && this.baseURL !== FALLBACK_API_URL;
+    const candidates = [this.preferredBaseURL, PRIMARY_API_URL, FALLBACK_API_URL]
+      .filter((value, index, arr) => arr.indexOf(value) === index);
 
-      if (!shouldFallback) {
-        throw error;
+    let lastError: unknown;
+
+    for (let i = 0; i < candidates.length; i += 1) {
+      const baseURL = candidates[i];
+      try {
+        const response = await this.api.request<T>({
+          ...config,
+          baseURL,
+        });
+        this.preferredBaseURL = baseURL;
+        return response.data;
+      } catch (error) {
+        const axiosError = error as AxiosError;
+        lastError = error;
+
+        // If server responded, don't hop environments; surface real API errors.
+        if (axiosError.response) {
+          throw error;
+        }
       }
-
-      this.baseURL = FALLBACK_API_URL;
-      this.api.defaults.baseURL = FALLBACK_API_URL;
-
-      const fallbackResponse = await this.api.request<T>(config);
-      return fallbackResponse.data;
     }
+
+    throw lastError;
   }
 
   async login(data: LoginRequest): Promise<AuthResponse> {
@@ -96,7 +104,7 @@ class ApiService {
       method: "get",
       url: "/products",
     });
-    return (data.data || data.products || []) as Product[];
+    return (data.data || data.products || data?.data?.products || []) as Product[];
   }
 
   async getProductById(id: string) {
@@ -146,7 +154,11 @@ class ApiService {
       method: "get",
       url: "/orders/my-orders",
     });
-    return (response.orders || response.data || []) as Order[];
+    if (Array.isArray(response)) return response as Order[];
+    if (Array.isArray(response.orders)) return response.orders as Order[];
+    if (Array.isArray(response.data)) return response.data as Order[];
+    if (Array.isArray(response?.data?.orders)) return response.data.orders as Order[];
+    return [];
   }
 
   async getOrderById(id: string) {

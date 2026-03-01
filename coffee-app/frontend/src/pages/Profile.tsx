@@ -89,7 +89,7 @@ export default function Profile() {
         },
       );
       if (response.data.success) {
-        setMessage("✓ Profile updated successfully!");
+        setMessage("Done Profile updated successfully!");
         setTimeout(() => setMessage(""), 3000);
       }
     } catch (error: any) {
@@ -113,7 +113,7 @@ export default function Profile() {
       {/* Header */}
       <section className="section-gap bg-gray-800 text-white">
         <div className="container">
-          <h1 className="text-5xl font-bold mb-2">👤 My Profile</h1>
+          <h1 className="text-5xl font-bold mb-2">Profile My Profile</h1>
           <p className="text-lg opacity-90">
             Manage your account and view your orders
           </p>
@@ -127,7 +127,7 @@ export default function Profile() {
             {/* Profile Card - Sticky Sidebar */}
             <aside className="lg:col-span-1">
               <div className="sticky top-20 bg-white rounded-2xl shadow-lg p-6 text-center">
-                <div className="text-6xl mb-4">☕</div>
+                <div className="text-6xl mb-4">Coffee</div>
                 <h3 className="text-2xl font-bold text-black mb-1">
                   {user?.name || "User"}
                 </h3>
@@ -247,7 +247,7 @@ export default function Profile() {
                       {message && (
                         <div
                           className={`px-4 py-3 rounded-lg ${
-                            message.includes("✓")
+                            message.includes("Done")
                               ? "bg-green-50 text-green-800"
                               : "bg-red-50 text-red-800"
                           }`}
@@ -261,7 +261,7 @@ export default function Profile() {
                         disabled={loading}
                         className="btn btn-primary w-full"
                       >
-                        {loading ? "⏳ Saving..." : "✓ Save Changes"}
+                        {loading ? "Processing... Saving..." : "Done Save Changes"}
                       </button>
                     </form>
                   </div>
@@ -291,7 +291,7 @@ export default function Profile() {
                         disabled={loading}
                         className="btn btn-primary"
                       >
-                        {loading ? "⏳ Saving..." : "✓ Update Address"}
+                        {loading ? "Processing... Saving..." : "Done Update Address"}
                       </button>
                     </form>
                   </div>
@@ -303,7 +303,7 @@ export default function Profile() {
                 <div className="space-y-6">
                   {orders.length === 0 ? (
                     <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
-                      <p className="text-4xl mb-4">📦</p>
+                      <p className="text-4xl mb-4">Orders</p>
                       <h3 className="text-2xl font-bold text-black mb-2">
                         No Orders Yet
                       </h3>
@@ -373,7 +373,7 @@ export default function Profile() {
                           </div>
                           <div className="mt-4 pt-4 border-t border-gray-300 border-opacity-20">
                             <p className="text-sm text-coffee-700">
-                              📍 {order.deliveryAddress}
+                              Location: {order.deliveryAddress}
                             </p>
                           </div>
                         </div>

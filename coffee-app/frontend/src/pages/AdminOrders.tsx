@@ -97,7 +97,7 @@ export default function AdminOrders() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 to-yellow-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-6xl mb-4">☕</div>
+          <div className="text-6xl mb-4">Coffee</div>
           <p className="text-xl text-coffee-700">Loading orders...</p>
         </div>
       </div>
@@ -111,7 +111,7 @@ export default function AdminOrders() {
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-5xl font-bold text-black mb-2">
-              📦 Order Management
+              Orders Order Management
             </h1>
             <p className="text-lg text-coffee-700">Manage all customer orders</p>
           </div>
@@ -149,7 +149,7 @@ export default function AdminOrders() {
           <div className="lg:col-span-2 space-y-4">
             {orders.length === 0 ? (
               <div className="bg-white rounded-3xl shadow-lg p-12 text-center">
-                <div className="text-6xl mb-4">📭</div>
+                <div className="text-6xl mb-4">No data</div>
                 <h3 className="text-2xl font-bold text-black mb-2">
                   No Orders Found
                 </h3>
@@ -200,12 +200,12 @@ export default function AdminOrders() {
           {/* Order Details Sidebar */}
           {selectedOrder && (
             <div className="bg-white rounded-3xl shadow-lg p-6 h-fit sticky top-8">
-              <h2 className="text-3xl font-bold text-black mb-6">📋 Details</h2>
+              <h2 className="text-3xl font-bold text-black mb-6">Order Details</h2>
 
               {/* Customer Info */}
               <div className="mb-6 pb-6 border-b-2 border-gray-300">
                 <h3 className="font-bold text-black mb-3 text-lg">
-                  👤 Customer
+                  Profile Customer
                 </h3>
                 <p className="text-sm font-semibold text-black">
                   {selectedOrder.user?.name}
@@ -220,7 +220,7 @@ export default function AdminOrders() {
 
               {/* Items */}
               <div className="mb-6 pb-6 border-b-2 border-gray-300">
-                <h3 className="font-bold text-black mb-3 text-lg">☕ Items</h3>
+                <h3 className="font-bold text-black mb-3 text-lg">Coffee Items</h3>
                 <div className="space-y-2">
                   {selectedOrder.orderItems?.map((item, idx) => (
                     <div
@@ -244,7 +244,7 @@ export default function AdminOrders() {
               {/* Delivery Address */}
               <div className="mb-6 pb-6 border-b-2 border-gray-300">
                 <h3 className="font-bold text-black mb-3 text-lg">
-                  📍 Address
+                  Location: Address
                 </h3>
                 <p className="text-sm text-coffee-700 leading-relaxed">
                   {selectedOrder.deliveryAddress}

@@ -40,7 +40,7 @@ export default function CartPage() {
     return (
       <div className="min-h-screen bg-coffee-50 flex items-center justify-center">
         <div className="text-center max-w-md">
-          <div className="text-8xl mb-6 opacity-50">🛒</div>
+          <div className="text-8xl mb-6 opacity-50">Cart</div>
           <h1 className="text-4xl font-bold text-coffee-900 mb-4">
             Your cart is empty
           </h1>
@@ -70,7 +70,7 @@ export default function CartPage() {
       {/* Header */}
       <section className="section-gap bg-coffee-500 text-white">
         <div className="container">
-          <h1 className="text-5xl font-bold mb-2">🛒 Shopping Cart</h1>
+          <h1 className="text-5xl font-bold mb-2">Cart Shopping Cart</h1>
           <p className="text-lg opacity-90">
             {itemsCount} item{itemsCount !== 1 ? "s" : ""} in your cart
           </p>
@@ -160,7 +160,7 @@ export default function CartPage() {
                         className="px-4 py-2 text-red-600 hover:bg-red-100 rounded-lg font-bold transition"
                         title="Remove from cart"
                       >
-                        ✕
+                        Remove
                       </button>
                     </div>
                   </div>
@@ -210,7 +210,7 @@ export default function CartPage() {
                   </div>
                   {deliveryFee === 0 && (
                     <p className="text-xs text-green-600 font-semibold mt-2 text-center">
-                      ✓ Free delivery on orders ₱500+
+                      Done Free delivery on orders ₱500+
                     </p>
                   )}
                 </div>

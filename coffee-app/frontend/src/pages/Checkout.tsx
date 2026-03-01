@@ -288,7 +288,7 @@ export default function Checkout() {
       {/* Header */}
       <section className="section-gap bg-gray-800 text-white">
         <div className="container">
-          <h1 className="text-5xl font-bold mb-2">🛍️ Checkout</h1>
+          <h1 className="text-5xl font-bold mb-2">Checkout Checkout</h1>
           <p className="text-lg opacity-90">Complete your coffee order</p>
         </div>
       </section>
@@ -311,7 +311,7 @@ export default function Checkout() {
                 >
                   {["delivery", "payment", "review"].indexOf(currentStep) >
                   index
-                    ? "✓"
+                    ? "Done"
                     : index + 1}
                 </div>
                 <span
@@ -339,7 +339,7 @@ export default function Checkout() {
               <div className="bg-white rounded-2xl shadow-lg p-8">
                 {error && (
                   <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded">
-                    <p className="text-red-800 font-semibold">⚠️ {error}</p>
+                    <p className="text-red-800 font-semibold">Error: {error}</p>
                   </div>
                 )}
 
@@ -347,7 +347,7 @@ export default function Checkout() {
                 {currentStep === "delivery" && (
                   <div className="space-y-6">
                     <h2 className="text-2xl font-bold text-black mb-6">
-                      📍 Delivery Information
+                      Location: Delivery Information
                     </h2>
 
                     <div>
@@ -396,7 +396,7 @@ export default function Checkout() {
                     {/* MAP CONTAINER */}
                     <div>
                       <label className="block text-sm font-semibold text-black mb-3">
-                        📍 Click on map to pin your location
+                        Location: Click on map to pin your location
                       </label>
                       <div
                         id="checkout-map"
@@ -490,7 +490,7 @@ export default function Checkout() {
                           className="w-4 h-4"
                         />
                         <span className="ml-3 font-semibold text-black">
-                          💵 Cash on Delivery (COD)
+                          Cash Cash on Delivery (COD)
                         </span>
                         <span className="ml-auto text-sm text-coffee-700">
                           Pay when order arrives
@@ -515,7 +515,7 @@ export default function Checkout() {
                           className="w-4 h-4"
                         />
                         <span className="ml-3 font-semibold text-black">
-                          💳 Credit/Debit Card
+                          Card Credit/Debit Card
                         </span>
                       </label>
                     </div>
@@ -645,14 +645,14 @@ export default function Checkout() {
                       </h3>
                       <p className="text-sm">
                         {formData.paymentMethod === "cash"
-                          ? "💵 Cash on Delivery"
-                          : "💳 Credit/Debit Card"}
+                          ? "Cash Cash on Delivery"
+                          : "Card Credit/Debit Card"}
                       </p>
                     </div>
 
                     <div className="border-t border-gray-300 border-opacity-20 pt-6">
                       <p className="text-green-600 font-semibold text-center mb-4">
-                        ✓ All information is correct. Ready to place order?
+                        Done All information is correct. Ready to place order?
                       </p>
                     </div>
                   </div>
@@ -684,7 +684,7 @@ export default function Checkout() {
                       disabled={loading}
                       className="flex-1 btn btn-primary"
                     >
-                      {loading ? "⏳ Placing Order..." : "✓ Place Order"}
+                      {loading ? "Processing... Placing Order..." : "Done Place Order"}
                     </button>
                   )}
                 </div>

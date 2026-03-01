@@ -44,11 +44,41 @@ export default function Menu() {
   });
 
   useEffect(() => {
+    const fetchFromDirectEndpoint = async (): Promise<any[]> => {
+      const candidates = [
+        (import.meta.env.VITE_API_URL as string) || "http://localhost:3000/api",
+        "http://localhost:5000/api",
+      ];
+
+      for (const base of candidates) {
+        try {
+          const res = await fetch(`${base}/products`);
+          if (!res.ok) continue;
+          const payload = await res.json();
+          const records = payload?.data || payload?.products || [];
+          if (Array.isArray(records) && records.length > 0) {
+            return records;
+          }
+        } catch (_err) {
+          // Continue to next endpoint candidate
+        }
+      }
+
+      return [];
+    };
+
     const fetchProducts = async () => {
       setLoading(true);
       setError(null);
       try {
-        const products = await apiService.getProducts();
+        let products = await apiService.getProducts();
+        if (!Array.isArray(products) || products.length === 0) {
+          const directProducts = await fetchFromDirectEndpoint();
+          if (directProducts.length > 0) {
+            products = directProducts as any;
+          }
+        }
+
         const normalized = (products as any[]).map((product) => ({
           id: Number(product.id),
           name: String(product.name || ""),

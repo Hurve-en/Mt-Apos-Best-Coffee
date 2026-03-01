@@ -95,7 +95,7 @@ export default function Login() {
             {/* Error Message */}
             {error && (
               <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
-                <p className="text-red-800 font-semibold">⚠️ {error}</p>
+                <p className="text-red-800 font-semibold">Error: {error}</p>
               </div>
             )}
 
@@ -145,7 +145,7 @@ export default function Login() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-coffee-600 hover:text-coffee-900 transition"
                   >
-                    {showPassword ? "👁️" : "👁️‍🗨️"}
+                    {showPassword ? "Hide" : "Show"}
                   </button>
                 </div>
               </div>
@@ -156,7 +156,7 @@ export default function Login() {
                 disabled={loading}
                 className="btn btn-lg w-full bg-coffee-500 text-pure-white hover:bg-coffee-600 shadow-md"
               >
-                {loading ? "⏳ Logging in..." : "✓ Login"}
+                {loading ? "Processing... Logging in..." : "Done Login"}
               </button>
             </form>
 
