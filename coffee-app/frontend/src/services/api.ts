@@ -8,9 +8,11 @@ import {
   OrderRequest,
 } from "../types";
 
+const LOCAL_API_URL = "http://localhost:3000/api";
+const DOCKER_API_URL = "http://localhost:5000/api";
 const PRIMARY_API_URL =
-  (import.meta.env.VITE_API_URL as string) || "http://localhost:3000/api";
-const FALLBACK_API_URL = "http://localhost:5000/api";
+  (import.meta.env.VITE_API_URL as string) || LOCAL_API_URL;
+const FALLBACK_API_URL = DOCKER_API_URL;
 
 class ApiService {
   private api: AxiosInstance;
@@ -48,7 +50,12 @@ class ApiService {
   }
 
   private async requestWithFallback<T>(config: AxiosRequestConfig): Promise<T> {
-    const candidates = [this.preferredBaseURL, PRIMARY_API_URL, FALLBACK_API_URL]
+    const candidates = [
+      this.preferredBaseURL,
+      PRIMARY_API_URL,
+      LOCAL_API_URL,
+      FALLBACK_API_URL,
+    ]
       .filter((value, index, arr) => arr.indexOf(value) === index);
 
     let lastError: unknown;

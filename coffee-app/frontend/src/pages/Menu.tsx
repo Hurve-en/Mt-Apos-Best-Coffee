@@ -47,8 +47,9 @@ export default function Menu() {
     const fetchFromDirectEndpoint = async (): Promise<any[]> => {
       const candidates = [
         (import.meta.env.VITE_API_URL as string) || "http://localhost:3000/api",
+        "http://localhost:3000/api",
         "http://localhost:5000/api",
-      ];
+      ].filter((value, index, arr) => arr.indexOf(value) === index);
 
       for (const base of candidates) {
         try {
@@ -71,11 +72,19 @@ export default function Menu() {
       setLoading(true);
       setError(null);
       try {
-        let products = await apiService.getProducts();
-        if (!Array.isArray(products) || products.length === 0) {
+        let products: any[] = [];
+
+        // First attempt via shared API client
+        const fromService = await apiService.getProducts();
+        if (Array.isArray(fromService)) {
+          products = fromService as any[];
+        }
+
+        // Fallback direct endpoint attempts
+        if (products.length === 0) {
           const directProducts = await fetchFromDirectEndpoint();
-          if (directProducts.length > 0) {
-            products = directProducts as any;
+          if (Array.isArray(directProducts) && directProducts.length > 0) {
+            products = directProducts;
           }
         }
 
@@ -93,6 +102,7 @@ export default function Menu() {
         setAllProducts(normalized);
       } catch (_err) {
         setError("Failed to load products. Please try again.");
+        setAllProducts([]);
       } finally {
         setLoading(false);
       }

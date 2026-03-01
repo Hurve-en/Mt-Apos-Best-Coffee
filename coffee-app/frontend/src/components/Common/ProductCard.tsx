@@ -44,7 +44,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const imageSrc = getProductImage(product.name, product.image, product.id);
 
   return (
-    <div className="group bg-pure-white rounded-2xl shadow-md hover:shadow-xl transition-transform transform hover:-translate-y-1 duration-300">
+    <div className="group h-full flex flex-col bg-pure-white rounded-2xl shadow-md hover:shadow-xl transition-transform transform hover:-translate-y-1 duration-300">
       <div className="relative overflow-hidden rounded-t-2xl mb-4 bg-neutral-100 aspect-[4/3]">
         <img
           src={imageSrc}
@@ -96,29 +96,33 @@ export default function ProductCard({ product }: ProductCardProps) {
         </p>
       </div>
 
-      <div className="px-4 pb-6 space-y-3">
-        {!isOutOfStock && (
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setQuantity(Math.max(1, quantity - 1))}
-              className="flex-1 btn btn-secondary btn-sm"
-            >
-              −
-            </button>
-            <span className="w-12 text-center font-semibold">{quantity}</span>
-            <button
-              onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-              className="flex-1 btn btn-secondary btn-sm"
-            >
-              +
-            </button>
-          </div>
-        )}
+      <div className="px-4 pb-6 mt-auto space-y-3">
+        <div className="h-10">
+          {!isOutOfStock ? (
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                className="flex-1 btn btn-secondary btn-sm"
+              >
+                −
+              </button>
+              <span className="w-12 text-center font-semibold">{quantity}</span>
+              <button
+                onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                className="flex-1 btn btn-secondary btn-sm"
+              >
+                +
+              </button>
+            </div>
+          ) : (
+            <div aria-hidden className="h-10" />
+          )}
+        </div>
 
         <button
           onClick={handleAddToCart}
           disabled={isOutOfStock}
-          className={`w-full btn rounded-lg ${
+          className={`w-full h-11 btn rounded-lg ${
             isOutOfStock
               ? "opacity-50 cursor-not-allowed bg-neutral-300"
               : "bg-coffee-500 text-pure-white hover:bg-coffee-600"

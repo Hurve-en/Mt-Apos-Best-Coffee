@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 import { clearCart } from "../redux/slices/cartSlice";
 import axios from "axios";
+import { apiService } from "../services/api";
 import L from "leaflet";
 import "../styles/premium.css";
 import "leaflet/dist/leaflet.css";
@@ -233,28 +234,18 @@ export default function Checkout() {
   const handleSubmitOrder = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        "http://localhost:3000/api/orders",
-        {
-          deliveryAddress: `${formData.address}, ${formData.city} ${formData.postalCode}`,
-          paymentMethod: formData.paymentMethod,
-          items: items.map((item: any) => ({
-            productId: Number(item.productId),
-            quantity: item.quantity,
-            price: item.price,
-          })),
-          total: finalTotal,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      await apiService.createOrder({
+        deliveryAddress: `${formData.address}, ${formData.city} ${formData.postalCode}`,
+        totalPrice: finalTotal,
+        items: items.map((item: any) => ({
+          productId: String(item.productId),
+          quantity: Number(item.quantity),
+          price: Number(item.price),
+        })),
+      });
 
-      if (response.data.success) {
-        dispatch(clearCart());
-        navigate("/orders");
-      }
+      dispatch(clearCart());
+      navigate("/orders", { state: { orderPlaced: true } });
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to place order");
     } finally {

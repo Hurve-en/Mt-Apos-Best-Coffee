@@ -79,6 +79,62 @@ async function startServer(): Promise<void> {
     await prisma.$connect();
     logger.success("Database connected successfully");
 
+    // Ensure a usable catalog exists so menu/order flows work in fresh environments.
+    const productCount = await prisma.product.count();
+    if (productCount === 0) {
+      const baseImage =
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%238B4513'/%3E%3C/svg%3E";
+
+      await prisma.product.createMany({
+        data: [
+          {
+            name: "Mt. Apo Arabica 250g",
+            description:
+              "100% Premium Arabica from Mt. Apo. Medium roast with balanced flavor.",
+            price: 399,
+            roastLevel: "Medium",
+            grind: "Whole Beans",
+            size: "250g",
+            image: baseImage,
+            stock: 50,
+          },
+          {
+            name: "Mt. Apo Arabica 500g",
+            description:
+              "Premium medium roast Arabica beans sourced from Mt. Apo.",
+            price: 689,
+            roastLevel: "Medium",
+            grind: "Ground",
+            size: "500g",
+            image: baseImage,
+            stock: 40,
+          },
+          {
+            name: "Mt. Apo Dark Roast 250g",
+            description: "Bold dark roast profile for espresso and strong brews.",
+            price: 429,
+            roastLevel: "Dark",
+            grind: "Espresso",
+            size: "250g",
+            image: baseImage,
+            stock: 35,
+          },
+          {
+            name: "Mt. Apo Light Roast 250g",
+            description: "Crisp and bright light roast with floral notes.",
+            price: 379,
+            roastLevel: "Light",
+            grind: "Whole Beans",
+            size: "250g",
+            image: baseImage,
+            stock: 45,
+          },
+        ],
+      });
+
+      logger.info("Catalog was empty, seeded default products");
+    }
+
     // Start server
     app.listen(PORT, () => {
       logger.success(`Server running on port ${PORT}`);
