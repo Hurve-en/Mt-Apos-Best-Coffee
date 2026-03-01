@@ -74,12 +74,12 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="section-gap bg-coffee-500 text-pure-white">
+      <section className="section-gap bg-white border-t border-neutral-200">
         <div className="container text-center">
-          <h2 className="mb-4 text-4xl font-extrabold uppercase leading-tight">
+          <h2 className="mb-4 text-4xl font-extrabold uppercase leading-tight text-coffee-900">
             Ready for the Perfect Brew?
           </h2>
-          <p className="text-lg mb-8 opacity-90 max-w-2xl mx-auto text-coffee-100">
+          <p className="text-lg mb-8 max-w-2xl mx-auto text-coffee-700">
             Explore our complete collection of premium Mt. Apo coffee and find
             your perfect roast
           </p>

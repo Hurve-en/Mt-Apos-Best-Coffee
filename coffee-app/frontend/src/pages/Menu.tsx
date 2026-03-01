@@ -191,10 +191,10 @@ export default function Menu() {
 
   return (
     <div className="min-h-screen bg-coffee-50">
-      <section className="section-gap bg-coffee-700 text-white">
+      <section className="section-gap bg-white border-b border-neutral-200">
         <div className="container">
-          <h1 className="text-5xl font-bold mb-2">Our Coffee Menu</h1>
-          <p className="text-lg opacity-90">
+          <h1 className="text-5xl font-bold mb-3 text-coffee-900">Our Coffee Menu</h1>
+          <p className="text-lg text-coffee-700 max-w-2xl leading-relaxed">
             Premium Mt. Apo beans, roasted for balance and depth.
           </p>
         </div>
