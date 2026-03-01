@@ -45,7 +45,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <div className="group bg-pure-white rounded-2xl shadow-md hover:shadow-xl transition-transform transform hover:-translate-y-1 duration-300">
-      <div className="relative overflow-hidden rounded-t-2xl mb-4 bg-neutral-100 aspect-square">
+      <div className="relative overflow-hidden rounded-t-2xl mb-4 bg-neutral-100 aspect-[4/3]">
         <img
           src={imageSrc}
           alt={product.name}

@@ -2,6 +2,7 @@ import type { Response } from "express";
 import type { AuthRequest } from "../middleware/auth.ts";
 import { orderService } from "../services/orderService.ts";
 import { logger } from "../utils/logger.ts";
+import { AppError } from "../utils/errorHandler.ts";
 
 export const orderController = {
   // Create order
@@ -19,8 +20,14 @@ export const orderController = {
         return;
       }
 
+      const normalizedItems = (items as any[]).map((item) => ({
+        productId: Number(item.productId),
+        quantity: Number(item.quantity),
+        price: Number(item.price),
+      }));
+
       const order = await orderService.createOrder(Number(req.user.id), {
-        items,
+        items: normalizedItems,
       });
 
       logger.success("Order created", {
@@ -35,6 +42,10 @@ export const orderController = {
       });
     } catch (error) {
       logger.error("Create order error", error);
+      if (error instanceof AppError) {
+        res.status(error.statusCode).json({ message: error.message });
+        return;
+      }
       res.status(500).json({ message: "Failed to create order" });
     }
   },
@@ -123,6 +134,10 @@ export const orderController = {
       });
     } catch (error) {
       logger.error("Update order status error", error);
+      if (error instanceof AppError) {
+        res.status(error.statusCode).json({ message: error.message });
+        return;
+      }
       res.status(500).json({ message: "Failed to update order" });
     }
   },
@@ -142,7 +157,9 @@ export const orderController = {
       });
     } catch (error) {
       logger.error("Cancel order error", error);
-      if (error instanceof Error) {
+      if (error instanceof AppError) {
+        res.status(error.statusCode).json({ message: error.message });
+      } else if (error instanceof Error) {
         res.status(400).json({ message: error.message });
       } else {
         res.status(500).json({ message: "Failed to cancel order" });

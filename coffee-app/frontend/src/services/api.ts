@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosError } from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 import {
   AuthResponse,
   LoginRequest,
@@ -8,21 +8,24 @@ import {
   OrderRequest,
 } from "../types";
 
-const API_URL =
+const PRIMARY_API_URL =
   (import.meta.env.VITE_API_URL as string) || "http://localhost:3000/api";
+const FALLBACK_API_URL = "http://localhost:5000/api";
 
 class ApiService {
   private api: AxiosInstance;
+  private baseURL: string;
 
   constructor() {
+    this.baseURL = PRIMARY_API_URL;
     this.api = axios.create({
-      baseURL: API_URL,
+      baseURL: this.baseURL,
       headers: {
         "Content-Type": "application/json",
       },
+      timeout: 10000,
     });
 
-    // Add token to requests
     this.api.interceptors.request.use((config) => {
       const token = localStorage.getItem("token");
       if (token) {
@@ -31,7 +34,6 @@ class ApiService {
       return config;
     });
 
-    // Handle responses
     this.api.interceptors.response.use(
       (response) => response,
       (error: AxiosError) => {
@@ -45,77 +47,123 @@ class ApiService {
     );
   }
 
-  // Auth endpoints
+  private async requestWithFallback<T>(config: AxiosRequestConfig): Promise<T> {
+    try {
+      const response = await this.api.request<T>(config);
+      return response.data;
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      const shouldFallback =
+        !axiosError.response && this.baseURL !== FALLBACK_API_URL;
+
+      if (!shouldFallback) {
+        throw error;
+      }
+
+      this.baseURL = FALLBACK_API_URL;
+      this.api.defaults.baseURL = FALLBACK_API_URL;
+
+      const fallbackResponse = await this.api.request<T>(config);
+      return fallbackResponse.data;
+    }
+  }
+
   async login(data: LoginRequest): Promise<AuthResponse> {
-    const response = await this.api.post<AuthResponse>("/auth/login", data);
-    return response.data;
+    return this.requestWithFallback<AuthResponse>({
+      method: "post",
+      url: "/auth/login",
+      data,
+    });
   }
 
   async register(data: RegisterRequest): Promise<AuthResponse> {
-    const response = await this.api.post<AuthResponse>("/auth/register", data);
-    return response.data;
+    return this.requestWithFallback<AuthResponse>({
+      method: "post",
+      url: "/auth/register",
+      data,
+    });
   }
 
   async getCurrentUser() {
-    const response = await this.api.get("/auth/me");
-    return response.data;
+    return this.requestWithFallback({
+      method: "get",
+      url: "/auth/me",
+    });
   }
 
-  // Product endpoints
   async getProducts() {
-    const response = await this.api.get<{ products: Product[] }>("/products");
-    return response.data.products || [];
+    const data = await this.requestWithFallback<any>({
+      method: "get",
+      url: "/products",
+    });
+    return (data.data || data.products || []) as Product[];
   }
 
   async getProductById(id: string) {
-    const response = await this.api.get<{ product: Product }>(
-      `/products/${id}`,
-    );
-    return response.data.product;
+    const data = await this.requestWithFallback<any>({
+      method: "get",
+      url: `/products/${id}`,
+    });
+    return (data.data || data.product) as Product;
   }
 
   async getProductsByCategory(category: string) {
-    const response = await this.api.get<{ products: Product[] }>(
-      `/products/category/${category}`,
-    );
-    return response.data.products || [];
+    const data = await this.requestWithFallback<any>({
+      method: "get",
+      url: `/products/category/${category}`,
+    });
+    return (data.data || data.products || []) as Product[];
   }
 
-  // User endpoints
   async getProfile() {
-    const response = await this.api.get("/users/profile");
-    return response.data.user;
+    const data = await this.requestWithFallback<any>({
+      method: "get",
+      url: "/users/profile",
+    });
+    return data.user;
   }
 
   async updateProfile(data: any) {
-    const response = await this.api.put("/users/profile", data);
-    return response.data.user;
+    const response = await this.requestWithFallback<any>({
+      method: "put",
+      url: "/users/profile",
+      data,
+    });
+    return response.user;
   }
 
-  // Order endpoints
   async createOrder(data: OrderRequest) {
-    const response = await this.api.post<{ order: Order }>("/orders", data);
-    return response.data.order;
+    const response = await this.requestWithFallback<any>({
+      method: "post",
+      url: "/orders",
+      data,
+    });
+    return response.order;
   }
 
   async getOrders() {
-    const response = await this.api.get<{ orders: Order[] }>(
-      "/orders/my-orders",
-    );
-    return response.data.orders || [];
+    const response = await this.requestWithFallback<any>({
+      method: "get",
+      url: "/orders/my-orders",
+    });
+    return (response.orders || response.data || []) as Order[];
   }
 
   async getOrderById(id: string) {
-    const response = await this.api.get<{ order: Order }>(`/orders/${id}`);
-    return response.data.order;
+    const response = await this.requestWithFallback<any>({
+      method: "get",
+      url: `/orders/${id}`,
+    });
+    return (response.order || response.data) as Order;
   }
 
   async cancelOrder(id: string) {
-    const response = await this.api.patch<{ order: Order }>(
-      `/orders/${id}/cancel`,
-      {},
-    );
-    return response.data.order;
+    const response = await this.requestWithFallback<any>({
+      method: "patch",
+      url: `/orders/${id}/cancel`,
+      data: {},
+    });
+    return response.order as Order;
   }
 }
 

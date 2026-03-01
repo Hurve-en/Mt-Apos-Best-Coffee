@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../hooks/useRedux";
 import { apiService } from "../services/api";
 import { getProductImage } from "../utils/productImages";
+import { AxiosError } from "axios";
 
 interface ApiOrderItem {
   id: number;
@@ -85,8 +86,14 @@ const Orders: React.FC = () => {
     try {
       const data = await apiService.getOrders();
       setOrders(normalizeOrders(Array.isArray(data) ? data : []));
-    } catch (_err) {
-      setError("Failed to load your orders. Please try again.");
+    } catch (err) {
+      const axiosError = err as AxiosError<{ message?: string }>;
+      const message =
+        axiosError.response?.data?.message ||
+        (axiosError.code === "ECONNABORTED"
+          ? "Request timed out. Please try again."
+          : "Failed to load your orders. Please try again.");
+      setError(message);
       setOrders([]);
     } finally {
       setLoading(false);

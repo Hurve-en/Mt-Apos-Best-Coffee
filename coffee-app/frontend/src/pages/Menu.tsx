@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import axios from "axios";
 import ProductCard from "../components/Common/ProductCard";
+import { apiService } from "../services/api";
 import "../styles/premium.css";
 
 interface Product {
@@ -29,14 +29,11 @@ export default function Menu() {
   const navigate = useNavigate();
   const user = useSelector((state: any) => state.auth.user);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<"price-asc" | "price-desc" | "name">(
-    "price-asc",
+    "name",
   );
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(12);
 
   const [filters, setFilters] = useState<Filters>({
     roastLevel: [],
@@ -46,133 +43,92 @@ export default function Menu() {
     searchTerm: "",
   });
 
-  // Fetch products helper
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get("http://localhost:3000/api/products");
-      if (response.data.success) {
-        setAllProducts(response.data.data || []);
-      }
-    } catch (err) {
-      setError("Failed to load products");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Fetch products on mount
   useEffect(() => {
-    fetchProducts();
+    const fetchProducts = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const products = await apiService.getProducts();
+        const normalized = (products as any[]).map((product) => ({
+          id: Number(product.id),
+          name: String(product.name || ""),
+          description: String(product.description || ""),
+          price: Number(product.price || 0),
+          image: String(product.image || ""),
+          roastLevel: String(product.roastLevel || "Medium"),
+          grind: String(product.grind || "Ground"),
+          size: String(product.size || "250g"),
+          stock: Number(product.stock ?? 0),
+        }));
+        setAllProducts(normalized);
+      } catch (_err) {
+        setError("Failed to load products. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void fetchProducts();
   }, []);
 
-  // Apply filters and search
-  useEffect(() => {
+  const filteredProducts = useMemo(() => {
     let result = [...allProducts];
 
-    // Search filter
     if (filters.searchTerm) {
+      const term = filters.searchTerm.toLowerCase();
       result = result.filter(
         (product) =>
-          product.name
-            .toLowerCase()
-            .includes(filters.searchTerm.toLowerCase()) ||
-          product.description
-            .toLowerCase()
-            .includes(filters.searchTerm.toLowerCase()),
+          product.name.toLowerCase().includes(term) ||
+          product.description.toLowerCase().includes(term),
       );
     }
 
-    // Roast level filter
     if (filters.roastLevel.length > 0) {
       result = result.filter((product) =>
-        filters.roastLevel.includes(product.roastLevel),
+        filters.roastLevel
+          .map((r) => r.toLowerCase())
+          .includes(product.roastLevel.toLowerCase()),
       );
     }
 
-    // Grind type filter
     if (filters.grind.length > 0) {
       result = result.filter((product) =>
-        filters.grind.includes(product.grind),
+        filters.grind
+          .map((g) => g.toLowerCase())
+          .includes(product.grind.toLowerCase()),
       );
     }
 
-    // Size filter
     if (filters.size.length > 0) {
       result = result.filter((product) => filters.size.includes(product.size));
     }
 
-    // Price range filter
     result = result.filter(
       (product) =>
         product.price >= filters.priceRange[0] &&
         product.price <= filters.priceRange[1],
     );
 
-    // Sort
-    if (sortBy === "price-asc") {
-      result.sort((a, b) => a.price - b.price);
-    } else if (sortBy === "price-desc") {
-      result.sort((a, b) => b.price - a.price);
-    } else if (sortBy === "name") {
-      result.sort((a, b) => a.name.localeCompare(b.name));
-    }
+    if (sortBy === "price-asc") result.sort((a, b) => a.price - b.price);
+    if (sortBy === "price-desc") result.sort((a, b) => b.price - a.price);
+    if (sortBy === "name") result.sort((a, b) => a.name.localeCompare(b.name));
 
-    setFilteredProducts(result);
-    setCurrentPage(1); // Reset to first page when filters change
-  }, [filters, sortBy, allProducts]);
+    return result;
+  }, [allProducts, filters, sortBy]);
 
-  // Pagination
-  const paginatedProducts = filteredProducts.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
-  );
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-
-  // Handle filter changes
-  const handleRoastLevelChange = (roast: string) => {
+  const handleToggle = (
+    key: "roastLevel" | "grind" | "size",
+    value: string,
+  ) => {
     setFilters((prev) => ({
       ...prev,
-      roastLevel: prev.roastLevel.includes(roast)
-        ? prev.roastLevel.filter((r) => r !== roast)
-        : [...prev.roastLevel, roast],
+      [key]: prev[key].includes(value)
+        ? prev[key].filter((item) => item !== value)
+        : [...prev[key], value],
     }));
   };
 
-  const handleGrindChange = (grind: string) => {
-    setFilters((prev) => ({
-      ...prev,
-      grind: prev.grind.includes(grind)
-        ? prev.grind.filter((g) => g !== grind)
-        : [...prev.grind, grind],
-    }));
-  };
-
-  const handleSizeChange = (size: string) => {
-    setFilters((prev) => ({
-      ...prev,
-      size: prev.size.includes(size)
-        ? prev.size.filter((s) => s !== size)
-        : [...prev.size, size],
-    }));
-  };
-
-  const handlePriceChange = (newPrice: [number, number]) => {
-    setFilters((prev) => ({
-      ...prev,
-      priceRange: newPrice,
-    }));
-  };
-
-  const handleSearchChange = (term: string) => {
-    setFilters((prev) => ({
-      ...prev,
-      searchTerm: term,
-    }));
-  };
-
-  const handleClearFilters = () => {
+  const clearFilters = () => {
     setFilters({
       roastLevel: [],
       grind: [],
@@ -185,11 +141,9 @@ export default function Menu() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-coffee-50">
-        <div className="text-center">
-          <div className="animate-pulse mb-4 text-4xl">☕</div>
-          <p className="text-coffee-900 font-semibold">
-            Loading premium coffee menu...
-          </p>
+        <div className="text-center animate-fade-in-up">
+          <div className="w-10 h-10 border-4 border-coffee-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-coffee-900 font-semibold">Loading premium coffee menu...</p>
         </div>
       </div>
     );
@@ -197,284 +151,132 @@ export default function Menu() {
 
   return (
     <div className="min-h-screen bg-coffee-50">
-      {/* Header */}
       <section className="section-gap bg-coffee-700 text-white">
         <div className="container">
           <h1 className="text-5xl font-bold mb-2">Our Coffee Menu</h1>
           <p className="text-lg opacity-90">
-            Discover our curated selection of premium Mt. Apo coffee
+            Premium Mt. Apo beans, roasted for balance and depth.
           </p>
         </div>
       </section>
 
-      {/* Main Content */}
       <section className="section-gap">
-        <div className="container">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            {/* Sidebar Filters */}
-            <aside className="lg:col-span-1">
-              <div className="sticky top-20 bg-white rounded-2xl shadow-lg p-6">
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-xl font-bold text-coffee-900">Filters</h3>
-                  {(filters.roastLevel.length > 0 ||
-                    filters.grind.length > 0 ||
-                    filters.size.length > 0 ||
-                    filters.searchTerm ||
-                    filters.priceRange[0] !== 0 ||
-                    filters.priceRange[1] !== 2000) && (
-                    <button
-                      onClick={handleClearFilters}
-                      className="text-sm text-accent hover:text-coffee-900 transition"
-                    >
-                      Clear All
-                    </button>
-                  )}
-                </div>
+        <div className="container space-y-6">
+          <div className="bg-white rounded-2xl shadow-md p-4 md:p-6 space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <input
+                type="text"
+                value={filters.searchTerm}
+                onChange={(e) =>
+                  setFilters((prev) => ({ ...prev, searchTerm: e.target.value }))
+                }
+                placeholder="Search coffee"
+                className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+              />
 
-                {/* Search */}
-                <div className="mb-6">
-                  <label className="block text-sm font-semibold text-coffee-900 mb-2">
-                    Search
-                  </label>
-                  <input
-                    type="text"
-                    value={filters.searchTerm}
-                    onChange={(e) => handleSearchChange(e.target.value)}
-                    placeholder="Search products..."
-                    className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
-                  />
-                </div>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+                className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+              >
+                <option value="name">Sort: Name</option>
+                <option value="price-asc">Sort: Price Low to High</option>
+                <option value="price-desc">Sort: Price High to Low</option>
+              </select>
 
-                {/* Roast Level */}
-                <div className="mb-6 pb-6 border-b border-neutral-300 border-opacity-30">
-                  <h4 className="font-semibold text-coffee-900 mb-3">Roast Level</h4>
-                  <div className="space-y-2">
-                    {["Light", "Medium", "Dark"].map((roast) => (
-                      <label
-                        key={roast}
-                        className="flex items-center cursor-pointer group"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={filters.roastLevel.includes(roast)}
-                          onChange={() => handleRoastLevelChange(roast)}
-                          className="w-4 h-4 text-accent rounded cursor-pointer"
-                        />
-                        <span className="ml-2 text-coffee-900 group-hover:text-accent transition">
-                          {roast}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
+              <button onClick={clearFilters} className="btn btn-secondary btn-sm w-full">
+                Clear Filters
+              </button>
+            </div>
 
-                {/* Grind Type */}
-                <div className="mb-6 pb-6 border-b border-neutral-300 border-opacity-30">
-                  <h4 className="font-semibold text-coffee-900 mb-3">Grind Type</h4>
-                  <div className="space-y-2">
-                    {["Whole Beans", "Ground", "Espresso"].map((grind) => (
-                      <label
-                        key={grind}
-                        className="flex items-center cursor-pointer group"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={filters.grind.includes(grind)}
-                          onChange={() => handleGrindChange(grind)}
-                          className="w-4 h-4 text-accent rounded cursor-pointer"
-                        />
-                        <span className="ml-2 text-coffee-900 group-hover:text-accent transition">
-                          {grind}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Size */}
-                <div className="mb-6 pb-6 border-b border-neutral-300 border-opacity-30">
-                  <h4 className="font-semibold text-coffee-900 mb-3">Size</h4>
-                  <div className="space-y-2">
-                    {["250g", "500g", "1kg"].map((size) => (
-                      <label
-                        key={size}
-                        className="flex items-center cursor-pointer group"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={filters.size.includes(size)}
-                          onChange={() => handleSizeChange(size)}
-                          className="w-4 h-4 text-accent rounded cursor-pointer"
-                        />
-                        <span className="ml-2 text-coffee-900 group-hover:text-accent transition">
-                          {size}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Price Range */}
-                <div>
-                  <h4 className="font-semibold text-coffee-900 mb-3">Price Range</h4>
-                  <div className="space-y-3">
-                    <div>
-                      <label className="text-sm text-coffee-700 mb-2 block">
-                        Min: ₱{filters.priceRange[0]}
-                      </label>
-                      <input
-                        type="range"
-                        min="0"
-                        max="2000"
-                        value={filters.priceRange[0]}
-                        onChange={(e) => {
-                          const newMin = Number(e.target.value);
-                          if (newMin < filters.priceRange[1]) {
-                            handlePriceChange([newMin, filters.priceRange[1]]);
-                          }
-                        }}
-                        className="w-full"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-sm text-coffee-700 mb-2 block">
-                        Max: ₱{filters.priceRange[1]}
-                      </label>
-                      <input
-                        type="range"
-                        min="0"
-                        max="2000"
-                        value={filters.priceRange[1]}
-                        onChange={(e) => {
-                          const newMax = Number(e.target.value);
-                          if (newMax > filters.priceRange[0]) {
-                            handlePriceChange([filters.priceRange[0], newMax]);
-                          }
-                        }}
-                        className="w-full"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </aside>
-
-            {/* Products Grid */}
-            <div className="lg:col-span-3">
-              {/* Toolbar */}
-              <div className="flex justify-between items-center mb-8 bg-white rounded-2xl shadow-lg p-4">
-                <p className="text-coffee-700 font-semibold">
-                  Showing{" "}
-                  {paginatedProducts.length > 0
-                    ? (currentPage - 1) * itemsPerPage + 1
-                    : 0}
-                  -
-                  {Math.min(
-                    currentPage * itemsPerPage,
-                    filteredProducts.length,
-                  )}{" "}
-                  of {filteredProducts.length} products
-                </p>
-                <div className="flex items-center gap-4">
-                  {user?.role === "admin" && (
-                    <button
-                      onClick={() => navigate("/admin/products")}
-                      className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition font-semibold text-sm"
-                    >
-                      ✓ Add New Product
-                    </button>
-                  )}
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value as any)}
-                    className="px-4 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div className="flex flex-wrap gap-2">
+                {["Light", "Medium", "Dark"].map((roast) => (
+                  <button
+                    key={roast}
+                    onClick={() => handleToggle("roastLevel", roast)}
+                    className={`px-3 py-1.5 rounded-full text-sm border transition ${
+                      filters.roastLevel.includes(roast)
+                        ? "bg-coffee-700 text-white border-coffee-700"
+                        : "bg-white text-coffee-800 border-neutral-300 hover:border-coffee-700"
+                    }`}
                   >
-                    <option value="price-asc">Price: Low to High</option>
-                    <option value="price-desc">Price: High to Low</option>
-                    <option value="name">Name: A to Z</option>
-                  </select>
-                </div>
+                    {roast}
+                  </button>
+                ))}
               </div>
 
-              {/* Products Grid */}
-              {filteredProducts.length === 0 ? (
-                <div className="text-center py-16">
-                  <p className="text-2xl text-coffee-700 mb-4">No products found</p>
-                  <div className="space-x-4">
-                    <button
-                      onClick={handleClearFilters}
-                      className="text-accent font-semibold hover:text-coffee-900 transition"
-                    >
-                      Clear filters
-                    </button>
-                    <button
-                      onClick={fetchProducts}
-                      className="text-accent font-semibold hover:text-coffee-900 transition"
-                    >
-                      Reload products
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <div className="grid grid-1 sm:grid-2 lg:grid-4 gap-6 mb-8">
-                    {paginatedProducts.map((product) => (
-                      <ProductCard key={product.id} product={product} />
-                    ))}
-                  </div>
+              <div className="flex flex-wrap gap-2">
+                {["Whole Beans", "Ground", "Espresso"].map((grind) => (
+                  <button
+                    key={grind}
+                    onClick={() => handleToggle("grind", grind)}
+                    className={`px-3 py-1.5 rounded-full text-sm border transition ${
+                      filters.grind.includes(grind)
+                        ? "bg-coffee-700 text-white border-coffee-700"
+                        : "bg-white text-coffee-800 border-neutral-300 hover:border-coffee-700"
+                    }`}
+                  >
+                    {grind}
+                  </button>
+                ))}
+              </div>
 
-                  {/* Pagination */}
-                  {totalPages > 1 && (
-                    <div className="flex justify-center items-center gap-2">
-                      <button
-                        onClick={() =>
-                          setCurrentPage((p) => Math.max(1, p - 1))
-                        }
-                        disabled={currentPage === 1}
-                        className="px-4 py-2 border border-neutral-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-coffee-50 transition"
-                      >
-                        ← Previous
-                      </button>
-
-                      {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                        (page) => (
-                          <button
-                            key={page}
-                            onClick={() => setCurrentPage(page)}
-                            className={`px-4 py-2 rounded-lg transition ${
-                              currentPage === page
-                                ? "bg-accent text-white font-semibold"
-                                : "border border-neutral-300 hover:bg-coffee-50"
-                            }`}
-                          >
-                            {page}
-                          </button>
-                        ),
-                      )}
-
-                      <button
-                        onClick={() =>
-                          setCurrentPage((p) => Math.min(totalPages, p + 1))
-                        }
-                        disabled={currentPage === totalPages}
-                        className="px-4 py-2 border border-neutral-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-coffee-50 transition"
-                      >
-                        Next →
-                      </button>
-                    </div>
-                  )}
-                </>
-              )}
+              <div className="flex flex-wrap gap-2">
+                {["250g", "500g", "1kg"].map((size) => (
+                  <button
+                    key={size}
+                    onClick={() => handleToggle("size", size)}
+                    className={`px-3 py-1.5 rounded-full text-sm border transition ${
+                      filters.size.includes(size)
+                        ? "bg-coffee-700 text-white border-coffee-700"
+                        : "bg-white text-coffee-800 border-neutral-300 hover:border-coffee-700"
+                    }`}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
+
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl">
+              {error}
+            </div>
+          )}
+
+          <div className="flex items-center justify-between">
+            <p className="text-coffee-700 font-medium">
+              {filteredProducts.length} product{filteredProducts.length === 1 ? "" : "s"}
+            </p>
+            {user?.role === "admin" && (
+              <button
+                onClick={() => navigate("/admin/products")}
+                className="btn btn-primary btn-sm"
+              >
+                Manage Products
+              </button>
+            )}
+          </div>
+
+          {filteredProducts.length === 0 ? (
+            <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
+              <h3 className="text-2xl font-bold text-coffee-900 mb-2">No products found</h3>
+              <p className="text-coffee-700 mb-6">Try adjusting search or filters.</p>
+              <button onClick={clearFilters} className="btn btn-secondary">
+                Reset Filters
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
-
-      {error && (
-        <div className="fixed bottom-4 right-4 bg-red-500 text-white px-6 py-4 rounded-lg shadow-lg">
-          {error}
-        </div>
-      )}
     </div>
   );
 }
