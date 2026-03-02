@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../hooks/useRedux";
-import { loginSuccess } from "../redux/slices/authSlice";
 import axios from "axios";
 import logo from "../Images/Logo.jpg";
+import { useAppDispatch } from "../hooks/useRedux";
+import { loginSuccess } from "../redux/slices/authSlice";
 import "../styles/premium.css";
 
 export default function Register() {
@@ -27,6 +27,7 @@ export default function Register() {
       ...prev,
       [name]: value,
     }));
+
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -37,11 +38,13 @@ export default function Register() {
 
   const getPasswordStrength = (password: string) => {
     if (!password) return 0;
+
     let strength = 0;
-    if (password.length >= 8) strength++;
-    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
-    if (/\d/.test(password)) strength++;
-    if (/[^a-zA-Z\d]/.test(password)) strength++;
+    if (password.length >= 8) strength += 1;
+    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength += 1;
+    if (/\d/.test(password)) strength += 1;
+    if (/[^a-zA-Z\d]/.test(password)) strength += 1;
+
     return strength;
   };
 
@@ -50,16 +53,19 @@ export default function Register() {
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.name.trim()) newErrors.name = "Full name is required";
-    if (!formData.email) newErrors.email = "Email is required";
+    if (!formData.name.trim()) newErrors.name = "Full name is required.";
+    if (!formData.email) newErrors.email = "Email is required.";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = "Please enter a valid email address.";
     }
-    if (!formData.password) newErrors.password = "Password is required";
-    if (formData.password.length < 8)
-      newErrors.password = "Password must be at least 8 characters";
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
+    if (!formData.password) newErrors.password = "Password is required.";
+    if (formData.password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters.";
+    }
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = "Please confirm your password.";
+    } else if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match.";
     }
 
     setErrors(newErrors);
@@ -74,15 +80,12 @@ export default function Register() {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/auth/register",
-        {
-          email: formData.email,
-          password: formData.password,
-          name: formData.name,
-          phone: formData.phone || undefined,
-        },
-      );
+      const response = await axios.post("http://localhost:3000/api/auth/register", {
+        email: formData.email,
+        password: formData.password,
+        name: formData.name,
+        phone: formData.phone || undefined,
+      });
 
       if (response.data.success) {
         const { token, user } = response.data;
@@ -98,121 +101,146 @@ export default function Register() {
 
         navigate("/");
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       const errorMsg =
-        err.response?.data?.message || "Registration failed. Please try again.";
+        axios.isAxiosError(err) && err.response?.data?.message
+          ? String(err.response.data.message)
+          : "Registration failed. Please try again.";
       setErrors({ submit: errorMsg });
     } finally {
       setLoading(false);
     }
   };
 
+  const strengthLabel =
+    passwordStrength <= 1
+      ? "Weak"
+      : passwordStrength === 2
+        ? "Fair"
+        : passwordStrength === 3
+          ? "Good"
+          : "Strong";
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50 flex items-center justify-center py-12 px-4">
-      <div className="max-w-md w-full">
-        {/* Card */}
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
-          {/* Header */}
-          <div className="bg-gray-800 text-white py-12 text-center">
-            <img
-              src={logo}
-              alt="Apo Coffee Logo"
-              className="w-24 h-24 mx-auto mb-4"
-            />
-            <h1 className="text-4xl font-bold mb-2">Apo Coffee</h1>
-            <p className="text-lg opacity-90">Join our coffee community!</p>
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-coffee-50 via-white to-coffee-100 px-4 py-8 sm:py-12">
+      <div className="pointer-events-none absolute -left-20 top-10 h-72 w-72 rounded-full bg-coffee-200/35 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-coffee-300/30 blur-3xl" />
+
+      <div className="relative mx-auto grid w-full max-w-5xl overflow-hidden rounded-3xl border border-coffee-200 bg-white shadow-2xl lg:grid-cols-[1fr_1.1fr]">
+        <aside className="hidden bg-coffee-900 p-10 text-white lg:flex lg:flex-col lg:justify-between">
+          <div>
+            <div className="mb-10 inline-flex items-center gap-3 rounded-full border border-white/30 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/90">
+              Freshly Brewed Access
+            </div>
+            <h1 className="mb-4 text-4xl font-bold leading-tight text-white">
+              Create your account.
+              <br />
+              Start your best coffee days.
+            </h1>
+            <p className="max-w-sm text-base text-coffee-100">
+              Save favorites, track deliveries, and earn loyalty perks across
+              every cup.
+            </p>
           </div>
 
-          {/* Form Content */}
-          <div className="p-8 space-y-5">
-            {/* Error Message */}
+          <div className="rounded-2xl border border-white/20 bg-white/10 p-5 backdrop-blur-sm">
+            <p className="mb-2 text-sm font-semibold text-white">Why sign up?</p>
+            <ul className="space-y-2 text-sm text-coffee-100">
+              <li>Faster checkout for repeat orders</li>
+              <li>Order tracking in one place</li>
+              <li>Priority access to new blends</li>
+            </ul>
+          </div>
+        </aside>
+
+        <main className="p-6 sm:p-10">
+          <div className="mx-auto max-w-md">
+            <div className="mb-8 flex items-center gap-3">
+              <img
+                src={logo}
+                alt="Apo Coffee Logo"
+                className="h-12 w-12 rounded-xl object-cover"
+              />
+              <div>
+                <p className="text-xl font-bold text-coffee-900">Apo Coffee</p>
+                <p className="text-xs uppercase tracking-[0.16em] text-coffee-600">
+                  Create your account
+                </p>
+              </div>
+            </div>
+
             {errors.submit && (
-              <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
-                <p className="text-red-800 font-semibold">Error: {errors.submit}</p>
+              <div
+                className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+                role="alert"
+              >
+                {errors.submit}
               </div>
             )}
 
-            {/* Form */}
-            <form className="space-y-5" onSubmit={handleSubmit}>
-              {/* Name */}
+            <form className="space-y-4" onSubmit={handleSubmit}>
               <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-semibold text-black mb-2"
-                >
-                  Full Name
+                <label htmlFor="name" className="mb-2 block text-sm font-semibold text-coffee-900">
+                  Full name
                 </label>
                 <input
                   id="name"
                   name="name"
                   type="text"
                   required
+                  autoComplete="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition ${
+                  className={`w-full rounded-xl border bg-white px-4 py-3 text-coffee-900 placeholder:text-coffee-400 focus:outline-none focus:ring-2 ${
                     errors.name
-                      ? "border-red-500 focus:ring-red-300"
-                      : "border-gray-300 focus:ring-accent"
+                      ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                      : "border-coffee-200 focus:border-coffee-500 focus:ring-coffee-200"
                   }`}
                   placeholder="Juan Dela Cruz"
                 />
-                {errors.name && (
-                  <p className="mt-1 text-sm text-red-600">Remove {errors.name}</p>
-                )}
+                {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
               </div>
 
-              {/* Email */}
               <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-semibold text-black mb-2"
-                >
-                  Email Address
+                <label htmlFor="email" className="mb-2 block text-sm font-semibold text-coffee-900">
+                  Email address
                 </label>
                 <input
                   id="email"
                   name="email"
                   type="email"
                   required
+                  autoComplete="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition ${
+                  className={`w-full rounded-xl border bg-white px-4 py-3 text-coffee-900 placeholder:text-coffee-400 focus:outline-none focus:ring-2 ${
                     errors.email
-                      ? "border-red-500 focus:ring-red-300"
-                      : "border-gray-300 focus:ring-accent"
+                      ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                      : "border-coffee-200 focus:border-coffee-500 focus:ring-coffee-200"
                   }`}
                   placeholder="you@example.com"
                 />
-                {errors.email && (
-                  <p className="mt-1 text-sm text-red-600">Remove {errors.email}</p>
-                )}
+                {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
               </div>
 
-              {/* Phone */}
               <div>
-                <label
-                  htmlFor="phone"
-                  className="block text-sm font-semibold text-black mb-2"
-                >
-                  Phone Number (Optional)
+                <label htmlFor="phone" className="mb-2 block text-sm font-semibold text-coffee-900">
+                  Phone number <span className="text-coffee-500">(optional)</span>
                 </label>
                 <input
                   id="phone"
                   name="phone"
                   type="tel"
+                  autoComplete="tel"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
+                  className="w-full rounded-xl border border-coffee-200 bg-white px-4 py-3 text-coffee-900 placeholder:text-coffee-400 focus:border-coffee-500 focus:outline-none focus:ring-2 focus:ring-coffee-200"
                   placeholder="+63 9XX XXX XXXX"
                 />
               </div>
 
-              {/* Password */}
               <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-semibold text-black mb-2"
-                >
+                <label htmlFor="password" className="mb-2 block text-sm font-semibold text-coffee-900">
                   Password
                 </label>
                 <div className="relative">
@@ -221,70 +249,59 @@ export default function Register() {
                     name="password"
                     type={showPassword ? "text" : "password"}
                     required
+                    autoComplete="new-password"
                     value={formData.password}
                     onChange={handleChange}
-                    className={`w-full px-4 py-3 pr-12 border rounded-lg focus:outline-none focus:ring-2 transition ${
+                    className={`w-full rounded-xl border bg-white px-4 py-3 pr-20 text-coffee-900 placeholder:text-coffee-400 focus:outline-none focus:ring-2 ${
                       errors.password
-                        ? "border-red-500 focus:ring-red-300"
-                        : "border-gray-300 focus:ring-accent"
+                        ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                        : "border-coffee-200 focus:border-coffee-500 focus:ring-coffee-200"
                     }`}
-                    placeholder="••••••••"
+                    placeholder="Use 8+ characters"
                   />
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-coffee-700 hover:text-black transition"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md px-2 py-1 text-sm font-semibold text-coffee-700 hover:bg-coffee-100"
                   >
                     {showPassword ? "Hide" : "Show"}
                   </button>
                 </div>
                 {errors.password && (
-                  <p className="mt-1 text-sm text-red-600">
-                    Remove {errors.password}
-                  </p>
+                  <p className="mt-1 text-xs text-red-600">{errors.password}</p>
                 )}
+
                 {formData.password && (
                   <div className="mt-2">
-                    <div className="flex gap-1 h-2">
-                      {[1, 2, 3, 4].map((i) => (
+                    <div className="flex h-2 gap-1">
+                      {[1, 2, 3, 4].map((level) => (
                         <div
-                          key={i}
+                          key={level}
                           className={`flex-1 rounded-full ${
-                            i <= passwordStrength
-                              ? i === 1
+                            level <= passwordStrength
+                              ? level <= 1
                                 ? "bg-red-500"
-                                : i === 2
-                                  ? "bg-yellow-500"
-                                  : i === 3
-                                    ? "bg-blue-500"
+                                : level === 2
+                                  ? "bg-orange-400"
+                                  : level === 3
+                                    ? "bg-yellow-500"
                                     : "bg-green-500"
-                              : "bg-gray-200"
+                              : "bg-coffee-100"
                           }`}
                         />
                       ))}
                     </div>
-                    <p className="text-xs text-coffee-700 mt-1">
-                      {passwordStrength === 0
-                        ? "Very Weak"
-                        : passwordStrength === 1
-                          ? "Weak"
-                          : passwordStrength === 2
-                            ? "Fair"
-                            : passwordStrength === 3
-                              ? "Good"
-                              : "Strong"}
-                    </p>
+                    <p className="mt-1 text-xs text-coffee-600">Strength: {strengthLabel}</p>
                   </div>
                 )}
               </div>
 
-              {/* Confirm Password */}
               <div>
                 <label
                   htmlFor="confirmPassword"
-                  className="block text-sm font-semibold text-black mb-2"
+                  className="mb-2 block text-sm font-semibold text-coffee-900"
                 >
-                  Confirm Password
+                  Confirm password
                 </label>
                 <div className="relative">
                   <input
@@ -292,73 +309,59 @@ export default function Register() {
                     name="confirmPassword"
                     type={showConfirmPassword ? "text" : "password"}
                     required
+                    autoComplete="new-password"
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className={`w-full px-4 py-3 pr-12 border rounded-lg focus:outline-none focus:ring-2 transition ${
+                    className={`w-full rounded-xl border bg-white px-4 py-3 pr-20 text-coffee-900 placeholder:text-coffee-400 focus:outline-none focus:ring-2 ${
                       errors.confirmPassword
-                        ? "border-red-500 focus:ring-red-300"
-                        : "border-gray-300 focus:ring-accent"
+                        ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                        : "border-coffee-200 focus:border-coffee-500 focus:ring-coffee-200"
                     }`}
-                    placeholder="••••••••"
+                    placeholder="Re-enter your password"
                   />
                   <button
                     type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-coffee-700 hover:text-black transition"
+                    onClick={() => setShowConfirmPassword((prev) => !prev)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md px-2 py-1 text-sm font-semibold text-coffee-700 hover:bg-coffee-100"
                   >
                     {showConfirmPassword ? "Hide" : "Show"}
                   </button>
                 </div>
                 {errors.confirmPassword && (
-                  <p className="mt-1 text-sm text-red-600">
-                    Remove {errors.confirmPassword}
-                  </p>
+                  <p className="mt-1 text-xs text-red-600">{errors.confirmPassword}</p>
                 )}
               </div>
 
-              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={loading}
-                className="btn btn-primary btn-lg w-full"
+                className="mt-2 w-full rounded-xl bg-coffee-800 px-4 py-3 text-base font-semibold text-white transition hover:bg-coffee-900 disabled:cursor-not-allowed disabled:opacity-70"
               >
-                {loading ? "Processing... Creating Account..." : "Done Create Account"}
+                {loading ? "Creating account..." : "Create account"}
               </button>
             </form>
 
-            {/* Divider */}
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300 border-opacity-30"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-coffee-700">or</span>
-              </div>
+            <div className="my-6 flex items-center gap-3">
+              <div className="h-px flex-1 bg-coffee-200" />
+              <span className="text-xs uppercase tracking-[0.16em] text-coffee-500">
+                Already registered?
+              </span>
+              <div className="h-px flex-1 bg-coffee-200" />
             </div>
 
-            {/* Login Link */}
             <button
               onClick={() => navigate("/login")}
               type="button"
-              className="btn btn-secondary btn-lg w-full"
+              className="w-full rounded-xl border border-coffee-300 bg-white px-4 py-3 text-base font-semibold text-coffee-900 transition hover:bg-coffee-50"
             >
-              Already Have an Account? Login
+              Sign in instead
             </button>
 
-            {/* Terms */}
-            <p className="text-center text-xs text-coffee-700">
-              By creating an account, you agree to our{" "}
-              <a href="#" className="text-accent font-semibold hover:underline">
-                Terms & Conditions
-              </a>
+            <p className="mt-6 text-center text-xs text-coffee-600">
+              By creating an account, you agree to our Terms & Conditions.
             </p>
           </div>
-        </div>
-
-        {/* Footer Text */}
-        <p className="text-center text-sm text-coffee-700 mt-6">
-          Apo Coffee © 2024 - Premium Mt. Apo Arabica
-        </p>
+        </main>
       </div>
     </div>
   );

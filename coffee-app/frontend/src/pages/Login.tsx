@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../hooks/useRedux";
-import { loginSuccess } from "../redux/slices/authSlice";
 import axios from "axios";
 import logo from "../Images/Logo.jpg";
+import { useAppDispatch } from "../hooks/useRedux";
+import { loginSuccess } from "../redux/slices/authSlice";
 import "../styles/premium.css";
 
 export default function Login() {
@@ -31,18 +31,13 @@ export default function Login() {
     setLoading(true);
 
     try {
-      console.log("Attempting login with:", formData);
       const response = await axios.post(
         "http://localhost:3000/api/auth/login",
         formData,
       );
 
-      console.log("Full response:", response);
-      console.log("Response data:", response.data);
-
       if (response.data && response.data.success) {
         const { token, user } = response.data;
-        console.log("Login successful! Token:", token, "User:", user);
         localStorage.setItem("token", token);
 
         dispatch(
@@ -53,21 +48,19 @@ export default function Login() {
           }),
         );
 
-        // Redirect based on role
         if (user.role === "admin") {
           navigate("/admin/dashboard");
         } else {
           navigate("/");
         }
       } else {
-        console.warn("Response success is false:", response.data);
         setError(response.data?.message || "Login failed. Please try again.");
       }
-    } catch (err: any) {
-      console.error("Login error caught:", err);
-      console.error("Error response:", err.response?.data);
+    } catch (err: unknown) {
       const errorMsg =
-        err.response?.data?.message || "Login failed. Please try again.";
+        axios.isAxiosError(err) && err.response?.data?.message
+          ? String(err.response.data.message)
+          : "Login failed. Please try again.";
       setError(errorMsg);
     } finally {
       setLoading(false);
@@ -75,147 +68,147 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-coffee-50 flex items-center justify-center py-12 px-4">
-      <div className="max-w-md w-full">
-        {/* Card */}
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
-          {/* Header */}
-          <div className="bg-coffee-700 text-pure-white py-12 text-center">
-            <img
-              src={logo}
-              alt="Apo Coffee Logo"
-              className="w-24 h-24 mx-auto mb-4"
-            />
-            <h1 className="text-4xl font-bold mb-2">Apo Coffee</h1>
-            <p className="text-lg opacity-90">Welcome back, coffee lover!</p>
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-coffee-50 via-white to-coffee-100 px-4 py-8 sm:py-12">
+      <div className="pointer-events-none absolute -left-20 top-10 h-72 w-72 rounded-full bg-coffee-200/35 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-coffee-300/30 blur-3xl" />
+
+      <div className="relative mx-auto grid w-full max-w-5xl overflow-hidden rounded-3xl border border-coffee-200 bg-white shadow-2xl lg:grid-cols-[1.05fr_1fr]">
+        <aside className="hidden bg-coffee-900 p-10 text-white lg:flex lg:flex-col lg:justify-between">
+          <div>
+            <div className="mb-10 inline-flex items-center gap-3 rounded-full border border-white/30 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/90">
+              Mt. Apo Arabica
+            </div>
+            <h1 className="mb-4 text-4xl font-bold leading-tight text-white">
+              Welcome back.
+              <br />
+              Your coffee ritual is waiting.
+            </h1>
+            <p className="max-w-sm text-base text-coffee-100">
+              Sign in to track orders, collect rewards, and get quick access to
+              your favorite blends.
+            </p>
           </div>
 
-          {/* Form Content */}
-          <div className="p-8 space-y-6">
-            {/* Error Message */}
+          <div className="rounded-2xl border border-white/20 bg-white/10 p-5 backdrop-blur-sm">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-coffee-100">
+              Demo Credentials
+            </p>
+            <div className="space-y-3 text-sm">
+              <div>
+                <p className="font-semibold text-white">Customer</p>
+                <p className="font-mono text-coffee-100">customer@apocoffee.com</p>
+                <p className="font-mono text-coffee-100">customer123</p>
+              </div>
+              <div className="border-t border-white/20 pt-3">
+                <p className="font-semibold text-white">Admin</p>
+                <p className="font-mono text-coffee-100">admin@apocoffee.com</p>
+                <p className="font-mono text-coffee-100">admin123</p>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <main className="p-6 sm:p-10">
+          <div className="mx-auto max-w-md">
+            <div className="mb-8 flex items-center gap-3">
+              <img
+                src={logo}
+                alt="Apo Coffee Logo"
+                className="h-12 w-12 rounded-xl object-cover"
+              />
+              <div>
+                <p className="text-xl font-bold text-coffee-900">Apo Coffee</p>
+                <p className="text-xs uppercase tracking-[0.16em] text-coffee-600">
+                  Sign in to your account
+                </p>
+              </div>
+            </div>
+
             {error && (
-              <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
-                <p className="text-red-800 font-semibold">Error: {error}</p>
+              <div
+                className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+                role="alert"
+              >
+                {error}
               </div>
             )}
 
-            {/* Form */}
-            <form className="space-y-6" onSubmit={handleSubmit}>
-              {/* Email */}
+            <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-semibold text-black mb-2"
-                >
-                  Email Address
+                <label htmlFor="email" className="mb-2 block text-sm font-semibold text-coffee-900">
+                  Email address
                 </label>
                 <input
                   id="email"
                   name="email"
                   type="email"
                   required
+                  autoComplete="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500 transition"
+                  className="w-full rounded-xl border border-coffee-200 bg-white px-4 py-3 text-coffee-900 placeholder:text-coffee-400 focus:border-coffee-500 focus:outline-none focus:ring-2 focus:ring-coffee-200"
                   placeholder="you@example.com"
                 />
               </div>
 
-              {/* Password */}
               <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-semibold text-black mb-2"
-                >
-                  Password
-                </label>
+                <div className="mb-2 flex items-center justify-between">
+                  <label htmlFor="password" className="block text-sm font-semibold text-coffee-900">
+                    Password
+                  </label>
+                </div>
                 <div className="relative">
                   <input
                     id="password"
                     name="password"
                     type={showPassword ? "text" : "password"}
                     required
+                    autoComplete="current-password"
                     value={formData.password}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 pr-12 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-coffee-500 transition"
-                    placeholder="••••••••"
+                    className="w-full rounded-xl border border-coffee-200 bg-white px-4 py-3 pr-20 text-coffee-900 placeholder:text-coffee-400 focus:border-coffee-500 focus:outline-none focus:ring-2 focus:ring-coffee-200"
+                    placeholder="Enter your password"
                   />
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-coffee-600 hover:text-coffee-900 transition"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md px-2 py-1 text-sm font-semibold text-coffee-700 hover:bg-coffee-100"
                   >
                     {showPassword ? "Hide" : "Show"}
                   </button>
                 </div>
               </div>
 
-              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={loading}
-                className="btn btn-lg w-full bg-coffee-500 text-pure-white hover:bg-coffee-600 shadow-md"
+                className="w-full rounded-xl bg-coffee-800 px-4 py-3 text-base font-semibold text-white transition hover:bg-coffee-900 disabled:cursor-not-allowed disabled:opacity-70"
               >
-                {loading ? "Processing... Logging in..." : "Done Login"}
+                {loading ? "Signing in..." : "Sign in"}
               </button>
             </form>
 
-            {/* Divider */}
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300 border-opacity-30"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-coffee-600">or</span>
-              </div>
+            <div className="my-6 flex items-center gap-3">
+              <div className="h-px flex-1 bg-coffee-200" />
+              <span className="text-xs uppercase tracking-[0.16em] text-coffee-500">
+                New here?
+              </span>
+              <div className="h-px flex-1 bg-coffee-200" />
             </div>
 
-            {/* Register Link */}
             <button
               onClick={() => navigate("/register")}
               type="button"
-              className="btn btn-lg w-full border-2 border-coffee-500 text-coffee-500 hover:bg-coffee-50"
+              className="w-full rounded-xl border border-coffee-300 bg-white px-4 py-3 text-base font-semibold text-coffee-900 transition hover:bg-coffee-50"
             >
-              Create New Account
+              Create an account
             </button>
 
-            {/* Test Credentials */}
-            <div className="bg-neutral-50 border-2 border-neutral-300 border-opacity-30 rounded-lg p-4">
-              <p className="text-xs font-bold text-black uppercase tracking-wide mb-3">
-                Demo Credentials
-              </p>
-              <div className="space-y-2 text-xs">
-                <div>
-                  <p className="text-coffee-700 font-semibold">Customer:</p>
-                  <p className="text-coffee-700 font-mono">
-                    customer@apocoffee.com
-                  </p>
-                  <p className="text-coffee-700 font-mono">customer123</p>
-                </div>
-                <div className="border-t border-neutral-300 border-opacity-30 pt-2">
-                  <p className="text-coffee-700 font-semibold">Admin:</p>
-                  <p className="text-coffee-700 font-mono">
-                    admin@apocoffee.com
-                  </p>
-                  <p className="text-coffee-700 font-mono">admin123</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Footer */}
-            <p className="text-center text-sm text-coffee-600">
-              By logging in, you agree to our{" "}
-              <a href="#" className="text-accent font-semibold hover:underline">
-                Terms & Conditions
-              </a>
+            <p className="mt-6 text-center text-xs text-coffee-600">
+              By signing in, you agree to our Terms & Conditions.
             </p>
           </div>
-        </div>
-
-        {/* Footer Text */}
-        <p className="text-center text-sm text-coffee-600 mt-6">
-          Apo Coffee © 2024 - Premium Mt. Apo Arabica
-        </p>
+        </main>
       </div>
     </div>
   );
