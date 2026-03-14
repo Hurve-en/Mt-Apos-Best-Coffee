@@ -1,4 +1,4 @@
-# 📚 Awwwards Design System - Complete Documentation Index
+
 
 Welcome to the Mt. Apos Best Coffee **Awwwards-Level Design System**! This document provides a comprehensive guide to all resources, documentation, and implementation details.
 
