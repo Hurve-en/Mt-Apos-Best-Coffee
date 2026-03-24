@@ -4,7 +4,7 @@ import { userService } from "../services/userService.ts";
 import { logger } from "../utils/logger.ts";
 
 export const userController = {
-  // Get user profile
+  // Return the logged-in user's profile
   getProfile: async (req: AuthRequest, res: Response): Promise<void> => {
     try {
       if (!req.user) {
@@ -23,7 +23,7 @@ export const userController = {
     }
   },
 
-  // Update profile
+  // Update basic profile fields for the logged-in user
   updateProfile: async (req: AuthRequest, res: Response): Promise<void> => {
     try {
       if (!req.user) {
@@ -50,7 +50,7 @@ export const userController = {
     }
   },
 
-  // Get all users (admin only)
+  // List all users (admin only)
   getAllUsers: async (_req: AuthRequest, res: Response): Promise<void> => {
     try {
       const users = await userService.getAllUsers();

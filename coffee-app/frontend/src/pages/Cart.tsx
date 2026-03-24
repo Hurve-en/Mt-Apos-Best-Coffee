@@ -28,7 +28,7 @@ export default function CartPage() {
     }
   };
 
-  // Calculate items count and subtotal
+  // Derive item count and totals
   const itemsCount = items.reduce(
     (sum: number, item: any) => sum + item.quantity,
     0,

@@ -3,7 +3,7 @@ import { AppError } from "../utils/errorHandler.ts";
 import type { IOrder, IOrderInput } from "../types/order.ts";
 
 export const orderService = {
-  // Create order
+  // Create an order and decrement stock
   createOrder: async (userId: number, data: IOrderInput): Promise<IOrder> => {
     if (!data.items || data.items.length === 0) {
       throw new AppError(400, "Order must contain at least one item", true);
@@ -78,7 +78,7 @@ export const orderService = {
     return order as unknown as IOrder;
   },
 
-  // Get order by ID
+  // Fetch a single order with its items
   getOrderById: async (id: number): Promise<IOrder | null> => {
     const order = await prisma.order.findUnique({
       where: { id },
@@ -93,7 +93,7 @@ export const orderService = {
     return order as unknown as IOrder;
   },
 
-  // Get user orders
+  // Fetch orders belonging to one user
   getUserOrders: async (userId: number): Promise<IOrder[]> => {
     const orders = await prisma.order.findMany({
       where: { userId },
@@ -111,7 +111,7 @@ export const orderService = {
     return orders as unknown as IOrder[];
   },
 
-  // Get all orders (admin)
+  // Fetch every order (admin view)
   getAllOrders: async (): Promise<IOrder[]> => {
     const orders = await prisma.order.findMany({
       include: {
@@ -135,7 +135,7 @@ export const orderService = {
     return orders as unknown as IOrder[];
   },
 
-  // Update order status
+  // Move an order to a new status
   updateOrderStatus: async (id: number, status: string): Promise<IOrder> => {
     const normalizedStatus = status.toLowerCase();
     const validStatuses = [
@@ -165,7 +165,7 @@ export const orderService = {
     return order as unknown as IOrder;
   },
 
-  // Cancel order
+  // Mark an order as cancelled when allowed
   cancelOrder: async (id: number): Promise<IOrder> => {
     const order = await prisma.order.findUnique({
       where: { id },

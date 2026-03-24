@@ -4,13 +4,13 @@ import { AppError } from "../utils/errorHandler.ts";
 import type { ITokenPayload } from "../types/user.ts";
 
 export const authService = {
-  // Hash password
+  // Hash a plaintext password
   hashPassword: async (password: string): Promise<string> => {
     const salt = await bcrypt.genSalt(10);
     return bcrypt.hash(password, salt);
   },
 
-  // Compare password
+  // Validate a password against its hash
   comparePassword: async (
     password: string,
     hashedPassword: string,
@@ -18,14 +18,14 @@ export const authService = {
     return bcrypt.compare(password, hashedPassword);
   },
 
-  // Generate JWT token
+  // Issue a short-lived access token
   generateToken: (payload: ITokenPayload): string => {
     return jwt.sign(payload, process.env.JWT_SECRET || "your-secret-key", {
       expiresIn: "15m",
     });
   },
 
-  // Generate refresh token
+  // Issue a longer-lived refresh token
   generateRefreshToken: (payload: ITokenPayload): string => {
     return jwt.sign(
       payload,
@@ -36,7 +36,7 @@ export const authService = {
     );
   },
 
-  // Verify token
+  // Decode and validate an access token
   verifyToken: (token: string): ITokenPayload => {
     try {
       return jwt.verify(
@@ -48,7 +48,7 @@ export const authService = {
     }
   },
 
-  // Verify refresh token
+  // Decode and validate a refresh token
   verifyRefreshToken: (token: string): ITokenPayload => {
     try {
       return jwt.verify(

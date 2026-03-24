@@ -2,13 +2,13 @@ import { prisma } from "../index.ts";
 import { IProduct, IProductInput } from "../types/product.ts";
 
 export const productService = {
-  // Get all products
+  // Return every product in the catalog
   getAllProducts: async (): Promise<IProduct[]> => {
     const products = await prisma.product.findMany();
     return products as unknown as IProduct[];
   },
 
-  // Get product by ID
+  // Look up a single product by its id
   getProductById: async (id: number): Promise<IProduct | null> => {
     const product = await prisma.product.findUnique({
       where: { id },
@@ -16,7 +16,7 @@ export const productService = {
     return product as unknown as IProduct;
   },
 
-  // Create product (admin)
+  // Create a new product (admin only)
   createProduct: async (data: IProductInput): Promise<IProduct> => {
     const product = await prisma.product.create({
       data,
@@ -24,7 +24,7 @@ export const productService = {
     return product as unknown as IProduct;
   },
 
-  // Update product (admin)
+  // Update an existing product (admin only)
   updateProduct: async (
     id: number,
     data: Partial<IProductInput>,
@@ -36,7 +36,7 @@ export const productService = {
     return product as unknown as IProduct;
   },
 
-  // Delete product (admin)
+  // Remove a product from the catalog (admin only)
   deleteProduct: async (id: number): Promise<IProduct> => {
     const product = await prisma.product.delete({
       where: { id },

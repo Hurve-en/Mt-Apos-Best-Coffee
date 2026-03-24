@@ -4,7 +4,7 @@ import { AppError } from "../utils/errorHandler.ts";
 
 export interface AuthRequest extends Request {
   user?: {
-    id: number; // ✅ Change from string to number
+    id: number; // store numeric user ids for consistency
     email: string;
     role: string;
   };
@@ -26,7 +26,7 @@ export const authMiddleware = (
       token,
       process.env.JWT_SECRET || "your-secret-key",
     ) as {
-      id: number; // ✅ Change from string to number
+      id: number; // keep id as number across handlers
       email: string;
       role: string;
     };
@@ -72,7 +72,7 @@ export const refreshTokenMiddleware = (
       token,
       process.env.JWT_REFRESH_SECRET || "your-refresh-secret",
     ) as {
-      id: number; // ✅ Change from string to number
+      id: number; // keep id as number across handlers
       email: string;
       role: string;
     };

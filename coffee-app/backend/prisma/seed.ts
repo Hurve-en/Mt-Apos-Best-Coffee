@@ -14,7 +14,7 @@ async function main() {
   const adminPassword = await bcrypt.hash("admin123", 10);
   const customerPassword = await bcrypt.hash("customer123", 10);
 
-  // Admin user
+  // Seed an admin account
   await prisma.user.create({
     data: {
       email: "admin@apocoffee.com",
@@ -24,7 +24,7 @@ async function main() {
     },
   });
 
-  // Customer user
+  // Seed a sample customer account
   await prisma.user.create({
     data: {
       email: "customer@apocoffee.com",
@@ -34,7 +34,7 @@ async function main() {
     },
   });
 
-  // Sample products with proper fields
+  // Seed a starter set of products
   const baseImage =
     "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%238B4513'/%3E%3C/svg%3E";
 

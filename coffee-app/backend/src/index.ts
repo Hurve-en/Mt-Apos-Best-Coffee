@@ -11,43 +11,32 @@ import {
 import routes from "./routes/index.ts";
 import { logger } from "./utils/logger.ts";
 
-// Load environment variables
+// Load .env variables before anything else
 dotenv.config();
 console.log("env PORT after dotenv:", process.env.PORT);
 
-// Initialize Prisma
+// Shared Prisma client for database work
 export const prisma = new PrismaClient();
 
-// Initialize Express app
+// Create Express server instance
 const app = express();
-const PORT = process.env.PORT || 3000; // default to 3000 (frontend relies on this)
+const PORT = process.env.PORT || 3000; // default stays 3000 to match the frontend dev server
 
-// ============================================================================
-// MIDDLEWARE
-// ============================================================================
-
-// Security middleware
+// Middleware stack
 app.use(helmet());
 
-// CORS middleware
 app.use(corsMiddleware);
 app.options("*", optionsHandler);
 
-// Body parser
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
-// Request logging
 app.use((req: Request, _res: Response, next: NextFunction) => {
   logger.debug(`${req.method} ${req.path}`);
   next();
 });
 
-// ============================================================================
-// ROUTES
-// ============================================================================
-
-// Health check
+// Basic routes
 app.get("/health", (_req: Request, res: Response) => {
   res.status(200).json({
     success: true,
@@ -56,30 +45,22 @@ app.get("/health", (_req: Request, res: Response) => {
   });
 });
 
-// API routes
+// Main API router
 app.use("/api", routes);
 
-// ============================================================================
-// ERROR HANDLING
-// ============================================================================
-
-// 404 handler
+// Catch unknown routes
 app.use(notFoundHandler);
 
-// Global error handler
+// Surface errors in a consistent shape
 app.use(globalErrorHandler);
-
-// ============================================================================
-// SERVER STARTUP
-// ============================================================================
 
 async function startServer(): Promise<void> {
   try {
-    // Check database connection
+    // Verify we can reach the database
     await prisma.$connect();
     logger.success("Database connected successfully");
 
-    // Ensure a usable catalog exists so menu/order flows work in fresh environments.
+    // Seed a minimal catalog so menu/order flows work on a fresh install
     const productCount = await prisma.product.count();
     if (productCount === 0) {
       const baseImage =
@@ -135,7 +116,7 @@ async function startServer(): Promise<void> {
       logger.info("Catalog was empty, seeded default products");
     }
 
-    // Start server
+    // Start listening for requests
     app.listen(PORT, () => {
       logger.success(`Server running on port ${PORT}`);
       logger.info(`API URL: http://localhost:${PORT}/api`);
@@ -147,7 +128,7 @@ async function startServer(): Promise<void> {
   }
 }
 
-// Handle graceful shutdown
+// Close connections cleanly on shutdown signals
 process.on("SIGTERM", async () => {
   logger.warn("SIGTERM signal received: closing HTTP server");
   await prisma.$disconnect();
@@ -160,5 +141,5 @@ process.on("SIGINT", async () => {
   process.exit(0);
 });
 
-// Start the server
+// Boot the application
 startServer();

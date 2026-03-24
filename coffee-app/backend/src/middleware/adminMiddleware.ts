@@ -1,7 +1,6 @@
-// src/middleware/adminMiddleware.ts
 import type { Request, Response, NextFunction } from "express";
 
-// Extend Express Request to include user
+// Add user info to the Express Request type
 declare global {
   namespace Express {
     interface Request {
@@ -20,7 +19,7 @@ export const adminMiddleware = (
   next: NextFunction,
 ): void => {
   try {
-    // Check if user exists (should come from authMiddleware)
+    // Require authMiddleware to populate req.user
     if (!req.user) {
       res.status(401).json({
         success: false,
@@ -29,7 +28,7 @@ export const adminMiddleware = (
       return;
     }
 
-    // Check if user is admin
+    // Only allow admin roles through
     if (req.user.role !== "admin") {
       res.status(403).json({
         success: false,

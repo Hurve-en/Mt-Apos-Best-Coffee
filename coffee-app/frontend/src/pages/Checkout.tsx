@@ -174,7 +174,7 @@ export default function Checkout() {
           response.data.address?.road || response.data.address?.village || "",
       }));
     } catch {
-      // best-effort reverse geocode; input field remains editable
+      // Ignore lookup failures so the address field stays editable
     }
   };
 

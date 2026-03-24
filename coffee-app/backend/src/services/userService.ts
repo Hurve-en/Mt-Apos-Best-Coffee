@@ -4,9 +4,9 @@ import { AppError } from "../utils/errorHandler.ts";
 import type { IUserInput, IUser } from "../types/user.ts";
 
 export const userService = {
-  // Create new user
+  // Create a user record
   createUser: async (data: IUserInput): Promise<IUser> => {
-    // Check if user exists
+    // Ensure the email is unused
     const existingUser = await prisma.user.findUnique({
       where: { email: data.email },
     });
@@ -15,10 +15,10 @@ export const userService = {
       throw new AppError(400, "User already exists with this email", true);
     }
 
-    // Hash password
+    // Encrypt the incoming password
     const hashedPassword = await authService.hashPassword(data.password);
 
-    // Create user
+    // Persist the new user
     const user = await prisma.user.create({
       data: {
         email: data.email,
@@ -30,7 +30,7 @@ export const userService = {
     return user as unknown as IUser;
   },
 
-  // Get user by ID
+  // Find a user by numeric id
   getUserById: async (id: number): Promise<IUser | null> => {
     const user = await prisma.user.findUnique({
       where: { id },
@@ -38,7 +38,7 @@ export const userService = {
     return user as unknown as IUser;
   },
 
-  // Get user by email
+  // Find a user by email address
   getUserByEmail: async (email: string): Promise<IUser | null> => {
     const user = await prisma.user.findUnique({
       where: { email },
@@ -46,7 +46,7 @@ export const userService = {
     return user as unknown as IUser;
   },
 
-  // Update user
+  // Update basic profile fields
   updateUser: async (id: number, data: Partial<IUserInput>): Promise<IUser> => {
     const user = await prisma.user.update({
       where: { id },
@@ -57,7 +57,7 @@ export const userService = {
     return user as unknown as IUser;
   },
 
-  // Get all users (admin only)
+  // List all users (admin only)
   getAllUsers: async (): Promise<IUser[]> => {
     const users = await prisma.user.findMany();
     return users as unknown as IUser[];

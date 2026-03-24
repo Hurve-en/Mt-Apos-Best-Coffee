@@ -62,7 +62,7 @@ export default function Checkout() {
     }
   }, [isAuthenticated, items.length, navigate]);
 
-  // Initialize map on delivery step
+  // Only load the map when the delivery step is active
   useEffect(() => {
     if (
       currentStep === "delivery" &&

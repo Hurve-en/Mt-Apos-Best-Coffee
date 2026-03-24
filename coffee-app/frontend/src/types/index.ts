@@ -1,4 +1,4 @@
-// User types
+// Shapes returned by auth endpoints
 export interface User {
   id: string;
   email: string;
@@ -32,7 +32,7 @@ export interface AuthResponse {
   refreshToken: string;
 }
 
-// Product types
+// Product catalog shapes
 export interface Product {
   id: string;
   name: string;
@@ -52,7 +52,7 @@ export interface ProductCustomization {
   priceAdd: number;
 }
 
-// Cart types
+// Cart state
 export interface CartItem {
   productId: number | string;
   name: string;
@@ -70,7 +70,7 @@ export interface Cart {
   totalPrice: number;
 }
 
-// Order types
+// Order payloads
 export interface OrderItem {
   productId: string;
   quantity: number;
@@ -101,7 +101,7 @@ export interface Order {
   updatedAt: string;
 }
 
-// API Response types
+// Generic API response wrapper
 export interface ApiResponse<T> {
   success: boolean;
   message?: string;

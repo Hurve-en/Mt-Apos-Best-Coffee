@@ -5,25 +5,25 @@ import { userService } from "../services/userService.ts";
 import { logger } from "../utils/logger.ts";
 
 export const authController = {
-  // Register new user
+  // Create an account
   register: async (req: Request, res: Response): Promise<void> => {
     try {
       const { email, password, name } = req.body;
 
-      // Validate input
+      // Basic payload guardrails
       if (!email || !password || !name) {
         res.status(400).json({ message: "Missing required fields" });
         return;
       }
 
-      // Create user
+      // Create the user record
       const user = await userService.createUser({
         email,
         password,
         name,
       });
 
-      // Generate tokens
+      // Issue access + refresh tokens
       const token = authService.generateToken({
         id: user.id,
         email: user.email,
@@ -59,7 +59,7 @@ export const authController = {
     }
   },
 
-  // Login user
+  // Authenticate and return tokens
   login: async (req: Request, res: Response): Promise<void> => {
     try {
       const { email, password } = req.body;
@@ -69,14 +69,14 @@ export const authController = {
         return;
       }
 
-      // Find user
+      // Locate the user by email
       const user = await userService.getUserByEmail(email);
       if (!user) {
         res.status(401).json({ message: "Invalid credentials" });
         return;
       }
 
-      // Compare password
+      // Validate password
       const isPasswordValid = await authService.comparePassword(
         password,
         user.password,
@@ -86,7 +86,7 @@ export const authController = {
         return;
       }
 
-      // Generate tokens
+      // Issue access + refresh tokens
       const token = authService.generateToken({
         id: user.id,
         email: user.email,
@@ -119,7 +119,7 @@ export const authController = {
     }
   },
 
-  // Refresh token
+  // Refresh an access token using a valid refresh token
   refreshToken: async (req: AuthRequest, res: Response): Promise<void> => {
     try {
       if (!req.user) {
@@ -144,7 +144,7 @@ export const authController = {
     }
   },
 
-  // Get current user
+  // Return the current user's profile
   getCurrentUser: async (req: AuthRequest, res: Response): Promise<void> => {
     try {
       if (!req.user) {

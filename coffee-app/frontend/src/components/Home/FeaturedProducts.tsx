@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ProductCard from "../Common/ProductCard";
 
-// local product images
+// Local placeholders for featured cards
 import img1 from "../../Images/image1.png";
 import img4 from "../../Images/image4.png";
 import img5 from "../../Images/image5.png";
@@ -30,12 +30,12 @@ export default function FeaturedProducts() {
         setLoading(true);
         const response = await axios.get("http://localhost:3000/api/products");
         if (response.data.success) {
-          // Get first 4 products as featured
+          // Show only the first four as featured items
           setProducts(response.data.data.slice(0, 4));
         }
       } catch (err) {
         console.error("Error fetching products:", err);
-                // Use mock data for now (local images imported at top)
+        // Fall back to local mock items if the API is unreachable
         setProducts([
           {
             id: 1,

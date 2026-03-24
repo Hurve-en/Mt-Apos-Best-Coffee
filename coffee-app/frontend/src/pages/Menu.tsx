@@ -61,7 +61,7 @@ export default function Menu() {
             return records;
           }
         } catch (_err) {
-          // Continue to next endpoint candidate
+          // Try the next base URL if this one fails
         }
       }
 
@@ -74,13 +74,13 @@ export default function Menu() {
       try {
         let products: any[] = [];
 
-        // First attempt via shared API client
+        // Prefer the shared API client first
         const fromService = await apiService.getProducts();
         if (Array.isArray(fromService)) {
           products = fromService as any[];
         }
 
-        // Fallback direct endpoint attempts
+        // If nothing came back, hit the endpoints directly
         if (products.length === 0) {
           const directProducts = await fetchFromDirectEndpoint();
           if (Array.isArray(directProducts) && directProducts.length > 0) {

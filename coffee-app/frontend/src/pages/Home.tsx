@@ -10,7 +10,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate page load
+    // Trigger an initial loading state for UX polish
     setLoading(false);
   }, []);
 
@@ -18,7 +18,7 @@ export default function Home() {
     return (
       <div className="flex items-center justify-center min-h-screen bg-coffee-50">
         <div className="text-center animate-fade-in-up">
-          {/* simple circle loader */}
+          {/* Simple spinner */}
           <div className="w-12 h-12 border-4 border-coffee-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-coffee-900 font-semibold">
             Loading your coffee experience…
@@ -30,10 +30,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Banner */}
+      {/* Hero banner */}
       <HeroBanner />
 
-      {/* Featured Products */}
+      {/* Featured products */}
       <section className="section-gap bg-coffee-50">
         <div className="container">
           <div className="text-center mb-12">
@@ -47,7 +47,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Why Choose Us */}
+      {/* Why choose us */}
       <section className="section-gap bg-pure-white">
         <div className="container">
           <div className="text-center mb-12">
@@ -73,7 +73,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Call to action */}
       <section className="section-gap bg-white border-t border-neutral-200">
         <div className="container text-center">
           <h2 className="mb-4 text-4xl font-extrabold uppercase leading-tight text-coffee-900">

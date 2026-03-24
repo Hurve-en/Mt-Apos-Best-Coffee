@@ -73,7 +73,7 @@ class ApiService {
         const axiosError = error as AxiosError;
         lastError = error;
 
-        // If server responded, don't hop environments; surface real API errors.
+        // Stop cycling base URLs once the API actually responds
         if (axiosError.response) {
           throw error;
         }

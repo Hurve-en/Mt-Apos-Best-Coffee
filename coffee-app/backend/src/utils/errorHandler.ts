@@ -22,7 +22,7 @@ export const handleError = (error: unknown) => {
     };
   }
 
-  // Default error response
+  // Fallback for unexpected errors
   return {
     statusCode: 500,
     message: "Internal Server Error",

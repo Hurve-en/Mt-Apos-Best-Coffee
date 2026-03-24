@@ -5,7 +5,7 @@ import { logger } from "../utils/logger.ts";
 import { AppError } from "../utils/errorHandler.ts";
 
 export const orderController = {
-  // Create order
+  // Create a new order for the current user
   createOrder: async (req: AuthRequest, res: Response): Promise<void> => {
     try {
       if (!req.user) {
@@ -50,7 +50,7 @@ export const orderController = {
     }
   },
 
-  // Get order by ID
+  // Get a single order by id
   getOrderById: async (req: AuthRequest, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
@@ -61,7 +61,7 @@ export const orderController = {
         return;
       }
 
-      // Check if user owns the order (unless admin)
+      // Only owners or admins can view the order
       if (req.user?.role?.toLowerCase() !== "admin" && order.userId !== req.user?.id) {
         res.status(403).json({ message: "Not authorized" });
         return;
@@ -77,7 +77,7 @@ export const orderController = {
     }
   },
 
-  // Get user orders
+  // Get all orders for the current user
   getUserOrders: async (req: AuthRequest, res: Response): Promise<void> => {
     try {
       if (!req.user) {
@@ -97,7 +97,7 @@ export const orderController = {
     }
   },
 
-  // Get all orders (admin)
+  // Get every order (admin)
   getAllOrders: async (_req: AuthRequest, res: Response): Promise<void> => {
     try {
       const orders = await orderService.getAllOrders();
@@ -112,7 +112,7 @@ export const orderController = {
     }
   },
 
-  // Update order status (admin)
+  // Change an order's status (admin)
   updateOrderStatus: async (req: AuthRequest, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
@@ -142,7 +142,7 @@ export const orderController = {
     }
   },
 
-  // Cancel order
+  // Cancel an order when allowed
   cancelOrder: async (req: AuthRequest, res: Response): Promise<void> => {
     try {
       const { id } = req.params;

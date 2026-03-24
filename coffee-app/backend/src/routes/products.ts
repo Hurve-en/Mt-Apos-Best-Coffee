@@ -6,15 +6,15 @@ import {
   updateProduct,
   deleteProduct,
 } from "../controllers/productController.ts";
-import { authMiddleware, adminMiddleware } from "../middleware/auth.ts"; // ✅ One import!
+import { authMiddleware, adminMiddleware } from "../middleware/auth.ts"; // Auth + admin guards
 
 const router = Router();
 
-// Public routes
+// Public product endpoints
 router.get("/", getAllProducts);
 router.get("/:id", getProductById);
 
-// Admin only routes
+// Admin-only product management endpoints
 router.post("/", authMiddleware, adminMiddleware, createProduct);
 router.put("/:id", authMiddleware, adminMiddleware, updateProduct);
 router.delete("/:id", authMiddleware, adminMiddleware, deleteProduct);

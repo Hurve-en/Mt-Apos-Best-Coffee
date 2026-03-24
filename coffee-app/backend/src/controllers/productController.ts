@@ -1,4 +1,4 @@
-// src/controllers/productController.ts
+// Product CRUD handlers
 import type { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 
@@ -26,7 +26,7 @@ export const getAllProducts = async (_req: Request, res: Response) => {
   }
 };
 
-// Get single product by ID
+// Get a single product by id
 export const getProductById = async (
   req: Request,
   res: Response,
@@ -58,7 +58,7 @@ export const getProductById = async (
   }
 };
 
-// Create product (Admin only)
+// Create a product (Admin only)
 export const createProduct = async (
   req: Request,
   res: Response,
@@ -67,7 +67,7 @@ export const createProduct = async (
     const { name, description, price, roastLevel, grind, size, image, stock } =
       req.body;
 
-    // Validation
+    // Ensure all required fields are present
     if (
       !name ||
       !description ||
@@ -84,7 +84,7 @@ export const createProduct = async (
       return;
     }
 
-    // Check if product already exists
+    // Avoid duplicates by name
     const existingProduct = await prisma.product.findUnique({
       where: { name },
     });
@@ -124,7 +124,7 @@ export const createProduct = async (
   }
 };
 
-// Update product (Admin only)
+// Update a product (Admin only)
 export const updateProduct = async (
   req: Request,
   res: Response,
@@ -134,7 +134,7 @@ export const updateProduct = async (
     const { name, description, price, roastLevel, grind, size, image, stock } =
       req.body;
 
-    // Check if product exists
+    // Confirm the product exists before updating
     const existingProduct = await prisma.product.findUnique({
       where: { id: parseInt(id) },
     });
@@ -147,7 +147,7 @@ export const updateProduct = async (
       return;
     }
 
-    // Check if new name already exists (if name is being changed)
+    // Prevent name collisions when renaming
     if (name && name !== existingProduct.name) {
       const duplicateProduct = await prisma.product.findUnique({
         where: { name },
@@ -189,7 +189,7 @@ export const updateProduct = async (
   }
 };
 
-// Delete product (Admin only)
+// Delete a product (Admin only)
 export const deleteProduct = async (
   req: Request,
   res: Response,
@@ -197,7 +197,7 @@ export const deleteProduct = async (
   try {
     const { id } = req.params;
 
-    // Check if product exists
+    // Confirm the product exists before deletion
     const product = await prisma.product.findUnique({
       where: { id: parseInt(id) },
     });

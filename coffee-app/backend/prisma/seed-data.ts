@@ -5,13 +5,13 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
-  // Clear existing data
+  // Wipe tables before reseeding
   await prisma.orderItem.deleteMany();
   await prisma.order.deleteMany();
   await prisma.product.deleteMany();
   await prisma.user.deleteMany();
 
-  // Create sample products
+  // Add sample products
   const products = await prisma.product.createMany({
     data: [
       {
@@ -89,7 +89,7 @@ async function main() {
     ],
   });
 
-  // Create demo admin user
+  // Add a demo admin user
   const hashedPassword = await bcrypt.hash("admin123", 10);
 
   await prisma.user.create({
@@ -101,7 +101,7 @@ async function main() {
     },
   });
 
-  // Create demo customer user
+  // Add a demo customer user
   const customerPassword = await bcrypt.hash("customer123", 10);
 
   await prisma.user.create({
