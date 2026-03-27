@@ -85,6 +85,16 @@ const Navbar: React.FC = () => {
               </Link>
             </li>
           )}
+          {isAuthenticated && user?.role === "admin" && (
+            <li>
+              <Link
+                to="/admin/dashboard"
+                className="relative py-2 hover:text-coffee-900 transition"
+              >
+                Dashboard
+              </Link>
+            </li>
+          )}
         </ul>
 
         <div className="flex items-center gap-6">
@@ -225,8 +235,8 @@ const Navbar: React.FC = () => {
         </div>
       </nav>
 
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-coffee-50 px-6 pb-4 space-y-2">
+          {mobileMenuOpen && (
+            <div className="md:hidden bg-coffee-50 px-6 pb-4 space-y-2">
           <Link
             to="/"
             className="block py-2 text-coffee-700 hover:text-coffee-900"
@@ -248,6 +258,15 @@ const Navbar: React.FC = () => {
               onClick={toggleMobileMenu}
             >
               Orders
+            </Link>
+          )}
+          {isAuthenticated && user?.role === "admin" && (
+            <Link
+              to="/admin/dashboard"
+              className="block py-2 text-coffee-700 hover:text-coffee-900"
+              onClick={toggleMobileMenu}
+            >
+              Dashboard
             </Link>
           )}
           {isAuthenticated && (

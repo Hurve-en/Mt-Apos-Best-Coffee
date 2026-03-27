@@ -1,4 +1,4 @@
-import { prisma } from "../index.ts";
+import { prisma } from "../config/prisma.ts";
 import { AppError } from "../utils/errorHandler.ts";
 import type { IOrder, IOrderInput } from "../types/order.ts";
 
@@ -9,9 +9,11 @@ export const orderService = {
       throw new AppError(400, "Order must contain at least one item", true);
     }
 
-    const productIds = [...new Set(data.items.map((item) => item.productId))];
+    const productIds = [
+      ...new Set(data.items.map((item) => String(item.productId))),
+    ];
     const products = await prisma.product.findMany({
-      where: { id: { in: productIds } },
+      where: { id: { in: productIds }, deletedAt: null },
       select: { id: true, price: true, stock: true },
     });
 
@@ -39,7 +41,7 @@ export const orderService = {
       return {
         productId: item.productId,
         quantity,
-        price: product.price,
+        price: Number(product.price),
       };
     });
 

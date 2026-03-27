@@ -10,7 +10,7 @@ export interface IOrder {
 export interface IOrderItem {
   id: number;
   orderId: number;
-  productId: number;
+  productId: string;
   quantity: number;
   price: number;
   createdAt: Date;
@@ -18,7 +18,7 @@ export interface IOrderItem {
 
 export interface IOrderInput {
   items: {
-    productId: number;
+    productId: string;
     quantity: number;
     price: number;
   }[];

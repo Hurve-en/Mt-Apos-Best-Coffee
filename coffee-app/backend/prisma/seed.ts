@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
@@ -43,11 +43,11 @@ async function main() {
       name: "Mt. Apo Arabica (250g)",
       description:
         "Premium 100% Arabica from Mount Apo. Medium Roast. High Altitude: 1,200-1,700 MASL.",
-      price: 399.0,
+      price: new Prisma.Decimal(399),
       roastLevel: "medium",
       grind: "whole",
       size: "250g",
-      image: baseImage,
+      imageUrl: baseImage,
       stock: 50,
     },
   });
@@ -57,11 +57,11 @@ async function main() {
       name: "Mt. Apo Arabica (500g)",
       description:
         "Premium 100% Arabica from Mount Apo. Medium Roast. High Altitude: 1,200-1,700 MASL.",
-      price: 689.0,
+      price: new Prisma.Decimal(689),
       roastLevel: "medium",
       grind: "whole",
       size: "500g",
-      image: baseImage,
+      imageUrl: baseImage,
       stock: 30,
     },
   });
@@ -71,11 +71,11 @@ async function main() {
       name: "Mt. Apo Arabica (1kg)",
       description:
         "Premium 100% Arabica from Mount Apo. Medium Roast. High Altitude: 1,200-1,700 MASL.",
-      price: 1399.0,
+      price: new Prisma.Decimal(1399),
       roastLevel: "medium",
       grind: "whole",
       size: "1kg",
-      image: baseImage,
+      imageUrl: baseImage,
       stock: 20,
     },
   });
@@ -85,11 +85,11 @@ async function main() {
       name: "Mt. Apo Dark Roast (250g)",
       description:
         "Bold and rich dark roast from Mount Apo. Perfect for espresso lovers.",
-      price: 449.0,
+      price: new Prisma.Decimal(449),
       roastLevel: "dark",
       grind: "ground",
       size: "250g",
-      image: baseImage,
+      imageUrl: baseImage,
       stock: 35,
     },
   });
@@ -99,11 +99,11 @@ async function main() {
       name: "Mt. Apo Light Roast (250g)",
       description:
         "Bright and fruity light roast from Mount Apo. Great for filter brewing.",
-      price: 379.0,
+      price: new Prisma.Decimal(379),
       roastLevel: "light",
       grind: "whole",
       size: "250g",
-      image: baseImage,
+      imageUrl: baseImage,
       stock: 45,
     },
   });
@@ -113,11 +113,11 @@ async function main() {
       name: "Mt. Apo Specialty Blend (500g)",
       description:
         "A unique blend of Mt. Apo Arabica with hints of chocolate and caramel.",
-      price: 799.0,
+      price: new Prisma.Decimal(799),
       roastLevel: "medium",
       grind: "ground",
       size: "500g",
-      image: baseImage,
+      imageUrl: baseImage,
       stock: 25,
     },
   });

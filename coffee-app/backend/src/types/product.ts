@@ -1,24 +1,25 @@
 export interface IProduct {
-  id: number;
+  id: string;
   name: string;
-  description: string;
+  description?: string | null;
   price: number;
-  image: string;
-  roastLevel: string;
-  grind: string;
-  size: string;
+  imageUrl?: string | null;
+  roastLevel?: string | null;
+  grind?: string | null;
+  size?: string | null;
   stock: number;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt?: Date | null;
 }
 
 export interface IProductInput {
   name: string;
-  description: string;
+  description?: string | null;
   price: number;
-  image: string;
-  roastLevel: string;
-  grind: string;
-  size: string;
+  imageUrl?: string | null;
+  roastLevel?: string | null;
+  grind?: string | null;
+  size?: string | null;
   stock?: number;
 }

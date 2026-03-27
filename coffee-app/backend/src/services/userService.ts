@@ -1,4 +1,4 @@
-import { prisma } from "../index.ts";
+import { prisma } from "../config/prisma.ts";
 import { authService } from "./authService.ts";
 import { AppError } from "../utils/errorHandler.ts";
 import type { IUserInput, IUser } from "../types/user.ts";

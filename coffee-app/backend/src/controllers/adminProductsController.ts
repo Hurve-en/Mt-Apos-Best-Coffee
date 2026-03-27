@@ -1,7 +1,6 @@
 import type { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { Prisma } from "@prisma/client";
+import { prisma } from "../config/prisma.ts";
 
 export const getAllProducts = async (_req: Request, res: Response) => {
   try {
@@ -17,25 +16,25 @@ export const getAllProducts = async (_req: Request, res: Response) => {
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
-    const { name, description, price, roastLevel, grind, size, image, stock } =
+    const { name, description, price, roastLevel, grind, size, imageUrl, stock } =
       req.body;
 
-    if (!name || !price || !roastLevel || !grind || !size || !image) {
+    if (!name || !price) {
       return res.status(400).json({
         success: false,
-        message: "Name, price, roastLevel, grind, size, and image are required",
+        message: "Name and price are required",
       });
     }
 
     const product = await prisma.product.create({
       data: {
         name,
-        description: description || "",
-        price: parseFloat(price),
+        description: description || undefined,
+        price: new Prisma.Decimal(parseFloat(price)),
         roastLevel,
         grind,
         size,
-        image,
+        imageUrl,
         stock: stock !== undefined ? parseInt(stock) : 0,
       },
     });
@@ -54,19 +53,19 @@ export const createProduct = async (req: Request, res: Response) => {
 export const updateProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { name, description, price, roastLevel, grind, size, image, stock } =
+    const { name, description, price, roastLevel, grind, size, imageUrl, stock } =
       req.body;
 
     const product = await prisma.product.update({
-      where: { id: Number(id) },
+      where: { id },
       data: {
         ...(name && { name }),
         ...(description !== undefined && { description }),
-        ...(price && { price: parseFloat(price) }),
+        ...(price && { price: new Prisma.Decimal(parseFloat(price)) }),
         ...(roastLevel && { roastLevel }),
         ...(grind && { grind }),
         ...(size && { size }),
-        ...(image && { image }),
+        ...(imageUrl && { imageUrl }),
         ...(stock !== undefined && { stock: parseInt(stock) }),
       },
     });
@@ -90,7 +89,10 @@ export const updateProduct = async (req: Request, res: Response) => {
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    await prisma.product.delete({ where: { id: Number(id) } });
+    await prisma.product.update({
+      where: { id },
+      data: { deletedAt: new Date() },
+    });
     return res.json({ success: true, message: "Product deleted successfully" });
   } catch (error: any) {
     if (error.code === "P2025") {

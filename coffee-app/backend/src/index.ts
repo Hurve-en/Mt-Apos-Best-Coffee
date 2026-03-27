@@ -1,58 +1,12 @@
-import express from "express";
-import type { Request, Response, NextFunction } from "express";
-import helmet from "helmet";
 import dotenv from "dotenv";
-import { PrismaClient } from "@prisma/client";
-import { corsMiddleware, optionsHandler } from "./middleware/cors.ts";
-import {
-  globalErrorHandler,
-  notFoundHandler,
-} from "./middleware/errorHandler.ts";
-import routes from "./routes/index.ts";
+import { Prisma } from "@prisma/client";
+import { app } from "./app.ts";
+import { prisma } from "./config/prisma.ts";
 import { logger } from "./utils/logger.ts";
 
 // Load .env variables before anything else
 dotenv.config();
-console.log("env PORT after dotenv:", process.env.PORT);
-
-// Shared Prisma client for database work
-export const prisma = new PrismaClient();
-
-// Create Express server instance
-const app = express();
 const PORT = process.env.PORT || 3000; // default stays 3000 to match the frontend dev server
-
-// Middleware stack
-app.use(helmet());
-
-app.use(corsMiddleware);
-app.options("*", optionsHandler);
-
-app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ limit: "10mb", extended: true }));
-
-app.use((req: Request, _res: Response, next: NextFunction) => {
-  logger.debug(`${req.method} ${req.path}`);
-  next();
-});
-
-// Basic routes
-app.get("/health", (_req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "Server is running",
-    timestamp: new Date().toISOString(),
-  });
-});
-
-// Main API router
-app.use("/api", routes);
-
-// Catch unknown routes
-app.use(notFoundHandler);
-
-// Surface errors in a consistent shape
-app.use(globalErrorHandler);
 
 async function startServer(): Promise<void> {
   try {
@@ -72,42 +26,42 @@ async function startServer(): Promise<void> {
             name: "Mt. Apo Arabica 250g",
             description:
               "100% Premium Arabica from Mt. Apo. Medium roast with balanced flavor.",
-            price: 399,
+            price: new Prisma.Decimal(399),
             roastLevel: "Medium",
             grind: "Whole Beans",
             size: "250g",
-            image: baseImage,
+            imageUrl: baseImage,
             stock: 50,
           },
           {
             name: "Mt. Apo Arabica 500g",
             description:
               "Premium medium roast Arabica beans sourced from Mt. Apo.",
-            price: 689,
+            price: new Prisma.Decimal(689),
             roastLevel: "Medium",
             grind: "Ground",
             size: "500g",
-            image: baseImage,
+            imageUrl: baseImage,
             stock: 40,
           },
           {
             name: "Mt. Apo Dark Roast 250g",
             description: "Bold dark roast profile for espresso and strong brews.",
-            price: 429,
+            price: new Prisma.Decimal(429),
             roastLevel: "Dark",
             grind: "Espresso",
             size: "250g",
-            image: baseImage,
+            imageUrl: baseImage,
             stock: 35,
           },
           {
             name: "Mt. Apo Light Roast 250g",
             description: "Crisp and bright light roast with floral notes.",
-            price: 379,
+            price: new Prisma.Decimal(379),
             roastLevel: "Light",
             grind: "Whole Beans",
             size: "250g",
-            image: baseImage,
+            imageUrl: baseImage,
             stock: 45,
           },
         ],

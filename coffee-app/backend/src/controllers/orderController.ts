@@ -21,7 +21,7 @@ export const orderController = {
       }
 
       const normalizedItems = (items as any[]).map((item) => ({
-        productId: Number(item.productId),
+        productId: String(item.productId),
         quantity: Number(item.quantity),
         price: Number(item.price),
       }));

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import AdminLayout from "../components/Admin/AdminLayout";
 import "../styles/premium.css";
 
 interface OrderItem {
@@ -95,33 +96,31 @@ export default function AdminOrders() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 to-yellow-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-6xl mb-4">Coffee</div>
-          <p className="text-xl text-coffee-700">Loading orders...</p>
+      <AdminLayout title="Orders" subtitle="Loading orders...">
+        <div className="min-h-[40vh] flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-4xl mb-4">☕</div>
+            <p className="text-lg text-coffee-700">Please wait</p>
+          </div>
         </div>
-      </div>
+      </AdminLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-yellow-50 p-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-5xl font-bold text-black mb-2">
-              Orders Order Management
-            </h1>
-            <p className="text-lg text-coffee-700">Manage all customer orders</p>
-          </div>
-          <button
-            onClick={() => navigate("/admin/dashboard")}
-            className="btn btn-secondary"
-          >
-            ← Back to Dashboard
-          </button>
-        </div>
+    <AdminLayout
+      title="Manage Orders"
+      subtitle="Track order status and keep customers updated"
+      actions={
+        <button
+          onClick={() => navigate("/admin/dashboard")}
+          className="btn btn-secondary"
+        >
+          ← Dashboard
+        </button>
+      }
+    >
+      <div className="space-y-8">
 
         {/* Filter */}
         <div className="mb-8 max-w-64">
@@ -286,6 +285,6 @@ export default function AdminOrders() {
           )}
         </div>
       </div>
-    </div>
+    </AdminLayout>
   );
 }

@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import AdminLayout from "../components/Admin/AdminLayout";
 import "../styles/premium.css";
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
   description: string;
   price: number;
   roastLevel: string;
   grind: string;
   size: string;
-  image: string;
+  image?: string;
+  imageUrl?: string;
   stock: number;
 }
 
@@ -20,19 +22,19 @@ export default function AdminProducts() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [imagePreview, setImagePreview] = useState<string>("");
 
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    price: 0,
+    price: "",
     roastLevel: "medium",
     grind: "whole",
     size: "250g",
     image: "",
-    stock: 10,
+    stock: "10",
   });
 
   const token = localStorage.getItem("token");
@@ -60,7 +62,7 @@ export default function AdminProducts() {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "price" || name === "stock" ? Number(value) : value,
+      [name]: value,
     }));
   };
 
@@ -70,8 +72,13 @@ export default function AdminProducts() {
     if (!formData.name.trim()) newErrors.name = "Product name is required";
     if (!formData.description.trim())
       newErrors.description = "Description is required";
-    if (formData.price <= 0) newErrors.price = "Price must be greater than 0";
-    if (formData.stock < 0) newErrors.stock = "Stock cannot be negative";
+    const priceNumber = parseFloat(formData.price);
+    const stockNumber = parseInt(formData.stock, 10);
+
+    if (Number.isNaN(priceNumber) || priceNumber <= 0)
+      newErrors.price = "Price must be greater than 0";
+    if (Number.isNaN(stockNumber) || stockNumber < 0)
+      newErrors.stock = "Stock cannot be negative";
     if (!formData.image) newErrors.image = "Product image is required";
 
     setErrors(newErrors);
@@ -113,11 +120,17 @@ export default function AdminProducts() {
       console.log("Token:", token);
       console.log("Token is present:", !!token);
 
+      const payload = {
+        ...formData,
+        price: parseFloat(formData.price),
+        stock: parseInt(formData.stock, 10),
+      };
+
       if (editingId) {
         console.log("Updating product:", editingId);
         const response = await axios.put(
           `http://localhost:3000/api/products/${editingId}`,
-          formData,
+          payload,
           { headers: { Authorization: `Bearer ${token}` } },
         );
         console.log("Update response:", response.data);
@@ -138,12 +151,12 @@ export default function AdminProducts() {
       setFormData({
         name: "",
         description: "",
-        price: 0,
+        price: "",
         roastLevel: "medium",
         grind: "whole",
         size: "250g",
         image: "",
-        stock: 10,
+        stock: "10",
       });
       setShowForm(false);
       setEditingId(null);
@@ -168,19 +181,19 @@ export default function AdminProducts() {
     setFormData({
       name: product.name,
       description: product.description,
-      price: product.price,
+      price: product.price.toString(),
       roastLevel: product.roastLevel,
       grind: product.grind,
       size: product.size,
-      image: product.image,
-      stock: product.stock,
+      image: product.image || product.imageUrl || "",
+      stock: product.stock.toString(),
     });
-    setImagePreview(product.image);
+    setImagePreview(product.image || product.imageUrl || "");
     setEditingId(product.id);
     setShowForm(true);
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this product?")) return;
 
     try {
@@ -224,41 +237,28 @@ export default function AdminProducts() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 to-yellow-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-6xl mb-4">Coffee</div>
-          <p className="text-xl text-coffee-700">Loading products...</p>
+      <AdminLayout title="Products" subtitle="Manage your catalog">
+        <div className="min-h-[40vh] flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-4xl mb-4">☕</div>
+            <p className="text-lg text-coffee-700">Loading products...</p>
+          </div>
         </div>
-      </div>
+      </AdminLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-yellow-50 p-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-5xl font-bold text-black mb-2">
-              Coffee Product Management
-            </h1>
-            <p className="text-lg text-coffee-700">Manage your coffee products</p>
-          </div>
-          <div className="flex gap-4">
-            <button
-              onClick={() => navigate("/admin/dashboard")}
-              className="btn btn-secondary"
-            >
-              ← Back to Dashboard
-            </button>
-            <button
-              onClick={() => setShowForm(true)}
-              className="btn btn-primary"
-            >
-              Done Add New Product
-            </button>
-          </div>
-        </div>
+    <AdminLayout
+      title="Manage Products"
+      subtitle="Create, edit, and organize the Mt. Apo catalog"
+      actions={
+        <button onClick={() => setShowForm(true)} className="btn btn-primary">
+          + New Product
+        </button>
+      }
+    >
+      <div className="space-y-8">
 
         {/* Form Modal */}
         {showForm && (
@@ -335,6 +335,9 @@ export default function AdminProducts() {
                       name="price"
                       value={formData.price}
                       onChange={handleFormChange}
+                      inputMode="decimal"
+                      step="0.01"
+                      min="0"
                       className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition ${
                         errors.price
                           ? "border-red-500 focus:ring-red-300"
@@ -359,6 +362,9 @@ export default function AdminProducts() {
                       name="stock"
                       value={formData.stock}
                       onChange={handleFormChange}
+                      inputMode="numeric"
+                      step="1"
+                      min="0"
                       className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition ${
                         errors.stock
                           ? "border-red-500 focus:ring-red-300"
@@ -498,15 +504,15 @@ export default function AdminProducts() {
               >
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                   {/* Product Image */}
-                  {product.image && (
+                  {product.image || product.imageUrl ? (
                     <div className="flex items-center justify-center bg-amber-50 rounded-2xl overflow-hidden h-48 md:h-auto">
                       <img
-                        src={product.image}
+                        src={product.image || product.imageUrl}
                         alt={product.name}
                         className="w-full h-full object-cover"
                       />
                     </div>
-                  )}
+                  ) : null}
 
                   {/* Product Info */}
                   <div className={product.image ? "md:col-span-3" : ""}>
@@ -576,6 +582,6 @@ export default function AdminProducts() {
           </div>
         )}
       </div>
-    </div>
+    </AdminLayout>
   );
 }

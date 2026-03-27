@@ -121,13 +121,13 @@ export default function Profile() {
   if (!isAuthenticated) return null;
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <section className="border-b border-slate-200 bg-white">
+    <div className="min-h-screen bg-coffee-50">
+      <section className="border-b border-neutral-200 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-2">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-coffee-900 mb-2">
             My Profile
           </h1>
-          <p className="text-slate-600 text-base md:text-lg">
+          <p className="text-coffee-700 text-base md:text-lg">
             Manage account details and review your order history.
           </p>
         </div>
@@ -136,29 +136,29 @@ export default function Profile() {
       <section className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
           <aside className="lg:col-span-1">
-            <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 lg:sticky lg:top-24">
-              <div className="h-14 w-14 rounded-full bg-slate-900 text-white grid place-items-center text-lg font-bold mb-4">
+            <div className="bg-white border border-neutral-200 rounded-2xl shadow-sm p-6 lg:sticky lg:top-24">
+              <div className="h-14 w-14 rounded-full bg-primary-black text-white grid place-items-center text-lg font-bold mb-4">
                 {user?.name?.[0] || "U"}
               </div>
-              <h2 className="text-2xl font-bold text-slate-900 leading-tight">
+              <h2 className="text-2xl font-bold text-coffee-900 leading-tight">
                 {user?.name || "User"}
               </h2>
-              <p className="text-slate-600 text-sm mt-1 break-all">{user?.email}</p>
+              <p className="text-coffee-700 text-sm mt-1 break-all">{user?.email}</p>
 
               <div className="mt-6 space-y-3">
-                <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Phone</p>
-                  <p className="text-sm font-medium text-slate-900 mt-1">{user?.phone || "Not set"}</p>
+                <div className="rounded-xl border border-neutral-200 bg-coffee-50 p-3">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-coffee-700">Phone</p>
+                  <p className="text-sm font-medium text-coffee-900 mt-1">{user?.phone || "Not set"}</p>
                 </div>
 
-                <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Member Since</p>
-                  <p className="text-sm font-medium text-slate-900 mt-1">{memberSince}</p>
+                <div className="rounded-xl border border-neutral-200 bg-coffee-50 p-3">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-coffee-700">Member Since</p>
+                  <p className="text-sm font-medium text-coffee-900 mt-1">{memberSince}</p>
                 </div>
 
-                <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Total Orders</p>
-                  <p className="text-sm font-medium text-slate-900 mt-1">{orders.length}</p>
+                <div className="rounded-xl border border-neutral-200 bg-coffee-50 p-3">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-coffee-700">Total Orders</p>
+                  <p className="text-sm font-medium text-coffee-900 mt-1">{orders.length}</p>
                 </div>
               </div>
 
@@ -169,14 +169,14 @@ export default function Profile() {
           </aside>
 
           <div className="lg:col-span-3">
-            <div className="border-b border-slate-200 mb-6">
+            <div className="border-b border-neutral-200 mb-6">
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => setActiveTab("settings")}
                   className={`px-4 py-2 text-sm font-semibold rounded-t-lg transition ${
                     activeTab === "settings"
-                      ? "bg-white border-x border-t border-slate-200 text-slate-900"
-                      : "text-slate-600 hover:text-slate-900"
+                      ? "bg-white border-x border-t border-neutral-200 text-coffee-900"
+                      : "text-coffee-700 hover:text-coffee-900"
                   }`}
                 >
                   Account Settings
@@ -185,8 +185,8 @@ export default function Profile() {
                   onClick={() => setActiveTab("orders")}
                   className={`px-4 py-2 text-sm font-semibold rounded-t-lg transition ${
                     activeTab === "orders"
-                      ? "bg-white border-x border-t border-slate-200 text-slate-900"
-                      : "text-slate-600 hover:text-slate-900"
+                      ? "bg-white border-x border-t border-neutral-200 text-coffee-900"
+                      : "text-coffee-700 hover:text-coffee-900"
                   }`}
                 >
                   Order History ({orders.length})
@@ -196,53 +196,53 @@ export default function Profile() {
 
             {activeTab === "settings" && (
               <div className="space-y-6">
-                <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 md:p-8">
-                  <h3 className="text-2xl font-bold text-slate-900 mb-6">Personal Information</h3>
+                <div className="bg-white border border-neutral-200 rounded-2xl shadow-sm p-6 md:p-8">
+                  <h3 className="text-2xl font-bold text-coffee-900 mb-6">Personal Information</h3>
 
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
-                      <label className="block text-sm font-semibold text-slate-800 mb-2">Full Name</label>
+                      <label className="block text-sm font-semibold text-coffee-900 mb-2">Full Name</label>
                       <input
                         type="text"
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-800 focus:border-slate-800"
+                        className="w-full px-4 py-3 border border-neutral-300 rounded-lg text-coffee-900 placeholder:text-coffee-500 focus:outline-none focus:ring-2 focus:ring-primary-black focus:border-primary-black"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-slate-800 mb-2">Email Address</label>
+                      <label className="block text-sm font-semibold text-coffee-900 mb-2">Email Address</label>
                       <input
                         type="email"
                         value={formData.email}
                         disabled
-                        className="w-full px-4 py-3 border border-slate-300 bg-slate-100 text-slate-700 rounded-lg cursor-not-allowed"
+                        className="w-full px-4 py-3 border border-neutral-300 bg-coffee-50 text-coffee-700 rounded-lg cursor-not-allowed"
                       />
-                      <p className="text-xs text-slate-600 mt-1">Email cannot be changed.</p>
+                      <p className="text-xs text-coffee-700 mt-1">Email cannot be changed.</p>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-slate-800 mb-2">Phone Number</label>
+                      <label className="block text-sm font-semibold text-coffee-900 mb-2">Phone Number</label>
                       <input
                         type="tel"
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
                         placeholder="+63 9XX XXX XXXX"
-                        className="w-full px-4 py-3 border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-800 focus:border-slate-800"
+                        className="w-full px-4 py-3 border border-neutral-300 rounded-lg text-coffee-900 placeholder:text-coffee-500 focus:outline-none focus:ring-2 focus:ring-primary-black focus:border-primary-black"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-slate-800 mb-2">Default Delivery Address</label>
+                      <label className="block text-sm font-semibold text-coffee-900 mb-2">Default Delivery Address</label>
                       <textarea
                         name="address"
                         value={formData.address}
                         onChange={handleChange}
                         placeholder="Street address, building, apartment, etc."
                         rows={3}
-                        className="w-full px-4 py-3 border border-slate-300 rounded-lg text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-800 focus:border-slate-800"
+                        className="w-full px-4 py-3 border border-neutral-300 rounded-lg text-coffee-900 placeholder:text-coffee-500 focus:outline-none focus:ring-2 focus:ring-primary-black focus:border-primary-black"
                       />
                     </div>
 
@@ -285,9 +285,9 @@ export default function Profile() {
             {activeTab === "orders" && (
               <div className="space-y-4">
                 {orders.length === 0 ? (
-                  <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-10 text-center">
-                    <h3 className="text-2xl font-bold text-slate-900 mb-2">No Orders Yet</h3>
-                    <p className="text-slate-600 mb-6">
+                  <div className="bg-white border border-neutral-200 rounded-2xl shadow-sm p-10 text-center">
+                    <h3 className="text-2xl font-bold text-coffee-900 mb-2">No Orders Yet</h3>
+                    <p className="text-coffee-700 mb-6">
                       You haven&apos;t placed any orders yet.
                     </p>
                     <button onClick={() => navigate("/menu")} className="btn btn-primary">
@@ -299,25 +299,25 @@ export default function Profile() {
                     <button
                       key={order.id}
                       onClick={() => navigate(`/orders/${order.id}`)}
-                      className="w-full text-left bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition p-5"
+                      className="w-full text-left bg-white border border-neutral-200 rounded-2xl shadow-sm hover:shadow-md transition p-5"
                     >
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
                         <div>
-                          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Order ID</p>
-                          <p className="text-slate-900 font-bold mt-1">#{order.id}</p>
+                          <p className="text-xs font-semibold uppercase tracking-wide text-coffee-700">Order ID</p>
+                          <p className="text-coffee-900 font-bold mt-1">#{order.id}</p>
                         </div>
                         <div>
-                          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Date</p>
-                          <p className="text-slate-900 font-medium mt-1">
+                          <p className="text-xs font-semibold uppercase tracking-wide text-coffee-700">Date</p>
+                          <p className="text-coffee-900 font-medium mt-1">
                             {new Date(order.createdAt).toLocaleDateString()}
                           </p>
                         </div>
                         <div>
-                          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Amount</p>
-                          <p className="text-slate-900 font-bold mt-1">₱{order.total.toFixed(2)}</p>
+                          <p className="text-xs font-semibold uppercase tracking-wide text-coffee-700">Amount</p>
+                          <p className="text-coffee-900 font-bold mt-1">₱{order.total.toFixed(2)}</p>
                         </div>
                         <div>
-                          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Status</p>
+                          <p className="text-xs font-semibold uppercase tracking-wide text-coffee-700">Status</p>
                           <span className={`inline-block mt-1 px-3 py-1 rounded-full text-xs font-semibold ${statusPill(order.status)}`}>
                             {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                           </span>
@@ -325,8 +325,8 @@ export default function Profile() {
                       </div>
 
                       {order.deliveryAddress && (
-                        <div className="mt-4 pt-4 border-t border-slate-200">
-                          <p className="text-sm text-slate-600">{order.deliveryAddress}</p>
+                        <div className="mt-4 pt-4 border-t border-neutral-200">
+                          <p className="text-sm text-coffee-700">{order.deliveryAddress}</p>
                         </div>
                       )}
                     </button>

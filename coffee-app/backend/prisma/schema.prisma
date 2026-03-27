@@ -20,17 +20,18 @@ model User {
 }
 
 model Product {
-  id          Int     @id @default(autoincrement())
-  name        String  @unique
-  description String  @db.Text
-  price       Float
-  roastLevel  String
-  grind       String
-  size        String
-  image       String
-  stock       Int     @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id          String     @id @default(uuid()) @db.Uuid
+  name        String     @unique
+  description String?    @db.Text
+  price       Decimal    @db.Decimal(10, 2)
+  stock       Int        @default(0)
+  imageUrl    String?
+  roastLevel  String?
+  grind       String?
+  size        String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  deletedAt   DateTime?
   orderItems  OrderItem[]
 }
 
@@ -49,9 +50,9 @@ model OrderItem {
   id        Int     @id @default(autoincrement())
   orderId   Int
   order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  productId Int
+  productId String
   product   Product @relation(fields: [productId], references: [id])
   quantity  Int
-  price     Float
+  price     Decimal @db.Decimal(10, 2)
   createdAt DateTime @default(now())
 }

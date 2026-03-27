@@ -1,7 +1,7 @@
 import { Router } from "express";
 import authRoutes from "./auth.ts";
 import userRoutes from "./users.ts";
-import productRoutes from "./products.ts";
+import productRoutes from "./product.routes.ts";
 import orderRoutes from "./orders.ts";
 
 const router = Router();

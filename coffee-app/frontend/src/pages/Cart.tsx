@@ -66,12 +66,12 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-coffee-50">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <section className="section-gap bg-coffee-500 text-white">
+      <section className="section-gap bg-white border-b border-neutral-200">
         <div className="container">
-          <h1 className="text-5xl font-bold mb-2">Cart Shopping Cart</h1>
-          <p className="text-lg opacity-90">
+          <h1 className="text-5xl font-bold text-coffee-900 mb-2">Cart</h1>
+          <p className="text-lg text-coffee-700">
             {itemsCount} item{itemsCount !== 1 ? "s" : ""} in your cart
           </p>
         </div>
