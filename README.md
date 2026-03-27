@@ -82,6 +82,7 @@ Meanwhile, administrators can:
 | **Prisma** | 5.8.0 | ORM & database management |
 | **PostgreSQL** | 16-alpine | Production database |
 | **Socket.IO** | 4.7.2 | Real-time bidirectional communication |
+| **Multer** | 1.4.5 | Secure multipart uploads for product images |
 | **JWT** | 9.0.2 | Token-based authentication |
 | **bcryptjs** | 2.4.3 | Password hashing |
 | **Zod** | 3.22.4 | TypeScript-first schema validation |
@@ -97,6 +98,7 @@ Meanwhile, administrators can:
 | **React Router** | 6.20.0 | Client-side routing |
 | **Redux Toolkit** | 1.9.7 | State management |
 | **Axios** | 1.6.2 | HTTP client |
+| **classnames** | 2.5.1 | Conditional class utility |
 | **Socket.IO Client** | 4.5.4 | Real-time communication |
 | **Tailwind CSS** | 3.4.1 | Utility-first CSS framework |
 | **Leaflet** | 1.9.4 | Map visualization |
@@ -159,32 +161,40 @@ Mt-Apos-Best-Coffee/
 │   │   ├── package.json
 │   │   ├── tsconfig.json
 │   │   ├── src/
-│   │   │   ├── index.ts            # Application entry point
+│   │   │   ├── app.ts              # Express app setup (middleware, routes)
+│   │   │   ├── index.ts            # Server bootstrap & seeding
+│   │   │   ├── config/
+│   │   │   │   ├── prisma.ts       # Shared Prisma client
+│   │   │   │   └── multer.config.ts# Upload validation & storage
 │   │   │   ├── controllers/        # Request handlers
 │   │   │   │   ├── authController.ts
 │   │   │   │   ├── adminAuthController.ts
 │   │   │   │   ├── orderController.ts
 │   │   │   │   ├── adminOrdersController.ts
-│   │   │   │   ├── productController.ts
+│   │   │   │   ├── product.controller.ts
 │   │   │   │   ├── adminProductsController.ts
-│   │   │   │   ├── userController.ts
-│   │   │   │   └── index.ts
+│   │   │   │   └── userController.ts
 │   │   │   ├── services/          # Business logic
 │   │   │   │   ├── authService.ts
 │   │   │   │   ├── orderService.ts
-│   │   │   │   ├── productService.ts
+│   │   │   │   ├── product.service.ts
 │   │   │   │   └── userService.ts
+│   │   │   ├── repositories/      # Data access helpers
+│   │   │   │   └── product.repository.ts
 │   │   │   ├── routes/            # API endpoints
 │   │   │   │   ├── auth.ts
 │   │   │   │   ├── orders.ts
-│   │   │   │   ├── products.ts
+│   │   │   │   ├── product.routes.ts
 │   │   │   │   ├── users.ts
 │   │   │   │   └── index.ts
 │   │   │   ├── middleware/        # Middleware functions
-│   │   │   │   ├── auth.ts
+│   │   │   │   ├── auth.middleware.ts
 │   │   │   │   ├── adminMiddleware.ts
 │   │   │   │   ├── cors.ts
+│   │   │   │   ├── error.middleware.ts
 │   │   │   │   └── errorHandler.ts
+│   │   │   ├── schemas/           # Zod validation schemas
+│   │   │   │   └── product.schema.ts
 │   │   │   ├── types/             # TypeScript type definitions
 │   │   │   │   ├── user.ts
 │   │   │   │   ├── order.ts
@@ -269,6 +279,7 @@ Mt-Apos-Best-Coffee/
 │       │   ├── styles/             # Global styles
 │       │   │   ├── index.css
 │       │   │   ├── premium.css
+│       │   │   ├── menu-editorial.css  # New editorial menu theme
 │       │   │   └── variables.css
 │       │   ├── assets/             # Static assets
 │       │   └── Images/
@@ -299,21 +310,22 @@ model User {
 ### Product Model
 ```prisma
 model Product {
-  id          Int     @id @default(autoincrement())
-  name        String  @unique
-  description String  @db.Text
-  price       Float
-  roastLevel  String
-  grind       String
-  size        String
-  image       String
-  stock       Int     @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id          String     @id @default(uuid()) @db.Uuid
+  name        String     @unique
+  description String?    @db.Text
+  price       Decimal    @db.Decimal(10, 2)
+  stock       Int        @default(0)
+  imageUrl    String?
+  roastLevel  String?
+  grind       String?
+  size        String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  deletedAt   DateTime?
   orderItems  OrderItem[]
 }
 ```
-**Purpose**: Stores coffee product information with detailed specifications
+**Purpose**: Stores coffee product information with soft-delete support and precise pricing
 
 ### Order Model
 ```prisma
@@ -336,10 +348,10 @@ model OrderItem {
   id        Int     @id @default(autoincrement())
   orderId   Int
   order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  productId Int
+  productId String
   product   Product @relation(fields: [productId], references: [id])
   quantity  Int
-  price     Float
+  price     Decimal @db.Decimal(10, 2)
   createdAt DateTime @default(now())
 }
 ```
@@ -432,7 +444,7 @@ docker-compose exec backend npm run db:seed
 ```bash
 cd coffee-app/backend
 npm run dev
-# Server runs on http://localhost:5000
+# Server runs on http://localhost:3000 by default (set PORT to override)
 ```
 
 **Terminal 2 - Frontend:**
@@ -680,6 +692,6 @@ For support, email: support@mtaposbest.coffee or open an issue on GitHub.
 
 ---
 
-**Last Updated**: February 27, 2026  
+**Last Updated**: March 27, 2026  
 **Version**: 1.0.0  
 **Maintainers**: Mt. Apos Best Coffee Team
