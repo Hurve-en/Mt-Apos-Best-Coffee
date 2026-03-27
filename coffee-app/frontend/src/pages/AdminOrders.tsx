@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AdminLayout from "../components/Admin/AdminLayout";
 import "../styles/premium.css";
 
 interface OrderItem {
   id: number;
-  productId: number;
+  productId: string;
   quantity: number;
   price: number;
   product?: {
@@ -32,7 +31,6 @@ interface Order {
 }
 
 export default function AdminOrders() {
-  const navigate = useNavigate();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("");
@@ -42,7 +40,7 @@ export default function AdminOrders() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetchOrders();
+    void fetchOrders();
   }, [statusFilter]);
 
   const fetchOrders = async () => {
@@ -53,10 +51,14 @@ export default function AdminOrders() {
       const response = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setOrders(response.data.data || response.data);
-      setLoading(false);
+      const nextOrders = response.data.data || response.data;
+      setOrders(nextOrders);
+      if (nextOrders.length > 0 && !selectedOrder) {
+        setSelectedOrder(nextOrders[0]);
+      }
     } catch (err) {
       console.error("Failed to fetch orders", err);
+    } finally {
       setLoading(false);
     }
   };
@@ -69,9 +71,11 @@ export default function AdminOrders() {
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } },
       );
-      setOrders(orders.map((o) => (o.id === orderId ? response.data.data : o)));
+      setOrders((current) =>
+        current.map((order) => (order.id === orderId ? response.data.data : order)),
+      );
       setSelectedOrder(response.data.data);
-    } catch (err) {
+    } catch (_err) {
       alert("Failed to update order");
     } finally {
       setUpdating(false);
@@ -79,19 +83,15 @@ export default function AdminOrders() {
   };
 
   const getStatusBadge = (status: string) => {
-    const statusMap: Record<string, { bg: string; text: string }> = {
-      pending: { bg: "bg-yellow-100", text: "text-yellow-800" },
-      confirmed: { bg: "bg-blue-100", text: "text-blue-800" },
-      preparing: { bg: "bg-purple-100", text: "text-purple-800" },
-      ready: { bg: "bg-green-100", text: "text-green-800" },
-      delivered: { bg: "bg-green-200", text: "text-green-900" },
-      cancelled: { bg: "bg-red-100", text: "text-red-800" },
+    const statusMap: Record<string, string> = {
+      pending: "bg-amber-100 text-amber-900",
+      confirmed: "bg-sky-100 text-sky-900",
+      preparing: "bg-violet-100 text-violet-900",
+      ready: "bg-emerald-100 text-emerald-900",
+      delivered: "bg-emerald-200 text-emerald-900",
+      cancelled: "bg-red-100 text-red-800",
     };
-    const s = statusMap[status.toLowerCase()] || {
-      bg: "bg-gray-100",
-      text: "text-gray-800",
-    };
-    return `${s.bg} ${s.text}`;
+    return statusMap[status.toLowerCase()] || "bg-stone-100 text-stone-800";
   };
 
   if (loading) {
@@ -110,178 +110,208 @@ export default function AdminOrders() {
   return (
     <AdminLayout
       title="Manage Orders"
-      subtitle="Track order status and keep customers updated"
-      actions={
-        <button
-          onClick={() => navigate("/admin/dashboard")}
-          className="btn btn-secondary"
-        >
-          ← Dashboard
-        </button>
-      }
+      subtitle="Review every order, keep status updates clear, and stay close to the customer journey."
     >
       <div className="space-y-8">
+        <div className="grid gap-6 lg:grid-cols-[1fr_260px]">
+          <div className="rounded-[2rem] border border-[rgba(143,91,54,0.14)] bg-[linear-gradient(180deg,rgba(255,251,245,0.95),rgba(247,241,232,0.92))] p-7 shadow-[0_24px_80px_rgba(61,31,10,0.08)]">
+            <p className="text-[0.72rem] uppercase tracking-[0.22em] text-coffee-500">
+              Order Flow
+            </p>
+            <h3 className="mt-3 font-['Cormorant_Garamond'] text-4xl font-semibold text-coffee-900">
+              Keep service calm and timely.
+            </h3>
+            <p className="mt-3 text-sm leading-7 text-coffee-700">
+              Filter incoming orders, review customer information, and move
+              every order through the workflow with confidence.
+            </p>
+          </div>
 
-        {/* Filter */}
-        <div className="mb-8 max-w-64">
-          <label className="block text-sm font-semibold text-black mb-3">
-            Filter by Status
-          </label>
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
-          >
-            <option value="">All Orders</option>
-            <option value="pending">Pending</option>
-            <option value="confirmed">Confirmed</option>
-            <option value="preparing">Preparing</option>
-            <option value="ready">Ready</option>
-            <option value="delivered">Delivered</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
+          <div className="rounded-[2rem] border border-[rgba(143,91,54,0.14)] bg-white/85 p-7 shadow-[0_24px_80px_rgba(61,31,10,0.08)]">
+            <label className="block text-[0.72rem] uppercase tracking-[0.22em] text-coffee-500">
+              Filter by Status
+            </label>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="mt-4 w-full rounded-[1rem] border border-[rgba(143,91,54,0.16)] bg-white/90 px-4 py-3 text-coffee-900 focus:border-coffee-500 focus:outline-none focus:ring-2 focus:ring-coffee-200"
+            >
+              <option value="">All Orders</option>
+              <option value="pending">Pending</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="preparing">Preparing</option>
+              <option value="ready">Ready</option>
+              <option value="delivered">Delivered</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
         </div>
 
-        {/* Grid Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Orders List */}
-          <div className="lg:col-span-2 space-y-4">
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+          <div className="space-y-4">
             {orders.length === 0 ? (
-              <div className="bg-white rounded-3xl shadow-lg p-12 text-center">
-                <div className="text-6xl mb-4">No data</div>
-                <h3 className="text-2xl font-bold text-black mb-2">
+              <div className="rounded-[2rem] border border-[rgba(143,91,54,0.14)] bg-[linear-gradient(180deg,rgba(255,251,245,0.95),rgba(247,241,232,0.92))] p-12 text-center shadow-[0_24px_80px_rgba(61,31,10,0.08)]">
+                <h3 className="font-['Cormorant_Garamond'] text-4xl font-semibold text-coffee-900">
                   No Orders Found
                 </h3>
-                <p className="text-coffee-700">
-                  No orders match your filter criteria
+                <p className="mt-3 text-sm text-coffee-700">
+                  No orders match your current filter.
                 </p>
               </div>
             ) : (
               orders.map((order) => (
-                <div
+                <button
                   key={order.id}
                   onClick={() => setSelectedOrder(order)}
-                  className={`bg-white rounded-3xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition ${
-                    selectedOrder?.id === order.id ? "ring-4 ring-accent" : ""
+                  className={`w-full rounded-[1.75rem] border p-6 text-left shadow-[0_24px_80px_rgba(61,31,10,0.08)] transition hover:-translate-y-1 ${
+                    selectedOrder?.id === order.id
+                      ? "border-coffee-500 bg-[#fffaf3]"
+                      : "border-[rgba(143,91,54,0.14)] bg-[linear-gradient(180deg,rgba(255,251,245,0.95),rgba(247,241,232,0.92))]"
                   }`}
                 >
-                  <div className="flex justify-between items-start mb-4">
+                  <div className="flex flex-wrap items-start justify-between gap-4">
                     <div>
-                      <h3 className="text-xl font-bold text-black">
-                        Order #{String(order.id).padStart(4, "0")}
+                      <p className="text-[0.68rem] uppercase tracking-[0.18em] text-coffee-500">
+                        Order Reference
+                      </p>
+                      <h3 className="mt-2 font-['Cormorant_Garamond'] text-4xl font-semibold leading-none text-coffee-900">
+                        #{String(order.id).padStart(4, "0")}
                       </h3>
-                      <p className="text-sm text-coffee-700 mt-1">
-                        {order.user?.name} •{" "}
+                      <p className="mt-3 text-sm text-coffee-700">
+                        {order.user?.name || "Unknown customer"} •{" "}
                         {new Date(order.createdAt).toLocaleDateString()}
                       </p>
                     </div>
                     <span
-                      className={`px-4 py-2 rounded-full text-sm font-semibold ${getStatusBadge(order.status)}`}
+                      className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] ${getStatusBadge(order.status)}`}
                     >
-                      {order.status.charAt(0).toUpperCase() +
-                        order.status.slice(1)}
+                      {order.status}
                     </span>
                   </div>
 
-                  <div className="flex justify-between items-center text-lg">
-                    <span className="text-coffee-700">
-                      {order.orderItems?.length || 0} items
-                    </span>
-                    <span className="font-bold text-accent">
-                      ₱{order.total}
-                    </span>
+                  <div className="mt-5 flex items-end justify-between border-t border-[rgba(143,91,54,0.12)] pt-4">
+                    <div>
+                      <p className="text-[0.68rem] uppercase tracking-[0.18em] text-coffee-500">
+                        Items
+                      </p>
+                      <p className="mt-2 text-sm text-coffee-900">
+                        {order.orderItems?.length || 0} items
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[0.68rem] uppercase tracking-[0.18em] text-coffee-500">
+                        Total
+                      </p>
+                      <p className="mt-2 font-['Cormorant_Garamond'] text-4xl font-semibold leading-none text-coffee-900">
+                        ₱{order.total}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                </button>
               ))
             )}
           </div>
 
-          {/* Order Details Sidebar */}
           {selectedOrder && (
-            <div className="bg-white rounded-3xl shadow-lg p-6 h-fit sticky top-8">
-              <h2 className="text-3xl font-bold text-black mb-6">Order Details</h2>
+            <aside className="h-fit rounded-[2rem] border border-[rgba(143,91,54,0.14)] bg-[linear-gradient(180deg,rgba(255,251,245,0.95),rgba(247,241,232,0.92))] p-7 shadow-[0_24px_80px_rgba(61,31,10,0.08)] xl:sticky xl:top-28">
+              <p className="text-[0.72rem] uppercase tracking-[0.22em] text-coffee-500">
+                Selected Order
+              </p>
+              <h2 className="mt-3 font-['Cormorant_Garamond'] text-5xl font-semibold leading-none text-coffee-900">
+                #{String(selectedOrder.id).padStart(4, "0")}
+              </h2>
 
-              {/* Customer Info */}
-              <div className="mb-6 pb-6 border-b-2 border-gray-300">
-                <h3 className="font-bold text-black mb-3 text-lg">
-                  Profile Customer
-                </h3>
-                <p className="text-sm font-semibold text-black">
-                  {selectedOrder.user?.name}
-                </p>
-                <p className="text-sm text-coffee-700">
-                  {selectedOrder.user?.email}
-                </p>
-                <p className="text-sm text-coffee-700">
-                  {selectedOrder.user?.phone}
-                </p>
-              </div>
+              <div className="mt-7 space-y-6">
+                <section className="rounded-[1.5rem] border border-[rgba(143,91,54,0.12)] bg-white/75 p-5">
+                  <p className="text-[0.68rem] uppercase tracking-[0.18em] text-coffee-500">
+                    Customer
+                  </p>
+                  <p className="mt-3 text-sm font-medium text-coffee-900">
+                    {selectedOrder.user?.name}
+                  </p>
+                  <p className="mt-1 text-sm text-coffee-700">
+                    {selectedOrder.user?.email}
+                  </p>
+                  <p className="mt-1 text-sm text-coffee-700">
+                    {selectedOrder.user?.phone}
+                  </p>
+                </section>
 
-              {/* Items */}
-              <div className="mb-6 pb-6 border-b-2 border-gray-300">
-                <h3 className="font-bold text-black mb-3 text-lg">Coffee Items</h3>
-                <div className="space-y-2">
-                  {selectedOrder.orderItems?.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="flex justify-between text-sm bg-amber-50 p-3 rounded-lg"
-                    >
-                      <div>
-                        <p className="font-semibold text-black">
-                          {item.product?.name}
+                <section className="rounded-[1.5rem] border border-[rgba(143,91,54,0.12)] bg-white/75 p-5">
+                  <p className="text-[0.68rem] uppercase tracking-[0.18em] text-coffee-500">
+                    Items
+                  </p>
+                  <div className="mt-4 space-y-3">
+                    {selectedOrder.orderItems?.map((item) => (
+                      <div
+                        key={item.id}
+                        className="flex items-start justify-between gap-4 rounded-[1rem] bg-[#f8f0e4] px-4 py-3"
+                      >
+                        <div>
+                          <p className="text-sm font-medium text-coffee-900">
+                            {item.product?.name}
+                          </p>
+                          <p className="mt-1 text-xs uppercase tracking-[0.14em] text-coffee-500">
+                            x{item.quantity}
+                          </p>
+                        </div>
+                        <p className="font-['Cormorant_Garamond'] text-2xl font-semibold leading-none text-coffee-900">
+                          ₱{(item.price * item.quantity).toFixed(0)}
                         </p>
-                        <p className="text-xs text-coffee-700">×{item.quantity}</p>
                       </div>
-                      <p className="font-bold text-accent">
-                        ₱{(item.price * item.quantity).toFixed(0)}
+                    ))}
+                  </div>
+                </section>
+
+                <section className="rounded-[1.5rem] border border-[rgba(143,91,54,0.12)] bg-white/75 p-5">
+                  <p className="text-[0.68rem] uppercase tracking-[0.18em] text-coffee-500">
+                    Delivery Address
+                  </p>
+                  <p className="mt-3 text-sm leading-7 text-coffee-700">
+                    {selectedOrder.deliveryAddress}
+                  </p>
+                </section>
+
+                <section className="rounded-[1.5rem] border border-[rgba(143,91,54,0.12)] bg-white/75 p-5">
+                  <div className="flex items-end justify-between gap-4">
+                    <div>
+                      <p className="text-[0.68rem] uppercase tracking-[0.18em] text-coffee-500">
+                        Total
+                      </p>
+                      <p className="mt-3 font-['Cormorant_Garamond'] text-5xl font-semibold leading-none text-coffee-900">
+                        ₱{selectedOrder.total}
                       </p>
                     </div>
-                  ))}
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] ${getStatusBadge(selectedOrder.status)}`}
+                    >
+                      {selectedOrder.status}
+                    </span>
+                  </div>
+                </section>
+
+                <div>
+                  <label className="mb-2 block text-[0.78rem] font-medium uppercase tracking-[0.16em] text-coffee-700">
+                    Update Status
+                  </label>
+                  <select
+                    value={selectedOrder.status}
+                    onChange={(e) =>
+                      handleStatusChange(selectedOrder.id, e.target.value)
+                    }
+                    disabled={updating}
+                    className="w-full rounded-[1rem] border border-[rgba(143,91,54,0.16)] bg-white/90 px-4 py-3 text-coffee-900 focus:border-coffee-500 focus:outline-none focus:ring-2 focus:ring-coffee-200"
+                  >
+                    <option value="pending">Pending</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="preparing">Preparing</option>
+                    <option value="ready">Ready</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
                 </div>
               </div>
-
-              {/* Delivery Address */}
-              <div className="mb-6 pb-6 border-b-2 border-gray-300">
-                <h3 className="font-bold text-black mb-3 text-lg">
-                  Location: Address
-                </h3>
-                <p className="text-sm text-coffee-700 leading-relaxed">
-                  {selectedOrder.deliveryAddress}
-                </p>
-              </div>
-
-              {/* Total */}
-              <div className="mb-6 pb-6 border-b-2 border-gray-300">
-                <div className="flex justify-between items-center">
-                  <span className="font-bold text-lg text-black">Total</span>
-                  <span className="font-bold text-2xl text-accent">
-                    ₱{selectedOrder.total}
-                  </span>
-                </div>
-              </div>
-
-              {/* Status Update */}
-              <div>
-                <label className="block text-sm font-semibold text-black mb-3">
-                  Update Status
-                </label>
-                <select
-                  value={selectedOrder.status}
-                  onChange={(e) =>
-                    handleStatusChange(selectedOrder.id, e.target.value)
-                  }
-                  disabled={updating}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent font-semibold"
-                >
-                  <option value="pending">Pending</option>
-                  <option value="confirmed">Confirmed</option>
-                  <option value="preparing">Preparing</option>
-                  <option value="ready">Ready</option>
-                  <option value="delivered">Delivered</option>
-                  <option value="cancelled">Cancelled</option>
-                </select>
-              </div>
-            </div>
+            </aside>
           )}
         </div>
       </div>

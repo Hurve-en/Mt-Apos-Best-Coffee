@@ -38,10 +38,12 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-coffee-50 flex items-center justify-center">
-        <div className="text-center max-w-md">
-          <div className="text-8xl mb-6 opacity-50">Cart</div>
-          <h1 className="text-4xl font-bold text-coffee-900 mb-4">
+      <div className="flex min-h-screen items-center justify-center bg-[linear-gradient(180deg,#faf7f0_0%,#f4ede2_100%)]">
+        <div className="max-w-md text-center">
+          <div className="mb-3 text-xs uppercase tracking-[0.28em] text-coffee-500">
+            Basket Review
+          </div>
+          <h1 className="mb-4 font-['Cormorant_Garamond'] text-6xl font-semibold leading-none text-coffee-900">
             Your cart is empty
           </h1>
           <p className="text-coffee-700 text-lg mb-8">
@@ -66,32 +68,33 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <section className="section-gap bg-white border-b border-neutral-200">
+    <div className="min-h-screen bg-[linear-gradient(180deg,#faf7f0_0%,#f5efe5_100%)]">
+      <section className="section-gap border-b border-[rgba(143,91,54,0.12)] bg-transparent">
         <div className="container">
-          <h1 className="text-5xl font-bold text-coffee-900 mb-2">Cart</h1>
+          <p className="mb-3 text-xs uppercase tracking-[0.28em] text-coffee-500">
+            Curated Checkout
+          </p>
+          <h1 className="mb-2 font-['Cormorant_Garamond'] text-6xl font-semibold leading-none text-coffee-900">
+            Cart
+          </h1>
           <p className="text-lg text-coffee-700">
             {itemsCount} item{itemsCount !== 1 ? "s" : ""} in your cart
           </p>
         </div>
       </section>
 
-      {/* Main Content */}
       <section className="section-gap">
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Cart Items */}
             <div className="lg:col-span-2">
               <div className="space-y-4">
                 {items.map((item: any) => (
                   <div
                     key={item.productId}
-                    className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between"
+                    className="flex flex-col items-start justify-between gap-4 rounded-[28px] border border-[rgba(143,91,54,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.95),rgba(250,249,245,0.92))] p-6 shadow-[0_18px_45px_rgba(61,31,10,0.08)] transition hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(61,31,10,0.12)] sm:flex-row sm:items-center"
                   >
-                    {/* Product Info */}
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-coffee-900 mb-2">
+                      <h3 className="mb-2 font-['Cormorant_Garamond'] text-[2rem] font-semibold leading-none text-coffee-900">
                         {item.name || "Product"}
                       </h3>
                       <div className="flex flex-wrap gap-3 mb-3">
@@ -116,9 +119,8 @@ export default function CartPage() {
                       </p>
                     </div>
 
-                    {/* Quantity Controls */}
                     <div className="flex items-center gap-4">
-                      <div className="flex items-center bg-coffee-50 rounded-lg border-2 border-neutral-300 border-opacity-30">
+                      <div className="flex items-center rounded-2xl border border-[rgba(143,91,54,0.16)] bg-white/80">
                         <button
                           onClick={() =>
                             handleQuantityChange(
@@ -146,7 +148,6 @@ export default function CartPage() {
                         </button>
                       </div>
 
-                      {/* Subtotal */}
                       <div className="text-right min-w-24">
                         <p className="text-sm text-coffee-700 mb-1">Subtotal</p>
                         <p className="text-2xl font-bold text-coffee-900">
@@ -154,7 +155,6 @@ export default function CartPage() {
                         </p>
                       </div>
 
-                      {/* Remove Button */}
                       <button
                         onClick={() => dispatch(removeFromCart(item.productId))}
                         className="px-4 py-2 text-red-600 hover:bg-red-100 rounded-lg font-bold transition"
@@ -168,10 +168,9 @@ export default function CartPage() {
               </div>
             </div>
 
-            {/* Cart Summary */}
             <div className="lg:col-span-1">
-              <div className="sticky top-20 bg-white rounded-2xl shadow-lg p-8">
-                <h2 className="text-2xl font-bold text-coffee-900 mb-6">
+              <div className="sticky top-20 rounded-[32px] border border-[rgba(143,91,54,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.95),rgba(250,249,245,0.92))] p-8 shadow-[0_18px_45px_rgba(61,31,10,0.08)]">
+                <h2 className="mb-6 font-['Cormorant_Garamond'] text-4xl font-semibold leading-none text-coffee-900">
                   Order Summary
                 </h2>
 

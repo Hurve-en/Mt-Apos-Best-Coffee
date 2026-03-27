@@ -30,15 +30,16 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero banner */}
       <HeroBanner />
 
-      {/* Featured products */}
-      <section className="section-gap bg-coffee-50">
+      <section className="section-gap bg-transparent">
         <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-coffee-900 mb-4">Our Best Sellers</h2>
-            <p className="text-coffee-700 text-lg max-w-2xl mx-auto">
+          <div className="mb-12 text-center">
+            <p className="mb-3 text-xs uppercase tracking-[0.28em] text-coffee-500">
+              Curated Selection
+            </p>
+            <h2 className="mb-4 text-coffee-900">Our Best Sellers</h2>
+            <p className="mx-auto max-w-2xl text-lg text-coffee-700">
               Handpicked from Mt. Apo's finest harvest. Each batch is carefully
               roasted to perfection
             </p>
@@ -47,12 +48,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Why choose us */}
-      <section className="section-gap bg-pure-white">
+      <section className="section-gap bg-transparent">
         <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-coffee-900 mb-4">Why Choose Apo Coffee</h2>
-            <p className="text-coffee-700 text-lg max-w-2xl mx-auto">
+          <div className="mb-12 text-center">
+            <p className="mb-3 text-xs uppercase tracking-[0.28em] text-coffee-500">
+              Crafted Experience
+            </p>
+            <h2 className="mb-4 text-coffee-900">Why Choose Apo Coffee</h2>
+            <p className="mx-auto max-w-2xl text-lg text-coffee-700">
               Premium quality meets exceptional service
             </p>
           </div>
@@ -60,12 +63,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="section-gap bg-coffee-50">
+      <section className="section-gap bg-transparent">
         <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-coffee-900 mb-4">What Our Customers Say</h2>
-            <p className="text-coffee-700 text-lg max-w-2xl mx-auto">
+          <div className="mb-12 text-center">
+            <p className="mb-3 text-xs uppercase tracking-[0.28em] text-coffee-500">
+              Community Notes
+            </p>
+            <h2 className="mb-4 text-coffee-900">What Our Customers Say</h2>
+            <p className="mx-auto max-w-2xl text-lg text-coffee-700">
               Real reviews from real coffee lovers
             </p>
           </div>
@@ -73,22 +78,26 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Call to action */}
-      <section className="section-gap bg-white border-t border-neutral-200">
-        <div className="container text-center">
-          <h2 className="mb-4 text-4xl font-extrabold uppercase leading-tight text-coffee-900">
+      <section className="section-gap-sm">
+        <div className="container">
+          <div className="rounded-[36px] border border-[rgba(143,91,54,0.14)] bg-[linear-gradient(140deg,rgba(255,255,255,0.92),rgba(245,241,224,0.98))] px-8 py-14 text-center shadow-[0_24px_70px_rgba(61,31,10,0.08)]">
+            <p className="mb-3 text-xs uppercase tracking-[0.28em] text-coffee-500">
+              Brew Your Ritual
+            </p>
+          <h2 className="mb-4 text-coffee-900">
             Ready for the Perfect Brew?
           </h2>
-          <p className="text-lg mb-8 max-w-2xl mx-auto text-coffee-700">
+          <p className="mx-auto mb-8 max-w-2xl text-lg text-coffee-700">
             Explore our complete collection of premium Mt. Apo coffee and find
             your perfect roast
           </p>
           <Link
             to="/menu"
-            className="btn btn-lg bg-coffee-700 hover:bg-coffee-800 text-pure-white shadow-lg transition-transform transform hover:-translate-y-1"
+            className="btn btn-lg"
           >
             Shop Now
           </Link>
+          </div>
         </div>
       </section>
     </div>

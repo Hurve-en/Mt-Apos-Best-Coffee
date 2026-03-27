@@ -130,10 +130,17 @@ const Orders: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-coffee-50 py-12">
+    <div className="min-h-screen bg-[linear-gradient(180deg,#faf7f0_0%,#f4ede2_100%)] py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-4xl font-bold text-coffee-900">My Orders</h1>
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <p className="mb-2 text-xs uppercase tracking-[0.28em] text-coffee-500">
+              Order Archive
+            </p>
+            <h1 className="font-['Cormorant_Garamond'] text-6xl font-semibold leading-none text-coffee-900">
+              My Orders
+            </h1>
+          </div>
           <button
             onClick={fetchOrders}
             className="btn btn-secondary btn-sm"
@@ -156,7 +163,7 @@ const Orders: React.FC = () => {
         )}
 
         {visibleOrders.length === 0 ? (
-          <div className="bg-white rounded-2xl shadow-lg p-12 text-center animate-fade-in-up">
+          <div className="animate-fade-in-up rounded-[32px] border border-[rgba(143,91,54,0.12)] bg-white/90 p-12 text-center shadow-[0_20px_60px_rgba(61,31,10,0.08)]">
             <div className="text-6xl mb-4">Orders</div>
             <h2 className="text-2xl font-bold text-coffee-900 mb-3">No orders yet</h2>
             <p className="text-coffee-700 mb-8">Your placed orders will appear here.</p>
@@ -169,7 +176,7 @@ const Orders: React.FC = () => {
             {visibleOrders.map((order) => (
               <article
                 key={order.id}
-                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 animate-fade-in-up"
+                className="animate-fade-in-up rounded-[28px] border border-[rgba(143,91,54,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.95),rgba(250,249,245,0.92))] p-6 shadow-[0_18px_45px_rgba(61,31,10,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(61,31,10,0.12)]"
               >
                 <div className="flex items-start justify-between gap-4 mb-4">
                   <div>

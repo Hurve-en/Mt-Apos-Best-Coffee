@@ -42,24 +42,25 @@ export default function Testimonials() {
   };
 
   return (
-    <div className="grid-4 lg:grid-5">
+    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
       {testimonials.map((testimonial) => (
-        <div key={testimonial.id} className="card card animate-fadeInUp">
-          {/* Avatar */}
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center text-white font-bold text-sm">
+        <div
+          key={testimonial.id}
+          className="card animate-fadeInUp rounded-[28px] border border-[rgba(143,91,54,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,249,245,0.94))] p-7"
+        >
+          <div className="mb-5 flex items-center gap-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-coffee-700 to-coffee-900 text-sm font-bold text-white">
               {testimonial.avatar}
             </div>
             <div>
               <h4 className="font-semibold text-black">{testimonial.name}</h4>
-              <p className="text-xs text-coffee-700">
+              <p className="text-xs uppercase tracking-[0.16em] text-coffee-700">
                 {renderStars(testimonial.rating)}
               </p>
             </div>
           </div>
 
-          {/* Review Text */}
-          <p className="text-coffee-700 text-sm italic">
+          <p className="font-['Cormorant_Garamond'] text-[1.65rem] italic leading-snug text-coffee-900">
             &quot;{testimonial.text}&quot;
           </p>
         </div>

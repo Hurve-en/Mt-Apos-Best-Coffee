@@ -3,63 +3,66 @@ import bannerImage from "../../Images/image7.png";
 
 export default function HeroBanner() {
   return (
-    <section className="relative overflow-hidden py-20 md:py-32 lg:py-40 bg-coffee-50">
-      {/* Decorative elements removed */}
-
+    <section className="relative overflow-hidden bg-transparent py-20 md:py-28 lg:py-32">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[520px] bg-[radial-gradient(circle_at_18%_22%,rgba(196,158,118,0.22),transparent_28%),radial-gradient(circle_at_82%_18%,rgba(143,91,54,0.16),transparent_24%)]" />
       <div className="container relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Text Content */}
+        <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="animate-slideInLeft">
-            <h1 className="mb-4 text-4xl sm:text-5xl lg:text-6xl font-extrabold uppercase leading-tight text-coffee-900 animate-fade-in">
-              Experience Peak Flavor
-            </h1>
-            <p className="text-lg text-coffee-700 mb-6 max-w-lg animate-fade-in-up">
-              Handpicked. Perfectly Roasted. Delivered Fast.
+            <p className="mb-5 text-xs uppercase tracking-[0.32em] text-coffee-500">
+              Mountain-grown in Mindanao
             </p>
-            <p className="text-base text-coffee-800 mb-12 leading-relaxed max-w-xl animate-fade-in-up">
+            <h1 className="mb-5 font-['Cormorant_Garamond'] text-[clamp(3.2rem,6vw,6.1rem)] font-semibold leading-[0.92] text-coffee-900 animate-fade-in">
+              Experience
+              <br />
+              peak flavor.
+            </h1>
+            <p className="mb-5 max-w-lg text-lg text-coffee-700 animate-fade-in-up">
+              Handpicked. Perfectly roasted. Delivered with the quiet confidence
+              of a premium daily ritual.
+            </p>
+            <p className="mb-12 max-w-xl text-base leading-relaxed text-coffee-800 animate-fade-in-up">
               Premium 100% Arabica coffee from Mt. Apo, Davao – sourced,
-              roasted, shipped with care.
+              roasted, and shipped with care while keeping the craft visible in
+              every detail.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col gap-4 sm:flex-row">
               <Link
                 to="/menu"
-                className="btn btn-lg bg-coffee-500 text-pure-white hover:bg-coffee-600 shadow-md transition-transform transform hover:-translate-y-1"
+                className="btn btn-lg"
               >
-                Order Now
+                Explore Menu
               </Link>
-              <button className="btn btn-lg border-2 border-coffee-500 text-coffee-500 hover:bg-coffee-50">
-                Learn More
+              <button className="btn btn-secondary btn-lg">
+                Discover Origin
               </button>
             </div>
           </div>
 
-          {/* Hero Image */}
-          <div className="animate-slideInRight relative flex justify-center items-center">
-            <div className="relative w-full h-96 flex items-center justify-center">
-              {/* Product image */}
+          <div className="animate-slideInRight relative flex items-center justify-center">
+            <div className="absolute inset-x-12 inset-y-10 rounded-[36px] border border-white/50 bg-white/35 blur-xl" />
+            <div className="relative flex h-[28rem] w-full items-center justify-center overflow-hidden rounded-[40px] border border-[rgba(143,91,54,0.14)] bg-[linear-gradient(145deg,rgba(255,255,255,0.72),rgba(245,241,224,0.9))] p-8 shadow-[0_30px_80px_rgba(61,31,10,0.14)]">
               <img
                 src={bannerImage}
                 alt="Mt. Apo's Best Coffee"
-                className="w-full h-full object-contain drop-shadow-2xl"
+                className="h-full w-full object-contain drop-shadow-[0_30px_30px_rgba(61,31,10,0.18)]"
               />
             </div>
           </div>
         </div>
 
-        {/* Stats Row */}
-        <div className="grid grid-cols-3 gap-8 mt-20 pt-12 border-t border-gray-300/30">
+        <div className="mt-20 grid grid-cols-3 gap-8 border-t border-[rgba(143,91,54,0.16)] pt-10">
           <div className="text-center">
-            <p className="text-3xl font-bold text-coffee-900 mb-2">100%</p>
-            <p className="text-coffee-700">Pure Arabica</p>
+            <p className="font-['Cormorant_Garamond'] text-4xl font-semibold text-coffee-900 mb-2">100%</p>
+            <p className="text-sm uppercase tracking-[0.18em] text-coffee-700">Pure Arabica</p>
           </div>
           <div className="text-center">
-            <p className="text-3xl font-bold text-coffee-900 mb-2">Fast</p>
-            <p className="text-coffee-700">Free Delivery</p>
+            <p className="font-['Cormorant_Garamond'] text-4xl font-semibold text-coffee-900 mb-2">Fast</p>
+            <p className="text-sm uppercase tracking-[0.18em] text-coffee-700">Free Delivery</p>
           </div>
           <div className="text-center">
-            <p className="text-3xl font-bold text-coffee-900 mb-2">Fresh</p>
-            <p className="text-coffee-700">Roasted Daily</p>
+            <p className="font-['Cormorant_Garamond'] text-4xl font-semibold text-coffee-900 mb-2">Fresh</p>
+            <p className="text-sm uppercase tracking-[0.18em] text-coffee-700">Roasted Daily</p>
           </div>
         </div>
       </div>

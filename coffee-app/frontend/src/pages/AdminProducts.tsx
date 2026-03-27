@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AdminLayout from "../components/Admin/AdminLayout";
 import "../styles/premium.css";
@@ -18,7 +17,6 @@ interface Product {
 }
 
 export default function AdminProducts() {
-  const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -40,16 +38,18 @@ export default function AdminProducts() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetchProducts();
+    void fetchProducts();
   }, []);
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/products");
+      const response = await axios.get("http://localhost:3000/api/products", {
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      });
       setProducts(response.data.data || response.data);
-      setLoading(false);
     } catch (err) {
       console.error("Failed to fetch products", err);
+    } finally {
       setLoading(false);
     }
   };
@@ -64,22 +64,35 @@ export default function AdminProducts() {
       ...prev,
       [name]: value,
     }));
+
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    }
   };
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.name.trim()) newErrors.name = "Product name is required";
-    if (!formData.description.trim())
-      newErrors.description = "Description is required";
+    if (!formData.name.trim()) newErrors.name = "Product name is required.";
+    if (!formData.description.trim()) {
+      newErrors.description = "Description is required.";
+    }
+
     const priceNumber = parseFloat(formData.price);
     const stockNumber = parseInt(formData.stock, 10);
 
-    if (Number.isNaN(priceNumber) || priceNumber <= 0)
-      newErrors.price = "Price must be greater than 0";
-    if (Number.isNaN(stockNumber) || stockNumber < 0)
-      newErrors.stock = "Stock cannot be negative";
-    if (!formData.image) newErrors.image = "Product image is required";
+    if (Number.isNaN(priceNumber) || priceNumber <= 0) {
+      newErrors.price = "Price must be greater than 0.";
+    }
+    if (Number.isNaN(stockNumber) || stockNumber < 0) {
+      newErrors.stock = "Stock cannot be negative.";
+    }
+    if (!editingId && !formData.image) {
+      newErrors.image = "Product image is required.";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -87,27 +100,42 @@ export default function AdminProducts() {
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      console.log("Image file selected:", file.name, file.type, file.size);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result as string;
-        console.log(
-          "Image converted to base64, length:",
-          base64String.length,
-        );
-        setFormData((prev) => ({
-          ...prev,
-          image: base64String,
-        }));
-        setImagePreview(base64String);
-      };
-      reader.onerror = () => {
-        console.error("Error reading file");
-        alert("Error reading image file");
-      };
-      reader.readAsDataURL(file);
-    }
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result as string;
+      setFormData((prev) => ({
+        ...prev,
+        image: base64String,
+      }));
+      setImagePreview(base64String);
+      setErrors((prev) => ({
+        ...prev,
+        image: "",
+      }));
+    };
+    reader.onerror = () => {
+      alert("Error reading image file");
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      description: "",
+      price: "",
+      roastLevel: "medium",
+      grind: "whole",
+      size: "250g",
+      image: "",
+      stock: "10",
+    });
+    setShowForm(false);
+    setEditingId(null);
+    setErrors({});
+    setImagePreview("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -116,10 +144,6 @@ export default function AdminProducts() {
     if (!validateForm()) return;
 
     try {
-      console.log("Submitting product:", formData);
-      console.log("Token:", token);
-      console.log("Token is present:", !!token);
-
       const payload = {
         ...formData,
         price: parseFloat(formData.price),
@@ -127,50 +151,25 @@ export default function AdminProducts() {
       };
 
       if (editingId) {
-        console.log("Updating product:", editingId);
-        const response = await axios.put(
+        await axios.put(
           `http://localhost:3000/api/products/${editingId}`,
           payload,
           { headers: { Authorization: `Bearer ${token}` } },
         );
-        console.log("Update response:", response.data);
         alert("Product updated successfully!");
       } else {
-        console.log("Creating new product");
-        const response = await axios.post(
-          "http://localhost:3000/api/products",
-          formData,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
-        console.log("Create response:", response.data);
+        await axios.post("http://localhost:3000/api/products", payload, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         alert("Product created successfully!");
       }
 
-      setFormData({
-        name: "",
-        description: "",
-        price: "",
-        roastLevel: "medium",
-        grind: "whole",
-        size: "250g",
-        image: "",
-        stock: "10",
-      });
-      setShowForm(false);
-      setEditingId(null);
-      setErrors({});
-      setImagePreview("");
-      fetchProducts();
+      resetForm();
+      void fetchProducts();
     } catch (err: any) {
-      console.error("Submit error:", err);
-      console.error("Error response:", err.response?.data);
-      console.error("Error status:", err.response?.status);
-      console.error("Error message:", err.message);
       const errorMsg =
         err.response?.data?.message || err.message || "Failed to save product";
-      alert("Error: " + errorMsg);
+      alert(`Error: ${errorMsg}`);
       setErrors({
         submit: errorMsg,
       });
@@ -191,48 +190,22 @@ export default function AdminProducts() {
     setImagePreview(product.image || product.imageUrl || "");
     setEditingId(product.id);
     setShowForm(true);
+    setErrors({});
   };
 
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this product?")) return;
 
     try {
-      console.log("Delete Deleting product:", id);
-      console.log("Token present:", !!token);
-      const response = await axios.delete(
-        `http://localhost:3000/api/products/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
-      console.log("Delete response:", response.data);
+      await axios.delete(`http://localhost:3000/api/products/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       alert("Product deleted successfully!");
-      fetchProducts();
+      void fetchProducts();
     } catch (err: any) {
-      console.error("Delete error:", err);
-      console.error("Error response:", err.response?.data);
-      console.error("Error status:", err.response?.status);
-      const errorMsg =
-        err.response?.data?.message || "Failed to delete product";
-      alert("Error: " + errorMsg);
+      const errorMsg = err.response?.data?.message || "Failed to delete product";
+      alert(`Error: ${errorMsg}`);
     }
-  };
-
-  const handleCancel = () => {
-    setShowForm(false);
-    setEditingId(null);
-    setFormData({
-      name: "",
-      description: "",
-      price: 0,
-      roastLevel: "medium",
-      grind: "whole",
-      size: "250g",
-      image: "",
-      stock: 10,
-    });
-    setErrors({});
-    setImagePreview("");
   };
 
   if (loading) {
@@ -251,7 +224,7 @@ export default function AdminProducts() {
   return (
     <AdminLayout
       title="Manage Products"
-      subtitle="Create, edit, and organize the Mt. Apo catalog"
+      subtitle="Curate the catalog with consistent product details, pricing, and imagery."
       actions={
         <button onClick={() => setShowForm(true)} className="btn btn-primary">
           + New Product
@@ -259,29 +232,54 @@ export default function AdminProducts() {
       }
     >
       <div className="space-y-8">
+        <div className="grid gap-6 lg:grid-cols-[1.4fr_0.6fr]">
+          <div className="rounded-[2rem] border border-[rgba(143,91,54,0.14)] bg-[linear-gradient(180deg,rgba(255,251,245,0.95),rgba(247,241,232,0.92))] p-7 shadow-[0_24px_80px_rgba(61,31,10,0.08)]">
+            <p className="text-[0.72rem] uppercase tracking-[0.22em] text-coffee-500">
+              Catalog Overview
+            </p>
+            <h3 className="mt-3 font-['Cormorant_Garamond'] text-4xl font-semibold text-coffee-900">
+              Build a menu that feels premium.
+            </h3>
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-coffee-700">
+              Keep descriptions clear, imagery polished, and stock levels ready
+              so the storefront stays aligned with the Apo Coffee brand.
+            </p>
+          </div>
 
-        {/* Form Modal */}
+          <div className="rounded-[2rem] border border-[rgba(143,91,54,0.14)] bg-white/85 p-7 shadow-[0_24px_80px_rgba(61,31,10,0.08)]">
+            <p className="text-[0.72rem] uppercase tracking-[0.22em] text-coffee-500">
+              Total Products
+            </p>
+            <p className="mt-3 font-['Cormorant_Garamond'] text-6xl font-semibold leading-none text-coffee-900">
+              {products.length}
+            </p>
+            <p className="mt-3 text-sm text-coffee-700">
+              Active items currently shown in the catalog.
+            </p>
+          </div>
+        </div>
+
         {showForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-              <div className="bg-gradient-to-r from-amber-900 to-amber-800 text-white py-6 px-8">
-                <h2 className="text-3xl font-bold">
-                  {editingId ? "Edit Edit Product" : "Add Add New Product"}
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(39,23,12,0.56)] p-4 backdrop-blur-sm">
+            <div className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-[2rem] border border-[rgba(143,91,54,0.14)] bg-[linear-gradient(180deg,rgba(255,251,245,0.98),rgba(247,241,232,0.96))] shadow-[0_30px_120px_rgba(61,31,10,0.2)]">
+              <div className="border-b border-[rgba(143,91,54,0.12)] px-8 py-7">
+                <p className="text-[0.72rem] uppercase tracking-[0.22em] text-coffee-500">
+                  Product Studio
+                </p>
+                <h2 className="mt-3 font-['Cormorant_Garamond'] text-5xl font-semibold leading-none text-coffee-900">
+                  {editingId ? "Edit Product" : "Add Product"}
                 </h2>
               </div>
 
-              <form onSubmit={handleSubmit} className="p-8 space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-6 p-8">
                 {errors.submit && (
-                  <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
-                    <p className="text-red-800 font-semibold">
-                      Error: {errors.submit}
-                    </p>
+                  <div className="rounded-[1rem] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                    {errors.submit}
                   </div>
                 )}
 
-                {/* Product Name */}
                 <div>
-                  <label className="block text-sm font-semibold text-black mb-2">
+                  <label className="mb-2 block text-[0.78rem] font-medium uppercase tracking-[0.16em] text-coffee-700">
                     Product Name
                   </label>
                   <input
@@ -289,45 +287,39 @@ export default function AdminProducts() {
                     name="name"
                     value={formData.name}
                     onChange={handleFormChange}
-                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition ${
+                    className={`w-full rounded-[1rem] border bg-white/90 px-4 py-3 focus:outline-none focus:ring-2 ${
                       errors.name
-                        ? "border-red-500 focus:ring-red-300"
-                        : "border-gray-300 focus:ring-accent"
+                        ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                        : "border-[rgba(143,91,54,0.16)] focus:border-coffee-500 focus:ring-coffee-200"
                     }`}
                     placeholder="Premium Mt. Apo Arabica"
                   />
-                  {errors.name && (
-                    <p className="mt-1 text-sm text-red-600">Remove {errors.name}</p>
-                  )}
+                  {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
                 </div>
 
-                {/* Description */}
                 <div>
-                  <label className="block text-sm font-semibold text-black mb-2">
+                  <label className="mb-2 block text-[0.78rem] font-medium uppercase tracking-[0.16em] text-coffee-700">
                     Description
                   </label>
                   <textarea
                     name="description"
                     value={formData.description}
                     onChange={handleFormChange}
-                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition h-24 ${
+                    className={`h-28 w-full rounded-[1rem] border bg-white/90 px-4 py-3 focus:outline-none focus:ring-2 ${
                       errors.description
-                        ? "border-red-500 focus:ring-red-300"
-                        : "border-gray-300 focus:ring-accent"
+                        ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                        : "border-[rgba(143,91,54,0.16)] focus:border-coffee-500 focus:ring-coffee-200"
                     }`}
-                    placeholder="Describe your coffee..."
+                    placeholder="Describe the tasting notes, body, and experience..."
                   />
                   {errors.description && (
-                    <p className="mt-1 text-sm text-red-600">
-                      Remove {errors.description}
-                    </p>
+                    <p className="mt-1 text-sm text-red-600">{errors.description}</p>
                   )}
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  {/* Price */}
+                <div className="grid gap-4 md:grid-cols-2">
                   <div>
-                    <label className="block text-sm font-semibold text-black mb-2">
+                    <label className="mb-2 block text-[0.78rem] font-medium uppercase tracking-[0.16em] text-coffee-700">
                       Price (₱)
                     </label>
                     <input
@@ -338,23 +330,18 @@ export default function AdminProducts() {
                       inputMode="decimal"
                       step="0.01"
                       min="0"
-                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition ${
+                      className={`w-full rounded-[1rem] border bg-white/90 px-4 py-3 focus:outline-none focus:ring-2 ${
                         errors.price
-                          ? "border-red-500 focus:ring-red-300"
-                          : "border-gray-300 focus:ring-accent"
+                          ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                          : "border-[rgba(143,91,54,0.16)] focus:border-coffee-500 focus:ring-coffee-200"
                       }`}
-                      placeholder="0"
+                      placeholder="0.00"
                     />
-                    {errors.price && (
-                      <p className="mt-1 text-sm text-red-600">
-                        Remove {errors.price}
-                      </p>
-                    )}
+                    {errors.price && <p className="mt-1 text-sm text-red-600">{errors.price}</p>}
                   </div>
 
-                  {/* Stock */}
                   <div>
-                    <label className="block text-sm font-semibold text-black mb-2">
+                    <label className="mb-2 block text-[0.78rem] font-medium uppercase tracking-[0.16em] text-coffee-700">
                       Stock
                     </label>
                     <input
@@ -365,32 +352,27 @@ export default function AdminProducts() {
                       inputMode="numeric"
                       step="1"
                       min="0"
-                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition ${
+                      className={`w-full rounded-[1rem] border bg-white/90 px-4 py-3 focus:outline-none focus:ring-2 ${
                         errors.stock
-                          ? "border-red-500 focus:ring-red-300"
-                          : "border-gray-300 focus:ring-accent"
+                          ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                          : "border-[rgba(143,91,54,0.16)] focus:border-coffee-500 focus:ring-coffee-200"
                       }`}
                       placeholder="10"
                     />
-                    {errors.stock && (
-                      <p className="mt-1 text-sm text-red-600">
-                        Remove {errors.stock}
-                      </p>
-                    )}
+                    {errors.stock && <p className="mt-1 text-sm text-red-600">{errors.stock}</p>}
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
-                  {/* Roast Level */}
+                <div className="grid gap-4 md:grid-cols-3">
                   <div>
-                    <label className="block text-sm font-semibold text-black mb-2">
+                    <label className="mb-2 block text-[0.78rem] font-medium uppercase tracking-[0.16em] text-coffee-700">
                       Roast Level
                     </label>
                     <select
                       name="roastLevel"
                       value={formData.roastLevel}
                       onChange={handleFormChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
+                      className="w-full rounded-[1rem] border border-[rgba(143,91,54,0.16)] bg-white/90 px-4 py-3 focus:border-coffee-500 focus:outline-none focus:ring-2 focus:ring-coffee-200"
                     >
                       <option value="light">Light</option>
                       <option value="medium">Medium</option>
@@ -398,32 +380,30 @@ export default function AdminProducts() {
                     </select>
                   </div>
 
-                  {/* Grind */}
                   <div>
-                    <label className="block text-sm font-semibold text-black mb-2">
+                    <label className="mb-2 block text-[0.78rem] font-medium uppercase tracking-[0.16em] text-coffee-700">
                       Grind Type
                     </label>
                     <select
                       name="grind"
                       value={formData.grind}
                       onChange={handleFormChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
+                      className="w-full rounded-[1rem] border border-[rgba(143,91,54,0.16)] bg-white/90 px-4 py-3 focus:border-coffee-500 focus:outline-none focus:ring-2 focus:ring-coffee-200"
                     >
                       <option value="whole">Whole Bean</option>
                       <option value="ground">Ground</option>
                     </select>
                   </div>
 
-                  {/* Size */}
                   <div>
-                    <label className="block text-sm font-semibold text-black mb-2">
+                    <label className="mb-2 block text-[0.78rem] font-medium uppercase tracking-[0.16em] text-coffee-700">
                       Size
                     </label>
                     <select
                       name="size"
                       value={formData.size}
                       onChange={handleFormChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
+                      className="w-full rounded-[1rem] border border-[rgba(143,91,54,0.16)] bg-white/90 px-4 py-3 focus:border-coffee-500 focus:outline-none focus:ring-2 focus:ring-coffee-200"
                     >
                       <option value="250g">250g</option>
                       <option value="500g">500g</option>
@@ -432,45 +412,48 @@ export default function AdminProducts() {
                   </div>
                 </div>
 
-                {/* Product Image Upload */}
-                <div>
-                  <label className="block text-sm font-semibold text-black mb-2">
-                    Product Image *
-                  </label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent transition"
-                  />
-                  {errors.image && (
-                    <p className="mt-1 text-sm text-red-600">
-                      Remove {errors.image}
+                <div className="grid gap-6 lg:grid-cols-[1fr_220px]">
+                  <div>
+                    <label className="mb-2 block text-[0.78rem] font-medium uppercase tracking-[0.16em] text-coffee-700">
+                      Product Image
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="w-full rounded-[1rem] border border-[rgba(143,91,54,0.16)] bg-white/90 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-coffee-200"
+                    />
+                    {errors.image && <p className="mt-1 text-sm text-red-600">{errors.image}</p>}
+                  </div>
+
+                  <div className="rounded-[1.5rem] border border-[rgba(143,91,54,0.14)] bg-white/80 p-4">
+                    <p className="text-[0.68rem] uppercase tracking-[0.18em] text-coffee-500">
+                      Preview
                     </p>
-                  )}
-                  {imagePreview && (
-                    <div className="mt-4 flex flex-col items-center">
-                      <img
-                        src={imagePreview}
-                        alt="Preview"
-                        className="w-32 h-32 object-cover rounded-lg border-2 border-gray-300"
-                      />
-                      <p className="text-xs text-coffee-700 mt-2">Image Preview</p>
+                    <div className="mt-3 flex aspect-square items-center justify-center overflow-hidden rounded-[1.25rem] bg-coffee-50">
+                      {imagePreview ? (
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-sm text-coffee-500">No image yet</span>
+                      )}
                     </div>
-                  )}
+                  </div>
                 </div>
 
-                {/* Buttons */}
-                <div className="flex gap-4 pt-6">
-                  <button type="submit" className="btn btn-primary flex-1">
-                    {editingId ? "Done Update Product" : "Done Add Product"}
+                <div className="flex flex-wrap gap-3 pt-2">
+                  <button type="submit" className="btn btn-primary">
+                    {editingId ? "Update Product" : "Add Product"}
                   </button>
                   <button
                     type="button"
-                    onClick={handleCancel}
-                    className="btn btn-secondary flex-1"
+                    onClick={resetForm}
+                    className="btn btn-secondary"
                   >
-                    Remove Cancel
+                    Cancel
                   </button>
                 </div>
               </form>
@@ -478,106 +461,90 @@ export default function AdminProducts() {
           </div>
         )}
 
-        {/* Products Grid */}
         {products.length === 0 ? (
-          <div className="bg-white rounded-3xl shadow-lg p-12 text-center">
-            <div className="text-7xl mb-4">Orders</div>
-            <h3 className="text-2xl font-bold text-black mb-2">
+          <div className="rounded-[2rem] border border-[rgba(143,91,54,0.14)] bg-[linear-gradient(180deg,rgba(255,251,245,0.95),rgba(247,241,232,0.92))] p-12 text-center shadow-[0_24px_80px_rgba(61,31,10,0.08)]">
+            <h3 className="font-['Cormorant_Garamond'] text-4xl font-semibold text-coffee-900">
               No Products Yet
             </h3>
-            <p className="text-coffee-700 mb-6">
-              Add your first coffee product to get started!
+            <p className="mt-3 text-sm text-coffee-700">
+              Add your first coffee product to get started.
             </p>
-            <button
-              onClick={() => setShowForm(true)}
-              className="btn btn-primary"
-            >
-              Add Add Product
+            <button onClick={() => setShowForm(true)} className="btn btn-primary mt-6">
+              Add Product
             </button>
           </div>
         ) : (
-          <div className="grid gap-6">
+          <div className="grid gap-6 xl:grid-cols-2">
             {products.map((product) => (
-              <div
+              <article
                 key={product.id}
-                className="bg-white rounded-3xl shadow-lg p-6 hover:shadow-xl transition"
+                className="overflow-hidden rounded-[2rem] border border-[rgba(143,91,54,0.14)] bg-[linear-gradient(180deg,rgba(255,251,245,0.95),rgba(247,241,232,0.92))] shadow-[0_24px_80px_rgba(61,31,10,0.08)] transition hover:-translate-y-1"
               >
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                  {/* Product Image */}
-                  {product.image || product.imageUrl ? (
-                    <div className="flex items-center justify-center bg-amber-50 rounded-2xl overflow-hidden h-48 md:h-auto">
+                <div className="grid h-full md:grid-cols-[220px_1fr]">
+                  <div className="bg-coffee-100">
+                    {product.image || product.imageUrl ? (
                       <img
                         src={product.image || product.imageUrl}
                         alt={product.name}
-                        className="w-full h-full object-cover"
+                        className="h-full w-full object-cover"
                       />
-                    </div>
-                  ) : null}
+                    ) : (
+                      <div className="flex h-full min-h-[220px] items-center justify-center text-coffee-500">
+                        No image
+                      </div>
+                    )}
+                  </div>
 
-                  {/* Product Info */}
-                  <div className={product.image ? "md:col-span-3" : ""}>
-                    <h3 className="text-2xl font-bold text-black mb-2">
-                      {product.name}
-                    </h3>
-                    <p className="text-coffee-700 mb-4">{product.description}</p>
+                  <div className="flex flex-col p-6">
+                    <div className="flex flex-wrap items-start justify-between gap-4">
+                      <div>
+                        <div className="flex flex-wrap gap-2">
+                          <span className="rounded-full bg-coffee-900 px-3 py-1 text-[0.68rem] uppercase tracking-[0.18em] text-white">
+                            {product.roastLevel}
+                          </span>
+                          <span className="rounded-full border border-[rgba(143,91,54,0.18)] px-3 py-1 text-[0.68rem] uppercase tracking-[0.18em] text-coffee-600">
+                            {product.grind}
+                          </span>
+                          <span className="rounded-full border border-[rgba(143,91,54,0.18)] px-3 py-1 text-[0.68rem] uppercase tracking-[0.18em] text-coffee-600">
+                            {product.size}
+                          </span>
+                        </div>
+                        <h3 className="mt-4 font-['Cormorant_Garamond'] text-4xl font-semibold leading-none text-coffee-900">
+                          {product.name}
+                        </h3>
+                      </div>
 
-                    <div className="grid grid-cols-2 gap-3 mb-4 text-sm">
-                      <div>
-                        <span className="font-semibold text-black">Price:</span>
-                        <span className="ml-2 text-accent">
-                          ₱{product.price}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="font-semibold text-black">Stock:</span>
-                        <span
-                          className={`ml-2 ${
-                            product.stock > 0
-                              ? "text-green-600"
-                              : "text-red-600"
-                          }`}
-                        >
-                          {product.stock} units
-                        </span>
-                      </div>
-                      <div>
-                        <span className="font-semibold text-black">Roast:</span>
-                        <span className="ml-2">
-                          {product.roastLevel.charAt(0).toUpperCase() +
-                            product.roastLevel.slice(1)}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="font-semibold text-black">Size:</span>
-                        <span className="ml-2">{product.size}</span>
-                      </div>
-                      <div>
-                        <span className="font-semibold text-black">Grind:</span>
-                        <span className="ml-2">
-                          {product.grind.charAt(0).toUpperCase() +
-                            product.grind.slice(1)}
-                        </span>
+                      <div className="text-right">
+                        <p className="font-['Cormorant_Garamond'] text-4xl font-semibold leading-none text-coffee-900">
+                          ₱{Number(product.price).toFixed(2)}
+                        </p>
+                        <p className="mt-2 text-xs uppercase tracking-[0.16em] text-coffee-500">
+                          {product.stock} in stock
+                        </p>
                       </div>
                     </div>
 
-                    {/* Actions */}
-                    <div className="flex gap-3">
+                    <p className="mt-5 flex-1 text-sm leading-7 text-coffee-700">
+                      {product.description}
+                    </p>
+
+                    <div className="mt-6 flex flex-wrap gap-3 border-t border-[rgba(143,91,54,0.12)] pt-5">
                       <button
                         onClick={() => handleEdit(product)}
-                        className="btn btn-secondary text-sm"
+                        className="btn btn-primary"
                       >
-                        Edit Edit
+                        Edit Product
                       </button>
                       <button
                         onClick={() => handleDelete(product.id)}
-                        className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition font-semibold text-sm"
+                        className="btn btn-secondary"
                       >
-                        Delete Delete
+                        Delete Product
                       </button>
                     </div>
                   </div>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         )}

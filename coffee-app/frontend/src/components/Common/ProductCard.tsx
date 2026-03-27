@@ -21,6 +21,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const [quantity, setQuantity] = useState(1);
+  const [added, setAdded] = useState(false);
   const dispatch = useAppDispatch();
 
   const handleAddToCart = () => {
@@ -36,22 +37,25 @@ export default function ProductCard({ product }: ProductCardProps) {
         size: product.size,
       }),
     );
-    setQuantity(1);
-    alert(`Added ${product.name} to cart!`);
+    setAdded(true);
+    window.setTimeout(() => {
+      setAdded(false);
+      setQuantity(1);
+    }, 900);
   };
 
   const isOutOfStock = product.stock === 0;
   const imageSrc = getProductImage(product.name, product.image, product.id);
 
   return (
-    <div className="group h-full flex flex-col bg-pure-white rounded-2xl shadow-md hover:shadow-xl transition-transform transform hover:-translate-y-1 duration-300">
-      <div className="relative overflow-hidden rounded-t-2xl mb-4 bg-neutral-100 aspect-[4/3]">
+    <div className="group flex h-full flex-col overflow-hidden rounded-[28px] border border-[rgba(143,91,54,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.95),rgba(250,249,245,0.92))] shadow-[0_18px_45px_rgba(61,31,10,0.08)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_60px_rgba(61,31,10,0.14)]">
+      <div className="relative mb-4 aspect-[4/3] overflow-hidden rounded-t-[28px] bg-gradient-to-br from-coffee-100 via-white to-coffee-50">
         <img
           src={imageSrc}
           alt={product.name}
           loading="lazy"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
         {isOutOfStock && (
           <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
@@ -61,24 +65,41 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
         {!isOutOfStock && product.stock < 10 && (
-          <div className="absolute top-3 right-3">
-            <span className="bg-warning text-pure-white px-2 py-0.5 rounded-full text-xs">
+          <div className="absolute right-3 top-3">
+            <span className="rounded-full bg-warning px-2 py-0.5 text-xs text-pure-white">
               Low Stock
             </span>
           </div>
         )}
+        <div className="absolute left-3 top-3">
+          <span className="rounded-full bg-coffee-900/90 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-coffee-100">
+            {product.roastLevel}
+          </span>
+        </div>
       </div>
 
-      <div className="px-4 mb-4">
-        <h3 className="text-xl font-semibold text-coffee-900 mb-2">{product.name}</h3>
-        <p className="text-sm text-coffee-700 mb-3 line-clamp-2">{product.description}</p>
+      <div className="mb-4 px-5">
+        <div className="mb-3 flex flex-wrap gap-2">
+          <span className="rounded-full border border-[rgba(143,91,54,0.16)] bg-coffee-50 px-3 py-1 text-[0.68rem] uppercase tracking-[0.16em] text-coffee-700">
+            {product.grind}
+          </span>
+          <span className="rounded-full border border-[rgba(143,91,54,0.16)] bg-coffee-50 px-3 py-1 text-[0.68rem] uppercase tracking-[0.16em] text-coffee-700">
+            {product.size}
+          </span>
+        </div>
+        <h3 className="mb-2 font-['Cormorant_Garamond'] text-[2rem] font-semibold leading-none text-coffee-900">
+          {product.name}
+        </h3>
+        <p className="mb-3 line-clamp-2 text-sm leading-relaxed text-coffee-700">
+          {product.description}
+        </p>
 
-        <div className="grid grid-cols-3 gap-2 mb-4 text-xs text-coffee-700">
+        <div className="grid grid-cols-3 gap-2 text-xs text-coffee-700">
           <div className="flex flex-col items-center text-center">
             <span className="font-semibold text-coffee-900">{product.roastLevel}</span>
             <span className="opacity-75">Roast</span>
           </div>
-          <div className="flex flex-col items-center text-center border-x border-neutral-300">
+          <div className="flex flex-col items-center border-x border-neutral-300 text-center">
             <span className="font-semibold text-coffee-900">{product.grind}</span>
             <span className="opacity-75">Type</span>
           </div>
@@ -89,27 +110,29 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
       </div>
 
-      <div className="px-4 mb-4 pb-4 border-b border-neutral-300">
-        <p className="text-2xl font-bold text-coffee-900">₱{product.price.toLocaleString()}</p>
+      <div className="mb-4 border-b border-[rgba(143,91,54,0.14)] px-5 pb-4">
+        <p className="font-['Cormorant_Garamond'] text-[2.1rem] font-semibold leading-none text-coffee-900">
+          ₱{product.price.toLocaleString()}
+        </p>
         <p className="text-xs text-coffee-600 mt-1">
           {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
         </p>
       </div>
 
-      <div className="px-4 pb-6 mt-auto space-y-3">
+      <div className="mt-auto space-y-3 px-5 pb-6">
         <div className="h-10">
           {!isOutOfStock ? (
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="flex-1 btn btn-secondary btn-sm"
+                className="flex h-10 flex-1 items-center justify-center rounded-2xl border border-[rgba(143,91,54,0.16)] bg-white/80 text-lg text-coffee-900 transition hover:bg-coffee-50"
               >
                 −
               </button>
-              <span className="w-12 text-center font-semibold">{quantity}</span>
+              <span className="w-12 text-center font-semibold text-coffee-900">{quantity}</span>
               <button
                 onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                className="flex-1 btn btn-secondary btn-sm"
+                className="flex h-10 flex-1 items-center justify-center rounded-2xl border border-[rgba(143,91,54,0.16)] bg-white/80 text-lg text-coffee-900 transition hover:bg-coffee-50"
               >
                 +
               </button>
@@ -122,13 +145,15 @@ export default function ProductCard({ product }: ProductCardProps) {
         <button
           onClick={handleAddToCart}
           disabled={isOutOfStock}
-          className={`w-full h-11 btn rounded-lg ${
+          className={`h-12 w-full rounded-full text-sm font-semibold tracking-[0.12em] uppercase transition ${
             isOutOfStock
-              ? "opacity-50 cursor-not-allowed bg-neutral-300"
-              : "bg-coffee-500 text-pure-white hover:bg-coffee-600"
+              ? "cursor-not-allowed bg-neutral-300 opacity-50"
+              : added
+                ? "bg-emerald-700 text-pure-white"
+                : "bg-coffee-700 text-pure-white hover:bg-coffee-800"
           }`}
         >
-          {isOutOfStock ? "Out of Stock" : "Add to Cart"}
+          {isOutOfStock ? "Out of Stock" : added ? "Added" : "Add to Cart"}
         </button>
       </div>
     </div>

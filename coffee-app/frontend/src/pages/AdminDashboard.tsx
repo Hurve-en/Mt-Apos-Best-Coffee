@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector, useAppDispatch } from "../hooks/useRedux";
-import { logout } from "../redux/slices/authSlice";
+import { useAppSelector } from "../hooks/useRedux";
 import axios from "axios";
 import AdminLayout from "../components/Admin/AdminLayout";
 import "../styles/premium.css";
@@ -15,7 +14,6 @@ interface Stats {
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const { isAuthenticated, user } = useAppSelector((state: any) => state.auth);
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -47,17 +45,12 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate("/");
-  };
-
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="flex min-h-screen items-center justify-center bg-[linear-gradient(180deg,#faf7f0_0%,#f4ede2_100%)]">
         <div className="text-center">
           <div className="text-4xl mb-4 animate-pulse">Coffee</div>
-          <p className="text-2xl text-black font-semibold">
+          <p className="font-['Cormorant_Garamond'] text-4xl font-semibold text-black">
             Loading admin dashboard...
           </p>
         </div>
@@ -79,57 +72,54 @@ export default function AdminDashboard() {
         <div className="space-y-12">
           {/* Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {/* Total Orders */}
-            <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition transform hover:-translate-y-1">
+            <div className="rounded-[30px] border border-[rgba(143,91,54,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.95),rgba(250,249,245,0.92))] p-8 shadow-[0_20px_60px_rgba(61,31,10,0.08)] transition hover:-translate-y-1">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-semibold text-coffee-700 uppercase tracking-wide">
                     Total Orders
                   </p>
-                  <p className="text-5xl font-bold text-accent mt-3">
+                  <p className="mt-3 font-['Cormorant_Garamond'] text-6xl font-semibold text-accent">
                     {stats?.totalOrders || 0}
                   </p>
                 </div>
-                <div className="text-6xl opacity-20">Orders</div>
+                <div className="font-['Cormorant_Garamond'] text-7xl opacity-20">Orders</div>
               </div>
               <div className="mt-4 pt-4 border-t border-gray-300 border-opacity-20">
                 <p className="text-xs text-coffee-700">View all orders</p>
               </div>
             </div>
 
-            {/* Total Products */}
-            <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition transform hover:-translate-y-1">
+            <div className="rounded-[30px] border border-[rgba(143,91,54,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.95),rgba(250,249,245,0.92))] p-8 shadow-[0_20px_60px_rgba(61,31,10,0.08)] transition hover:-translate-y-1">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-semibold text-coffee-700 uppercase tracking-wide">
                     Total Products
                   </p>
-                  <p className="text-5xl font-bold text-accent mt-3">
+                  <p className="mt-3 font-['Cormorant_Garamond'] text-6xl font-semibold text-accent">
                     {stats?.totalProducts || 0}
                   </p>
                 </div>
-                <div className="text-6xl opacity-20">Coffee</div>
+                <div className="font-['Cormorant_Garamond'] text-7xl opacity-20">Coffee</div>
               </div>
               <div className="mt-4 pt-4 border-t border-gray-300 border-opacity-20">
                 <p className="text-xs text-coffee-700">Manage inventory</p>
               </div>
             </div>
 
-            {/* Total Revenue */}
-            <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition transform hover:-translate-y-1">
+            <div className="rounded-[30px] border border-[rgba(143,91,54,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.95),rgba(250,249,245,0.92))] p-8 shadow-[0_20px_60px_rgba(61,31,10,0.08)] transition hover:-translate-y-1">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-semibold text-coffee-700 uppercase tracking-wide">
                     Total Revenue
                   </p>
-                  <p className="text-5xl font-bold text-accent mt-3">
+                  <p className="mt-3 font-['Cormorant_Garamond'] text-6xl font-semibold text-accent">
                     ₱
                     {(stats?.totalRevenue || 0).toLocaleString("en-PH", {
                       maximumFractionDigits: 0,
                     })}
                   </p>
                 </div>
-                <div className="text-6xl opacity-20">Revenue</div>
+                <div className="font-['Cormorant_Garamond'] text-7xl opacity-20">Revenue</div>
               </div>
               <div className="mt-4 pt-4 border-t border-gray-300 border-opacity-20">
                 <p className="text-xs text-coffee-700">All-time earnings</p>
@@ -139,8 +129,8 @@ export default function AdminDashboard() {
 
           {/* Recent Orders */}
           {stats?.recentOrders && stats.recentOrders.length > 0 && (
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h2 className="text-3xl font-bold text-black mb-8">
+            <div className="rounded-[32px] border border-[rgba(143,91,54,0.12)] bg-white/90 p-8 shadow-[0_20px_60px_rgba(61,31,10,0.08)]">
+              <h2 className="mb-8 font-['Cormorant_Garamond'] text-5xl font-semibold leading-none text-black">
                 Recent Orders
               </h2>
               <div className="space-y-4">

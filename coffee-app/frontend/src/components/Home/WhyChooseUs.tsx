@@ -63,18 +63,23 @@ export default function WhyChooseUs() {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
       {reasons.map((reason, index) => (
         <div
           key={reason.id}
-          className="group bg-white rounded-2xl border border-neutral-200 p-6 text-center shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+          className="group rounded-[28px] border border-[rgba(143,91,54,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,249,245,0.92))] p-7 text-left shadow-[0_18px_45px_rgba(61,31,10,0.06)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_60px_rgba(61,31,10,0.12)]"
           style={{ animationDelay: `${index * 80}ms` }}
         >
-          <div className="mx-auto mb-4 h-12 w-12 rounded-xl bg-coffee-50 border border-neutral-200 flex items-center justify-center group-hover:bg-white transition-colors duration-300">
+          <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-[rgba(143,91,54,0.12)] bg-coffee-50 transition-colors duration-300 group-hover:bg-white">
             {reason.icon}
           </div>
-          <h3 className="text-black font-semibold mb-2 text-lg">{reason.title}</h3>
-          <p className="text-coffee-700 text-sm leading-relaxed">{reason.description}</p>
+          <p className="mb-2 text-[0.68rem] uppercase tracking-[0.18em] text-coffee-500">
+            Why it matters
+          </p>
+          <h3 className="mb-2 text-[2rem] font-semibold leading-none text-black">
+            {reason.title}
+          </h3>
+          <p className="text-sm leading-relaxed text-coffee-700">{reason.description}</p>
         </div>
       ))}
     </div>

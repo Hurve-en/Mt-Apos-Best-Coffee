@@ -60,27 +60,38 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-coffee-50 backdrop-blur-md shadow-sm">
-      <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <img src={logo} alt="Apo Coffee Logo" className="w-10 h-10 rounded-full" />
-          <span className="text-xl font-extrabold text-coffee-900">Apo Coffee</span>
+    <header className="sticky top-0 z-50 border-b border-[rgba(143,91,54,0.14)] bg-[rgba(250,249,245,0.9)]">
+      <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+        <Link to="/" className="flex items-center gap-3">
+          <img
+            src={logo}
+            alt="Apo Coffee Logo"
+            className="h-11 w-11 rounded-full border border-coffee-200 object-cover"
+          />
+          <div>
+            <p className="text-[0.68rem] uppercase tracking-[0.28em] text-coffee-500">
+              Mt. Apo Roast
+            </p>
+            <span className="font-['Cormorant_Garamond'] text-3xl font-semibold leading-none text-coffee-900">
+              Apo Coffee
+            </span>
+          </div>
         </Link>
 
-        <ul className="hidden md:flex gap-8 text-coffee-700">
+        <ul className="hidden md:flex items-center gap-10 text-coffee-700">
           <li>
-            <Link to="/" className="relative py-2 hover:text-coffee-900 transition">
+            <Link to="/" className="relative py-2 text-sm tracking-[0.18em] uppercase hover:text-coffee-900 transition">
               Home
             </Link>
           </li>
           <li>
-            <Link to="/menu" className="relative py-2 hover:text-coffee-900 transition">
+            <Link to="/menu" className="relative py-2 text-sm tracking-[0.18em] uppercase hover:text-coffee-900 transition">
               Menu
             </Link>
           </li>
           {isAuthenticated && (
             <li>
-              <Link to="/orders" className="relative py-2 hover:text-coffee-900 transition">
+              <Link to="/orders" className="relative py-2 text-sm tracking-[0.18em] uppercase hover:text-coffee-900 transition">
                 Orders
               </Link>
             </li>
@@ -89,7 +100,7 @@ const Navbar: React.FC = () => {
             <li>
               <Link
                 to="/admin/dashboard"
-                className="relative py-2 hover:text-coffee-900 transition"
+                className="relative py-2 text-sm tracking-[0.18em] uppercase hover:text-coffee-900 transition"
               >
                 Dashboard
               </Link>
@@ -97,10 +108,10 @@ const Navbar: React.FC = () => {
           )}
         </ul>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4">
           <Link
             to="/cart"
-            className="relative p-2 text-coffee-700 hover:text-coffee-900 transition"
+            className="relative flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(143,91,54,0.18)] bg-white/80 text-coffee-700 transition hover:-translate-y-0.5 hover:text-coffee-900"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -117,7 +128,7 @@ const Navbar: React.FC = () => {
               />
             </svg>
             {items.length > 0 && (
-              <span className="absolute -top-1 -right-1 bg-coffee-700 text-pure-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-coffee-700 text-xs text-pure-white">
                 {items.length}
               </span>
             )}
@@ -135,7 +146,7 @@ const Navbar: React.FC = () => {
             >
               <button
                 onClick={toggleUserMenu}
-                className="flex items-center gap-1 text-coffee-700 hover:text-coffee-900 transition"
+                className="flex items-center gap-2 rounded-full border border-[rgba(143,91,54,0.18)] bg-white/80 px-4 py-2 text-coffee-700 transition hover:-translate-y-0.5 hover:text-coffee-900"
                 aria-haspopup="menu"
                 aria-expanded={userMenuOpen}
               >
@@ -151,7 +162,9 @@ const Navbar: React.FC = () => {
                     clipRule="evenodd"
                   />
                 </svg>
-                <span className="hidden sm:inline">{user?.name || "User"}</span>
+                <span className="hidden text-sm font-medium sm:inline">
+                  {user?.name || "User"}
+                </span>
               </button>
 
               <div
@@ -161,17 +174,17 @@ const Navbar: React.FC = () => {
                     : "opacity-0 -translate-y-1 pointer-events-none"
                 }`}
               >
-                <div className="w-44 bg-white rounded-xl shadow-xl border border-neutral-200 py-1">
+                <div className="w-48 rounded-2xl border border-[rgba(143,91,54,0.14)] bg-white/95 py-2 shadow-xl">
                   <Link
                     to="/profile"
-                    className="block px-4 py-2 text-coffee-700 hover:bg-coffee-50"
+                    className="block px-4 py-2 text-sm text-coffee-700 hover:bg-coffee-50"
                     onClick={() => setUserMenuOpen(false)}
                   >
                     Profile
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-coffee-700 hover:bg-coffee-50"
+                    className="w-full px-4 py-2 text-left text-sm text-coffee-700 hover:bg-coffee-50"
                   >
                     Logout
                   </button>
@@ -182,13 +195,13 @@ const Navbar: React.FC = () => {
             <div className="hidden md:flex items-center gap-3">
               <Link
                 to="/login"
-                className="inline-flex items-center justify-center h-10 px-5 rounded-lg border border-neutral-300 text-sm font-semibold text-coffee-800 hover:border-coffee-700 hover:text-coffee-900 hover:bg-white transition-all"
+                className="inline-flex h-11 items-center justify-center rounded-full border border-[rgba(143,91,54,0.18)] px-5 text-sm font-semibold text-coffee-800 transition-all hover:border-coffee-700 hover:bg-white hover:text-coffee-900"
               >
                 Login
               </Link>
               <Link
                 to="/register"
-                className="inline-flex items-center justify-center h-10 px-5 rounded-lg bg-coffee-700 text-pure-white text-sm font-semibold hover:bg-coffee-800 transition-all shadow-sm"
+                className="inline-flex h-11 items-center justify-center rounded-full bg-coffee-700 px-5 text-sm font-semibold text-pure-white shadow-sm transition-all hover:bg-coffee-800"
               >
                 Register
               </Link>
@@ -236,7 +249,7 @@ const Navbar: React.FC = () => {
       </nav>
 
           {mobileMenuOpen && (
-            <div className="md:hidden bg-coffee-50 px-6 pb-4 space-y-2">
+        <div className="md:hidden border-t border-[rgba(143,91,54,0.14)] bg-[rgba(250,249,245,0.96)] px-6 pb-5 pt-3 space-y-2">
           <Link
             to="/"
             className="block py-2 text-coffee-700 hover:text-coffee-900"

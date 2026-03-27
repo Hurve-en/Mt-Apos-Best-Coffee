@@ -121,57 +121,108 @@ export default function Register() {
           ? "Good"
           : "Strong";
 
-  return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-coffee-50 via-white to-coffee-100 px-4 py-8 sm:py-12">
-      <div className="pointer-events-none absolute -left-20 top-10 h-72 w-72 rounded-full bg-coffee-200/35 blur-3xl" />
-      <div className="pointer-events-none absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-coffee-300/30 blur-3xl" />
+  const strengthTone =
+    passwordStrength <= 1
+      ? "bg-red-300"
+      : passwordStrength === 2
+        ? "bg-amber-300"
+        : passwordStrength === 3
+          ? "bg-coffee-400"
+          : "bg-emerald-400";
 
-      <div className="relative mx-auto grid w-full max-w-5xl overflow-hidden rounded-3xl border border-coffee-200 bg-white shadow-2xl lg:grid-cols-[1fr_1.1fr]">
-        <aside className="hidden bg-coffee-900 p-10 text-white lg:flex lg:flex-col lg:justify-between">
-          <div>
-            <div className="mb-10 inline-flex items-center gap-3 rounded-full border border-white/30 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/90">
-              Freshly Brewed Access
+  return (
+    <div className="relative min-h-screen overflow-hidden bg-[linear-gradient(180deg,#faf5ee_0%,#f4ecdf_52%,#f8f4eb_100%)] px-4 py-8 sm:px-6 sm:py-10">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(circle_at_top,rgba(191,145,96,0.18),transparent_62%)]" />
+      <div className="pointer-events-none absolute -left-16 top-24 h-72 w-72 rounded-full bg-coffee-200/30 blur-3xl" />
+      <div className="pointer-events-none absolute -right-16 bottom-10 h-80 w-80 rounded-full bg-coffee-300/25 blur-3xl" />
+
+      <div className="relative mx-auto grid w-full max-w-6xl overflow-hidden rounded-[2rem] border border-[rgba(143,91,54,0.16)] bg-[rgba(255,251,245,0.92)] shadow-[0_30px_120px_rgba(61,31,10,0.12)] lg:grid-cols-[0.96fr_1.04fr]">
+        <aside className="hidden border-r border-[rgba(143,91,54,0.12)] bg-[linear-gradient(180deg,rgba(69,38,17,0.96),rgba(95,54,28,0.92))] p-10 text-white lg:flex lg:flex-col lg:justify-between">
+          <div className="space-y-8">
+            <div className="inline-flex items-center gap-3 rounded-full border border-white/20 px-4 py-2 text-[0.72rem] uppercase tracking-[0.28em] text-white/80">
+              Freshly Roasted Access
             </div>
-            <h1 className="mb-4 text-4xl font-bold leading-tight text-white">
-              Create your account.
-              <br />
-              Start your best coffee days.
-            </h1>
-            <p className="max-w-sm text-base text-coffee-100">
-              Save favorites, track deliveries, and earn loyalty perks across
-              every cup.
-            </p>
+            <div className="space-y-5">
+              <p className="text-sm uppercase tracking-[0.25em] text-white/55">
+                Join the House
+              </p>
+              <h1 className="max-w-xl font-['Cormorant_Garamond'] text-6xl font-semibold leading-[0.92] text-white">
+                Build your
+                <span className="block italic text-[#e9c89c]">
+                  Apo Coffee account.
+                </span>
+              </h1>
+              <p className="max-w-md text-base leading-7 text-white/72">
+                Keep your order history, move faster through checkout, and stay
+                close to limited roasts from the Mt. Apo harvest.
+              </p>
+            </div>
           </div>
 
-          <div className="rounded-2xl border border-white/20 bg-white/10 p-5 backdrop-blur-sm">
-            <p className="mb-2 text-sm font-semibold text-white">Why sign up?</p>
-            <ul className="space-y-2 text-sm text-coffee-100">
-              <li>Faster checkout for repeat orders</li>
-              <li>Order tracking in one place</li>
-              <li>Priority access to new blends</li>
-            </ul>
+          <div className="grid gap-4">
+            <div className="rounded-[1.75rem] border border-white/15 bg-white/8 p-6">
+              <p className="text-[0.7rem] uppercase tracking-[0.22em] text-white/55">
+                Why sign up
+              </p>
+              <ul className="mt-4 space-y-3 text-sm leading-6 text-white/78">
+                <li>Save delivery details for smoother repeat orders</li>
+                <li>Track every order from checkout to delivery</li>
+                <li>Get closer to new releases and reserve lots</li>
+              </ul>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="rounded-[1.5rem] border border-white/12 bg-white/8 p-5">
+                <p className="font-['Cormorant_Garamond'] text-4xl font-semibold">
+                  3
+                </p>
+                <p className="mt-2 text-[0.72rem] uppercase tracking-[0.18em] text-white/60">
+                  Roast profiles
+                </p>
+              </div>
+              <div className="rounded-[1.5rem] border border-white/12 bg-white/8 p-5">
+                <p className="font-['Cormorant_Garamond'] text-4xl font-semibold">
+                  PH
+                </p>
+                <p className="mt-2 text-[0.72rem] uppercase tracking-[0.18em] text-white/60">
+                  Origin grown
+                </p>
+              </div>
+            </div>
           </div>
         </aside>
 
-        <main className="p-6 sm:p-10">
-          <div className="mx-auto max-w-md">
-            <div className="mb-8 flex items-center gap-3">
+        <main className="bg-[linear-gradient(180deg,rgba(255,252,247,0.96),rgba(248,243,235,0.9))] p-6 sm:p-10 lg:p-12">
+          <div className="mx-auto max-w-lg">
+            <div className="mb-8 flex items-center gap-4">
               <img
                 src={logo}
                 alt="Apo Coffee Logo"
-                className="h-12 w-12 rounded-xl object-cover"
+                className="h-14 w-14 rounded-full border border-[rgba(143,91,54,0.16)] object-cover shadow-sm"
               />
               <div>
-                <p className="text-xl font-bold text-coffee-900">Apo Coffee</p>
-                <p className="text-xs uppercase tracking-[0.16em] text-coffee-600">
+                <p className="font-['Cormorant_Garamond'] text-3xl font-semibold text-coffee-900">
+                  Apo Coffee
+                </p>
+                <p className="text-[0.72rem] uppercase tracking-[0.24em] text-coffee-600">
                   Create your account
                 </p>
               </div>
             </div>
 
+            <div className="mb-8">
+              <h2 className="font-['Cormorant_Garamond'] text-5xl font-semibold leading-none text-coffee-900">
+                Begin your coffee profile.
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-coffee-700">
+                A few details now gives you a smoother, more premium ordering
+                experience every time you return.
+              </p>
+            </div>
+
             {errors.submit && (
               <div
-                className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+                className="mb-6 rounded-[1.25rem] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
                 role="alert"
               >
                 {errors.submit}
@@ -180,7 +231,10 @@ export default function Register() {
 
             <form className="space-y-4" onSubmit={handleSubmit}>
               <div>
-                <label htmlFor="name" className="mb-2 block text-sm font-semibold text-coffee-900">
+                <label
+                  htmlFor="name"
+                  className="mb-2 block text-[0.78rem] font-medium uppercase tracking-[0.16em] text-coffee-700"
+                >
                   Full name
                 </label>
                 <input
@@ -191,56 +245,67 @@ export default function Register() {
                   autoComplete="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className={`w-full rounded-xl border bg-white px-4 py-3 text-coffee-900 placeholder:text-coffee-400 focus:outline-none focus:ring-2 ${
+                  className={`w-full rounded-[1rem] border bg-white/90 px-4 py-3 text-coffee-900 placeholder:text-coffee-500 focus:outline-none focus:ring-2 ${
                     errors.name
                       ? "border-red-300 focus:border-red-400 focus:ring-red-100"
-                      : "border-coffee-200 focus:border-coffee-500 focus:ring-coffee-200"
+                      : "border-[rgba(143,91,54,0.16)] focus:border-coffee-500 focus:ring-coffee-200"
                   }`}
                   placeholder="Juan Dela Cruz"
                 />
                 {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
               </div>
 
-              <div>
-                <label htmlFor="email" className="mb-2 block text-sm font-semibold text-coffee-900">
-                  Email address
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  autoComplete="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`w-full rounded-xl border bg-white px-4 py-3 text-coffee-900 placeholder:text-coffee-400 focus:outline-none focus:ring-2 ${
-                    errors.email
-                      ? "border-red-300 focus:border-red-400 focus:ring-red-100"
-                      : "border-coffee-200 focus:border-coffee-500 focus:ring-coffee-200"
-                  }`}
-                  placeholder="you@example.com"
-                />
-                {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="mb-2 block text-[0.78rem] font-medium uppercase tracking-[0.16em] text-coffee-700"
+                  >
+                    Email address
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={`w-full rounded-[1rem] border bg-white/90 px-4 py-3 text-coffee-900 placeholder:text-coffee-500 focus:outline-none focus:ring-2 ${
+                      errors.email
+                        ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                        : "border-[rgba(143,91,54,0.16)] focus:border-coffee-500 focus:ring-coffee-200"
+                    }`}
+                    placeholder="you@example.com"
+                  />
+                  {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="phone"
+                    className="mb-2 block text-[0.78rem] font-medium uppercase tracking-[0.16em] text-coffee-700"
+                  >
+                    Phone number
+                  </label>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    autoComplete="tel"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full rounded-[1rem] border border-[rgba(143,91,54,0.16)] bg-white/90 px-4 py-3 text-coffee-900 placeholder:text-coffee-500 focus:border-coffee-500 focus:outline-none focus:ring-2 focus:ring-coffee-200"
+                    placeholder="+63 9XX XXX XXXX"
+                  />
+                </div>
               </div>
 
               <div>
-                <label htmlFor="phone" className="mb-2 block text-sm font-semibold text-coffee-900">
-                  Phone number <span className="text-coffee-500">(optional)</span>
-                </label>
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  autoComplete="tel"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="w-full rounded-xl border border-coffee-200 bg-white px-4 py-3 text-coffee-900 placeholder:text-coffee-400 focus:border-coffee-500 focus:outline-none focus:ring-2 focus:ring-coffee-200"
-                  placeholder="+63 9XX XXX XXXX"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="password" className="mb-2 block text-sm font-semibold text-coffee-900">
+                <label
+                  htmlFor="password"
+                  className="mb-2 block text-[0.78rem] font-medium uppercase tracking-[0.16em] text-coffee-700"
+                >
                   Password
                 </label>
                 <div className="relative">
@@ -252,54 +317,41 @@ export default function Register() {
                     autoComplete="new-password"
                     value={formData.password}
                     onChange={handleChange}
-                    className={`w-full rounded-xl border bg-white px-4 py-3 pr-20 text-coffee-900 placeholder:text-coffee-400 focus:outline-none focus:ring-2 ${
+                    className={`w-full rounded-[1rem] border bg-white/90 px-4 py-3 pr-20 text-coffee-900 placeholder:text-coffee-500 focus:outline-none focus:ring-2 ${
                       errors.password
                         ? "border-red-300 focus:border-red-400 focus:ring-red-100"
-                        : "border-coffee-200 focus:border-coffee-500 focus:ring-coffee-200"
+                        : "border-[rgba(143,91,54,0.16)] focus:border-coffee-500 focus:ring-coffee-200"
                     }`}
                     placeholder="Use 8+ characters"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md px-2 py-1 text-sm font-semibold text-coffee-700 hover:bg-coffee-100"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full border border-[rgba(143,91,54,0.16)] px-3 py-1 text-xs font-medium uppercase tracking-[0.12em] text-coffee-700 transition hover:bg-coffee-50"
                   >
                     {showPassword ? "Hide" : "Show"}
                   </button>
                 </div>
-                {errors.password && (
-                  <p className="mt-1 text-xs text-red-600">{errors.password}</p>
-                )}
+                {errors.password && <p className="mt-1 text-xs text-red-600">{errors.password}</p>}
 
-                {formData.password && (
-                  <div className="mt-2">
-                    <div className="flex h-2 gap-1">
-                      {[1, 2, 3, 4].map((level) => (
-                        <div
-                          key={level}
-                          className={`flex-1 rounded-full ${
-                            level <= passwordStrength
-                              ? level <= 1
-                                ? "bg-red-500"
-                                : level === 2
-                                  ? "bg-orange-400"
-                                  : level === 3
-                                    ? "bg-yellow-500"
-                                    : "bg-green-500"
-                              : "bg-coffee-100"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <p className="mt-1 text-xs text-coffee-600">Strength: {strengthLabel}</p>
+                <div className="mt-3 rounded-[1rem] border border-[rgba(143,91,54,0.12)] bg-white/70 p-3">
+                  <div className="flex items-center justify-between text-xs uppercase tracking-[0.14em] text-coffee-600">
+                    <span>Password strength</span>
+                    <span>{strengthLabel}</span>
                   </div>
-                )}
+                  <div className="mt-3 h-2 overflow-hidden rounded-full bg-coffee-100">
+                    <div
+                      className={`h-full rounded-full transition-all ${strengthTone}`}
+                      style={{ width: `${(passwordStrength / 4) * 100}%` }}
+                    />
+                  </div>
+                </div>
               </div>
 
               <div>
                 <label
                   htmlFor="confirmPassword"
-                  className="mb-2 block text-sm font-semibold text-coffee-900"
+                  className="mb-2 block text-[0.78rem] font-medium uppercase tracking-[0.16em] text-coffee-700"
                 >
                   Confirm password
                 </label>
@@ -312,17 +364,17 @@ export default function Register() {
                     autoComplete="new-password"
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className={`w-full rounded-xl border bg-white px-4 py-3 pr-20 text-coffee-900 placeholder:text-coffee-400 focus:outline-none focus:ring-2 ${
+                    className={`w-full rounded-[1rem] border bg-white/90 px-4 py-3 pr-20 text-coffee-900 placeholder:text-coffee-500 focus:outline-none focus:ring-2 ${
                       errors.confirmPassword
                         ? "border-red-300 focus:border-red-400 focus:ring-red-100"
-                        : "border-coffee-200 focus:border-coffee-500 focus:ring-coffee-200"
+                        : "border-[rgba(143,91,54,0.16)] focus:border-coffee-500 focus:ring-coffee-200"
                     }`}
                     placeholder="Re-enter your password"
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword((prev) => !prev)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md px-2 py-1 text-sm font-semibold text-coffee-700 hover:bg-coffee-100"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full border border-[rgba(143,91,54,0.16)] px-3 py-1 text-xs font-medium uppercase tracking-[0.12em] text-coffee-700 transition hover:bg-coffee-50"
                   >
                     {showConfirmPassword ? "Hide" : "Show"}
                   </button>
@@ -335,30 +387,21 @@ export default function Register() {
               <button
                 type="submit"
                 disabled={loading}
-                className="mt-2 w-full rounded-xl bg-coffee-800 px-4 py-3 text-base font-semibold text-white transition hover:bg-coffee-900 disabled:cursor-not-allowed disabled:opacity-70"
+                className="w-full rounded-full bg-coffee-900 px-4 py-3 text-sm font-medium uppercase tracking-[0.16em] text-white transition hover:bg-coffee-800 disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {loading ? "Creating account..." : "Create account"}
               </button>
             </form>
 
-            <div className="my-6 flex items-center gap-3">
-              <div className="h-px flex-1 bg-coffee-200" />
-              <span className="text-xs uppercase tracking-[0.16em] text-coffee-500">
-                Already registered?
-              </span>
-              <div className="h-px flex-1 bg-coffee-200" />
-            </div>
-
-            <button
-              onClick={() => navigate("/login")}
-              type="button"
-              className="w-full rounded-xl border border-coffee-300 bg-white px-4 py-3 text-base font-semibold text-coffee-900 transition hover:bg-coffee-50"
-            >
-              Sign in instead
-            </button>
-
-            <p className="mt-6 text-center text-xs text-coffee-600">
-              By creating an account, you agree to our Terms & Conditions.
+            <p className="mt-6 text-center text-sm text-coffee-600">
+              Already have an account?{" "}
+              <button
+                type="button"
+                onClick={() => navigate("/login")}
+                className="font-medium text-coffee-900 underline-offset-4 hover:underline"
+              >
+                Sign in
+              </button>
             </p>
           </div>
         </main>
